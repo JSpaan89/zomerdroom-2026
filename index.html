@@ -6169,12 +6169,65 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
 </script>
 
 <script>
-// PWA: register service worker
+/* ============================================================
+   PWA registration + AUTO-UPDATE
+   - Registreert service-worker
+   - Detecteert nieuwe versie automatisch (op load, focus, en periodiek)
+   - Toont kort een "vernieuwen..."-toast en herlaadt de pagina zelf
+   - Werkt ook in geïnstalleerde PWA — geen handmatige cache-clear meer
+   ============================================================ */
 if ('serviceWorker' in navigator) {
+  let refreshing = false;
+  // Wanneer de nieuwe SW het overneemt → herlaad de pagina
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    location.reload();
+  });
+
+  function showUpdateToast() {
+    if (document.getElementById('sw-update-toast')) return;
+    const t = document.createElement('div');
+    t.id = 'sw-update-toast';
+    t.textContent = '✨ Nieuwe versie gevonden — laadt opnieuw…';
+    t.style.cssText = 'position:fixed;bottom:1rem;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;'
+      + 'background:linear-gradient(160deg,#7A2A3A,#5a1f2c);color:#FBF3DD;'
+      + 'padding:.7rem 1.3rem;border-radius:99px;font-family:Cinzel,serif;font-size:.8rem;letter-spacing:.08em;'
+      + 'z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 30px rgba(241,205,117,.25);'
+      + 'border:1px solid rgba(241,205,117,.45);transition:all .35s;pointer-events:none;';
+    document.body.appendChild(t);
+    requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; });
+  }
+
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => console.log('SW: registered', reg.scope))
-      .catch(err => console.warn('SW: registration failed', err));
+    navigator.serviceWorker.register('./service-worker.js').then(reg => {
+      console.log('SW: registered', reg.scope);
+
+      // Bij elke nieuwe versie die geïnstalleerd wordt
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            // Nieuwe SW staat klaar, oude is nog actief
+            showUpdateToast();
+            // Forceer overname → triggert controllerchange → reload
+            nw.postMessage({ action: 'SKIP_WAITING' });
+          }
+        });
+      });
+
+      // Update-check bij focus & visibility (telefoon-app reopen)
+      const triggerUpdate = () => { try { reg.update(); } catch(e){} };
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') triggerUpdate();
+      });
+      window.addEventListener('focus', triggerUpdate);
+      // Periodieke check elke 30 minuten
+      setInterval(triggerUpdate, 30 * 60 * 1000);
+      // Direct na load ook één check
+      setTimeout(triggerUpdate, 1500);
+    }).catch(err => console.warn('SW: registration failed', err));
   });
 }
 

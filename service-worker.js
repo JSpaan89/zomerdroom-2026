@@ -1,19 +1,21 @@
 /**
- * Service Worker — Reisgids Europa 2026
+ * Service Worker — Zomerdroom 2026
  *
- * Strategy:
- *  - Cache-first for app shell (HTML, manifest, icons, avatars)
- *  - Network-first met cache-fallback voor Wikipedia hero images
- *  - Geen caching voor Google Maps / booking.com (altijd live)
+ * Strategy (v2.1+):
+ *  - **Network-first for HTML** (documents) -> cache fallback -> ensures users always
+ *    get the freshest index.html when online, without needing to clear cache.
+ *  - **Cache-first for static assets** (icons, avatars, manifest) -> instant load.
+ *  - **Cache-first for Wikimedia images** with long TTL -> no flicker on revisit.
+ *  - **No caching** for Google Maps / booking.com -> always live.
+ *  - skipWaiting + clients.claim -> new SW takes over immediately.
+ *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v2.0.0';
-const APP_CACHE = `reisgids-app-${VERSION}`;
-const RUNTIME_CACHE = `reisgids-runtime-${VERSION}`;
+const VERSION = 'v2.1.0';
+const APP_CACHE = `zomerdroom-app-${VERSION}`;
+const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
 const APP_SHELL = [
-  './',
-  './index.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -25,7 +27,6 @@ const APP_SHELL = [
   './avatars/roan.png',
 ];
 
-// ----- Install: pre-cache the app shell -----
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(APP_CACHE).then((cache) => {
@@ -36,7 +37,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// ----- Activate: clean up old caches -----
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -49,27 +49,57 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// ----- Fetch: routing -----
+self.addEventListener('message', (e) => {
+  if (e.data && e.data.action === 'SKIP_WAITING') self.skipWaiting();
+});
+
+function isHtmlRequest(req, url) {
+  if (req.mode === 'navigate') return true;
+  if (req.destination === 'document') return true;
+  const accept = req.headers.get('accept') || '';
+  if (accept.includes('text/html')) return true;
+  if (url.pathname.endsWith('/') || url.pathname.endsWith('.html')) return true;
+  return false;
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
 
-  // Skip cross-origin requests that we don't want to cache
+  // Skip cross-origin we don't manage
   if (url.hostname.includes('google.com') ||
       url.hostname.includes('booking.com') ||
       url.hostname.includes('maps.googleapis')) {
-    return; // let browser handle directly
+    return;
   }
 
-  // App shell (same-origin) → cache-first
+  // Same-origin requests
   if (url.origin === self.location.origin) {
+    // HTML documents -> NETWORK-FIRST so updates land instantly
+    if (isHtmlRequest(req, url)) {
+      event.respondWith(
+        fetch(req, { cache: 'no-store' })
+          .then((res) => {
+            if (res && res.ok) {
+              const clone = res.clone();
+              caches.open(RUNTIME_CACHE).then((c) => c.put(req, clone));
+            }
+            return res;
+          })
+          .catch(() =>
+            caches.match(req).then((cached) => cached || caches.match('./index.html'))
+          )
+      );
+      return;
+    }
+
+    // Static same-origin (icons, avatars, manifest, etc.) -> CACHE-FIRST
     event.respondWith(
       caches.match(req).then((cached) =>
         cached || fetch(req).then((res) => {
-          // Optionally cache successful responses
-          if (res && res.ok && (req.destination === 'image' || req.destination === 'document')) {
+          if (res && res.ok && req.destination === 'image') {
             const clone = res.clone();
             caches.open(RUNTIME_CACHE).then((c) => c.put(req, clone));
           }
@@ -80,9 +110,10 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Wikipedia / Wikimedia hero images → cache-first met long TTL
+  // Wikimedia hero images -> CACHE-FIRST (rarely change)
   if (url.hostname.includes('wikimedia.org') ||
-      url.hostname.includes('wikipedia.org')) {
+      url.hostname.includes('wikipedia.org') ||
+      url.hostname.includes('upload.wikimedia.org')) {
     event.respondWith(
       caches.open(RUNTIME_CACHE).then((cache) =>
         cache.match(req).then((cached) =>
