@@ -2194,6 +2194,60 @@ body[data-who="roan"]    img[src*="roan.png"]{
 @media (max-width:520px){
   .loc-music-toggle{top:4.3rem;right:8rem;width:32px;height:32px;font-size:.9rem}
 }
+
+
+/* === Live locatie op de Europa-kaart === */
+.live-loc-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  margin:.6rem auto 0;
+  background:linear-gradient(160deg, rgba(93,138,170,.18), rgba(40,80,120,.28));
+  color:#FBF3DD;border:1.5px solid rgba(120,180,220,.45);
+  font-family:"Cinzel",serif;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;padding:.5rem 1.1rem;border-radius:99px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 14px rgba(20,60,100,.25);
+}
+.live-loc-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,60,100,.35);
+  background:linear-gradient(160deg, rgba(93,138,170,.3), rgba(40,80,120,.42));}
+.live-loc-btn.active{
+  background:linear-gradient(160deg, #5d8aaa, #3a6080);
+  border-color:#7aa0c0;color:#fff;
+  animation:live-loc-pulse 2.2s ease-in-out infinite;
+}
+@keyframes live-loc-pulse{
+  0%,100%{box-shadow:0 4px 14px rgba(120,180,220,.4)}
+  50%{box-shadow:0 4px 26px rgba(120,180,220,.8), 0 0 30px rgba(160,210,250,.5)}
+}
+.live-loc-btn .dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:#6fb0e5;box-shadow:0 0 8px #6fb0e5;
+}
+.live-loc-status{
+  display:block;text-align:center;font-family:"Caveat",cursive;
+  color:var(--gold-light,#F5E8CA);font-size:.95rem;margin-top:.3rem;
+  opacity:.85;min-height:1.2em;
+}
+
+/* SVG marker pulse */
+.europa-kaart-svg .here-pulse{
+  fill:#6fb0e5;opacity:.5;
+  animation:here-pulse 1.8s ease-out infinite;
+  transform-origin:center;transform-box:fill-box;
+}
+@keyframes here-pulse{
+  0%   { r:6; opacity:.6; }
+  100% { r:32; opacity:0; }
+}
+.europa-kaart-svg .here-pulse.r2{ animation-delay:0.9s; }
+.europa-kaart-svg .here-dot{
+  fill:#6fb0e5;stroke:#fff;stroke-width:2;
+  filter:drop-shadow(0 0 10px rgba(110,180,230,.9));
+}
+.europa-kaart-svg .here-label{
+  fill:#fff;font-family:"Caveat",cursive;font-size:14px;
+  paint-order:stroke;stroke:rgba(20,40,70,.8);stroke-width:3;
+  text-anchor:middle;
+}
 </style>
 </head>
 <body>
@@ -2449,6 +2503,12 @@ body[data-who="roan"]    img[src*="roan.png"]{
     <span><i class="thuis"></i>Utrecht — start &amp; thuis</span>
     <span><i class="heen"></i>7 hoofdstops (heen)</span>
     <span><i class="terug"></i>2 stops (terug)</span>
+  </div>
+  <div style="text-align:center;">
+    <button type="button" class="live-loc-btn" id="live-loc-btn" aria-label="Toon mijn huidige locatie op de kaart">
+      <span class="dot"></span>📍 Toon waar wij zijn
+    </button>
+    <span class="live-loc-status" id="live-loc-status"></span>
   </div>
   <p class="europa-kaart-hint">tik op een pin om naar dat hoofdstuk te springen</p>
 </section>
@@ -6165,6 +6225,121 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   } else {
     window.addEventListener('DOMContentLoaded', () => setTimeout(checkAndPlay, 250));
   }
+})();
+</script>
+
+
+<script>
+/* ============================================================
+   ✦ LIVE LOCATIE op de Europa-kaart
+   ============================================================ */
+(function(){
+  const btn    = document.getElementById('live-loc-btn');
+  const status = document.getElementById('live-loc-status');
+  const svg    = document.getElementById('europa-kaart-svg');
+  if (!btn || !svg) return;
+
+  // Zelfde projectie als in de Europa-kaart-IIFE
+  const W = 900, H = 720;
+  const CENTER = { lng: 9.5, lat: 49 };
+  const SCALE = 38;
+  function project(lng, lat) {
+    const cosLat = Math.cos(CENTER.lat * Math.PI / 180);
+    const x = W/2 + (lng - CENTER.lng) * SCALE * cosLat;
+    const y = H/2 - (lat - CENTER.lat) * SCALE;
+    return [x, y];
+  }
+
+  const ns = 'http://www.w3.org/2000/svg';
+  let watchId = null;
+  let group = null;
+
+  function ensureGroup() {
+    if (group) return group;
+    group = document.createElementNS(ns, 'g');
+    group.setAttribute('class', 'here-group');
+    const pulse1 = document.createElementNS(ns, 'circle');
+    pulse1.setAttribute('class', 'here-pulse');
+    pulse1.setAttribute('r', 6);
+    const pulse2 = document.createElementNS(ns, 'circle');
+    pulse2.setAttribute('class', 'here-pulse r2');
+    pulse2.setAttribute('r', 6);
+    const dot = document.createElementNS(ns, 'circle');
+    dot.setAttribute('class', 'here-dot');
+    dot.setAttribute('r', 7);
+    const label = document.createElementNS(ns, 'text');
+    label.setAttribute('class', 'here-label');
+    label.textContent = 'Hier ben jij ✦';
+    group.appendChild(pulse1);
+    group.appendChild(pulse2);
+    group.appendChild(dot);
+    group.appendChild(label);
+    svg.appendChild(group);
+    return group;
+  }
+
+  function setMarker(lat, lng, accuracy) {
+    const [x, y] = project(lng, lat);
+    const g = ensureGroup();
+    // Clamp to viewbox edges with a margin so marker stays visible even
+    // if user is far outside the route corridor.
+    const cx = Math.max(20, Math.min(W - 20, x));
+    const cy = Math.max(20, Math.min(H - 28, y));
+    g.querySelectorAll('circle').forEach(c => {
+      c.setAttribute('cx', cx.toFixed(1));
+      c.setAttribute('cy', cy.toFixed(1));
+    });
+    const label = g.querySelector('text');
+    label.setAttribute('x', cx.toFixed(1));
+    label.setAttribute('y', (cy - 14).toFixed(1));
+    // Status
+    const outOfRange = (cx !== x) || (cy !== y);
+    const acc = accuracy ? ' (±' + Math.round(accuracy) + ' m)' : '';
+    if (outOfRange) {
+      status.textContent = 'jullie zijn buiten het kaartje' + acc;
+    } else {
+      status.textContent = 'live op de kaart' + acc + ' ✦';
+    }
+  }
+
+  function stopWatching() {
+    if (watchId !== null) {
+      try { navigator.geolocation.clearWatch(watchId); } catch(_) {}
+      watchId = null;
+    }
+    if (group) { group.remove(); group = null; }
+    btn.classList.remove('active');
+    btn.innerHTML = '<span class="dot"></span>📍 Toon waar wij zijn';
+    status.textContent = '';
+  }
+
+  function startWatching() {
+    if (!('geolocation' in navigator)) {
+      status.textContent = 'Locatie wordt door dit apparaat niet ondersteund.';
+      return;
+    }
+    btn.classList.add('active');
+    btn.innerHTML = '<span class="dot"></span>📍 Volgen aan — tik om te stoppen';
+    status.textContent = 'locatie ophalen…';
+    watchId = navigator.geolocation.watchPosition(
+      (pos) => setMarker(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy),
+      (err) => {
+        let msg = 'kon locatie niet ophalen';
+        if (err.code === 1) msg = 'geen toestemming voor locatie';
+        else if (err.code === 2) msg = 'locatie niet beschikbaar';
+        else if (err.code === 3) msg = 'locatie-aanvraag duurt te lang';
+        status.textContent = msg;
+        btn.classList.remove('active');
+        btn.innerHTML = '<span class="dot"></span>📍 Toon waar wij zijn';
+      },
+      { enableHighAccuracy: true, maximumAge: 30000, timeout: 15000 }
+    );
+  }
+
+  btn.addEventListener('click', () => {
+    if (watchId !== null) stopWatching();
+    else startWatching();
+  });
 })();
 </script>
 
