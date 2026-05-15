@@ -7,7 +7,7 @@
  *  - Geen caching voor Google Maps / booking.com (altijd live)
  */
 
-const VERSION = 'v1.0.0';
+const VERSION = 'v2.0.0';
 const APP_CACHE = `reisgids-app-${VERSION}`;
 const RUNTIME_CACHE = `reisgids-runtime-${VERSION}`;
 
