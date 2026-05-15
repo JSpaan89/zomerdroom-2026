@@ -729,13 +729,14 @@ a:hover,a:active{color:var(--ember);background-image:linear-gradient(transparent
 .bingo{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
 .bingo-item{
   background:rgba(255,255,255,.55);border:1px solid rgba(200,157,73,.4);
-  border-radius:6px;padding:.75rem .45rem;text-align:center;cursor:pointer;
-  font-family:"EB Garamond",serif;font-size:.84rem;color:var(--ink-text);
-  transition:all .2s;line-height:1.2;
+  border-radius:6px;padding:.55rem .35rem .65rem;text-align:center;cursor:pointer;
+  font-family:"EB Garamond",serif;font-size:.78rem;color:var(--ink-text);
+  transition:all .2s;line-height:1.15;
   aspect-ratio:1/1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.15rem;
 }
-.bingo-item .ic{display:block;font-size:1.5rem;margin-bottom:.25rem}
+.bingo-item .ic{display:block;font-size:2.3rem;margin-bottom:.35rem;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
 .bingo-item:hover{border-color:var(--gold);background:rgba(255,255,255,.8)}
 .bingo-item.found{
   background:linear-gradient(160deg,rgba(93,138,114,.3),rgba(239,201,74,.2));
@@ -1276,15 +1277,15 @@ a:hover,a:active{color:var(--ember);background-image:linear-gradient(transparent
   z-index:2;
 }
 .next-stop-driver-label{
-  position:absolute;top:3.6rem;right:.5rem;
+  position:absolute;top:4.8rem;right:.4rem;
   font-family:"Caveat",cursive;color:var(--gold-shimmer);
-  font-size:.85rem;line-height:1;letter-spacing:.02em;
-  text-align:center;width:80px;opacity:.85;
-  z-index:2;
+  font-size:.78rem;line-height:1.05;letter-spacing:.02em;
+  text-align:center;width:auto;min-width:62px;opacity:.75;
+  z-index:2;text-shadow:0 1px 2px rgba(0,0,0,.4);
 }
 @media (max-width:700px){
   .next-stop-driver{width:44px;height:44px;top:.8rem;right:.8rem}
-  .next-stop-driver-label{top:3rem;right:.35rem;font-size:.72rem;width:70px}
+  .next-stop-driver-label{top:3.8rem;right:.6rem;font-size:.7rem;min-width:55px}
 }
 
 .next-stop-leader{
@@ -1529,8 +1530,8 @@ footer{text-align:center;padding:2.5rem 1.8rem;margin-bottom:3rem}
 }
 
 .who-badge{
-  position:fixed;top:.6rem;right:.6rem;
-  z-index:120;
+  position:fixed;top:4.8rem;right:.6rem;
+  z-index:90;
   display:inline-flex;align-items:center;gap:.45rem;
   background:rgba(251,243,221,.92);
   backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
@@ -1546,7 +1547,7 @@ footer{text-align:center;padding:2.5rem 1.8rem;margin-bottom:3rem}
 .who-badge:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(122,42,58,.3)}
 .who-badge img{width:32px;height:32px;border-radius:50%;object-fit:cover;object-position:center 18%}
 @media (max-width:700px){
-  .who-badge{font-size:.7rem;padding:.2rem .65rem .2rem .25rem}
+  .who-badge{top:4.3rem;font-size:.7rem;padding:.2rem .65rem .2rem .25rem}
   .who-badge img{width:28px;height:28px}
   .who-grid{grid-template-columns:repeat(2,1fr);gap:.55rem}
   .who-card img{width:60px;height:60px}
@@ -1619,8 +1620,8 @@ body[data-who="roan"]    img[src*="roan.png"]{
   .two-col{grid-template-columns:1fr}
   .team-grid{grid-template-columns:repeat(2,1fr)}
   .bingo{grid-template-columns:repeat(3,1fr);gap:.4rem}
-  .bingo-item{padding:.5rem .25rem;font-size:.72rem}
-  .bingo-item .ic{font-size:1.2rem}
+  .bingo-item{padding:.4rem .2rem .5rem;font-size:.66rem;line-height:1.1}
+  .bingo-item .ic{font-size:1.85rem;margin-bottom:.2rem}
   .lang-cards{grid-template-columns:1fr}
   section.paspoort .stats{grid-template-columns:1fr 1fr 1fr;gap:.5rem}
   section.paspoort .stats .stat-card{padding:.7rem .3rem}
@@ -2052,6 +2053,147 @@ body[data-who="roan"]    img[src*="roan.png"]{
   .draw-size{width:28px;height:28px}
 }
 
+
+
+/* =================================================
+   ✦ LEVENDIGE MICRO-ANIMATIES + AMBIENT
+   ================================================= */
+/* Twinkle pulsing on cover-stars */
+.cover-stars{
+  animation: twinkle-shift 18s ease-in-out infinite alternate;
+}
+@keyframes twinkle-shift{
+  0%   { opacity: .55; transform: translateZ(0) scale(1); }
+  50%  { opacity: 1;   transform: translateZ(0) scale(1.04); }
+  100% { opacity: .7;  transform: translateZ(0) scale(1.02); }
+}
+
+/* Floating fireflies behind cover content */
+.cover::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle at 12% 70%, rgba(243,217,122,.7) 0, transparent 2px),
+    radial-gradient(circle at 38% 22%, rgba(245,185,200,.6) 0, transparent 2px),
+    radial-gradient(circle at 62% 52%, rgba(243,217,122,.5) 0, transparent 2px),
+    radial-gradient(circle at 86% 35%, rgba(255,255,255,.5) 0, transparent 2px),
+    radial-gradient(circle at 22% 88%, rgba(245,185,200,.6) 0, transparent 2px),
+    radial-gradient(circle at 76% 78%, rgba(243,217,122,.6) 0, transparent 2px);
+  animation: fireflies 14s ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes fireflies{
+  0%   { opacity:.4; transform:translateY(0) translateX(0); }
+  33%  { opacity:.85; transform:translateY(-12px) translateX(8px); }
+  66%  { opacity:.65; transform:translateY(6px) translateX(-6px); }
+  100% { opacity:.5; transform:translateY(-4px) translateX(2px); }
+}
+.cover-content{position:relative;z-index:1}
+
+/* Bingo wobble on hover (only desktop, subtle) */
+@media (hover:hover) and (pointer:fine){
+  .bingo-item:not(.found):hover{
+    animation: bingo-wobble .35s ease-out;
+  }
+}
+@keyframes bingo-wobble{
+  0%   { transform: rotate(0) scale(1); }
+  35%  { transform: rotate(-3deg) scale(1.03); }
+  70%  { transform: rotate(2deg) scale(1.04); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+/* Lang-card flip-feedback on hover */
+@media (hover:hover) and (pointer:fine){
+  .lang-card:not(.sentence):hover{
+    transform: translateY(-2px) scale(1.02);
+  }
+}
+
+/* Stempel-knop subtle breathing when not yet collected */
+.stamp-btn:not(.collected){
+  animation: stamp-breathe 4.5s ease-in-out infinite;
+}
+@keyframes stamp-breathe{
+  0%,100% { box-shadow: 0 6px 18px rgba(122,42,58,.35), 0 0 25px rgba(245,185,200,.3), inset 0 1px 0 rgba(255,228,138,.4); }
+  50%     { box-shadow: 0 8px 24px rgba(122,42,58,.45), 0 0 35px rgba(245,185,200,.5), inset 0 1px 0 rgba(255,228,138,.5); }
+}
+
+/* Reset speed-up when prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .cover-stars, .cover::after, .stamp-btn:not(.collected),
+  .pizza-slice, .ice-scoop, .countdown-fact{ animation:none !important; transition:none !important; }
+}
+
+
+/* === Volledige app-reset === */
+.full-reset-wrap{
+  text-align:center;margin:1.6rem 0 0;
+  padding-top:1.2rem;
+  border-top:1px dashed rgba(200,75,49,.3);
+}
+.full-reset-btn{
+  background:linear-gradient(160deg, rgba(232,90,138,.15), rgba(200,75,49,.25));
+  color:#7A2A3A;
+  border:1.5px solid rgba(200,75,49,.45);
+  border-radius:99px;
+  padding:.55rem 1.3rem;
+  font-family:"Cinzel",serif;font-weight:600;letter-spacing:.08em;
+  font-size:.78rem;text-transform:uppercase;cursor:pointer;
+  transition:all .2s;
+  box-shadow:0 4px 12px rgba(200,75,49,.18);
+}
+.full-reset-btn:hover{
+  background:linear-gradient(160deg, rgba(232,90,138,.3), rgba(200,75,49,.45));
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(200,75,49,.35);
+}
+.full-reset-btn:active{transform:translateY(0)}
+.full-reset-btn.confirming{
+  background:linear-gradient(160deg, #c84b31, #7A2A3A);
+  color:#fff;border-color:#7A2A3A;
+  animation:reset-pulse 1.5s ease-in-out infinite;
+}
+@keyframes reset-pulse{
+  0%,100%{box-shadow:0 4px 12px rgba(200,75,49,.4)}
+  50%{box-shadow:0 4px 22px rgba(200,75,49,.8), 0 0 30px rgba(232,90,138,.5)}
+}
+.full-reset-hint{
+  font-family:"Caveat",cursive;
+  font-size:.95rem;color:#8B6B3E;
+  opacity:.8;margin:.5rem auto 0;
+  max-width:380px;line-height:1.3;
+}
+
+
+/* === Locatie-muziek mute-toggle === */
+.loc-music-toggle{
+  position:fixed;top:4.8rem;right:8.5rem;
+  z-index:90;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(251,243,221,.92);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1.5px solid var(--gold);
+  color:var(--burgundy);
+  font-size:1rem;cursor:pointer;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(122,42,58,.2);
+  transition:all .25s;
+}
+.loc-music-toggle:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(122,42,58,.3)}
+.loc-music-toggle.muted{opacity:.55;background:rgba(122,42,58,.1)}
+.loc-music-toggle.playing{
+  background:linear-gradient(160deg,#FFF3D5,#FFE0B0);
+  border-color:#C84B31;
+  animation:music-pulse 1.4s ease-in-out infinite;
+}
+@keyframes music-pulse{
+  0%,100%{box-shadow:0 4px 14px rgba(200,75,49,.4)}
+  50%{box-shadow:0 4px 22px rgba(200,75,49,.7), 0 0 24px rgba(241,205,117,.5)}
+}
+@media (max-width:520px){
+  .loc-music-toggle{top:4.3rem;right:8rem;width:32px;height:32px;font-size:.9rem}
+}
 </style>
 </head>
 <body>
@@ -3285,7 +3427,7 @@ body[data-who="roan"]    img[src*="roan.png"]{
     <div class="stat-card">
       <div class="label">Bingo</div>
       <div class="value" id="total-bingo">0</div>
-      <div class="total">van 72 spots</div>
+      <div class="total">van 81 spots</div>
     </div>
     <div class="stat-card">
       <div class="label">Stempels</div>
@@ -3308,6 +3450,14 @@ body[data-who="roan"]    img[src*="roan.png"]{
   <p style="font-size:0.85rem; opacity:0.75; margin-top:1.2rem;">
     Alles wordt bewaard op jullie apparaat — sluit de gids en open hem morgen, alles staat er nog. Klik op een stempel om hem aan/uit te zetten.
   </p>
+
+  <!-- Volledige app-reset (helemaal opnieuw beginnen) -->
+  <div class="full-reset-wrap">
+    <button type="button" id="full-reset-btn" class="full-reset-btn" aria-label="Reset de hele app">
+      ⚠️ Reset hele app — alles opnieuw
+    </button>
+    <p class="full-reset-hint">Wist quiz, bingo, stempels, ijsjes, pizza's, tekeningen, personage en avatar-keuze. Geen weg terug.</p>
+  </div>
 </section>
 
 <div class="flourish">✦</div>
@@ -3640,6 +3790,10 @@ body[data-who="roan"]    img[src*="roan.png"]{
     <p style="margin-top:.9rem;font-family:'Caveat',cursive;color:#8B4513;font-size:1.05rem;">Wisselen mag altijd — tik op je badge rechtsboven.</p>
   </div>
 </div>
+
+
+<!-- Locatie-muziek mute-toggle -->
+<button type="button" id="loc-music-toggle" class="loc-music-toggle" aria-label="Locatie-muziek aan/uit" title="Locatie-muziek aan/uit">🔊</button>
 
 <!-- Persistente badge rechtsboven -->
 <button type="button" id="who-badge" class="who-badge" hidden aria-label="Wissel personage">
@@ -5483,6 +5637,536 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
 
 </script>
 
+
+
+<script>
+/* ============================================================
+   ✦ SPAAN SOUND — Web Audio FX + livelier hooks
+   ============================================================ */
+(function(){
+  let ctx = null, master = null, lastPlay = 0;
+  function getCtx(){
+    if (ctx) return ctx;
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain();
+      master.gain.value = 0.55;
+      master.connect(ctx.destination);
+    } catch(e){ return null; }
+    return ctx;
+  }
+  // Some browsers suspend ctx until user gesture — resume on any interaction
+  ['pointerdown','keydown','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => {
+      const c = getCtx(); if (c && c.state === 'suspended') c.resume();
+    }, { once:false, passive:true })
+  );
+
+  function tone(freq, dur, opts){
+    const c = getCtx(); if (!c) return;
+    opts = opts || {};
+    const t0 = c.currentTime + (opts.delay || 0);
+    const osc = c.createOscillator();
+    const g   = c.createGain();
+    osc.type = opts.type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    if (opts.sweepTo) {
+      osc.frequency.exponentialRampToValueAtTime(opts.sweepTo, t0 + dur);
+    }
+    const vol = opts.vol == null ? 0.16 : opts.vol;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g).connect(master);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }
+  function noise(dur, vol, freq){
+    const c = getCtx(); if (!c) return;
+    const bufSize = Math.floor(c.sampleRate * dur);
+    const buf = c.createBuffer(1, bufSize, c.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i=0; i<bufSize; i++) data[i] = (Math.random()*2-1) * Math.exp(-i / (bufSize*0.3));
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = freq || 1500;
+    bp.Q.value = 1.5;
+    const g = c.createGain();
+    g.gain.value = vol || 0.18;
+    src.connect(bp).connect(g).connect(master);
+    src.start();
+  }
+  function throttle(){ const n=performance.now(); if (n - lastPlay < 40) return true; lastPlay=n; return false; }
+
+  // Sound library — each is short and distinct
+  const SFX = {
+    avatar:    () => { if(throttle())return; tone(523.25,.18,{type:'triangle',vol:.18}); tone(659.25,.18,{type:'triangle',vol:.18,delay:.1}); tone(783.99,.32,{type:'triangle',vol:.22,delay:.2}); tone(1046.5,.4,{type:'sine',vol:.14,delay:.3}); },
+    erica:     () => { tone(523.25,.18,{type:'sine',vol:.16}); tone(415.30,.18,{type:'sine',vol:.16,delay:.16}); tone(622.25,.4,{type:'sine',vol:.18,delay:.32}); tone(659.25,.6,{type:'sine',vol:.16,delay:.55}); },
+    gelato:    () => { for (let i=0;i<6;i++) tone(880 + i*120,.08,{type:'triangle',vol:.12,delay:i*.05}); tone(1318,.3,{type:'sine',vol:.16,delay:.4}); },
+    leonora:   () => { for (let i=0;i<8;i++) tone(1318 + Math.random()*1000,.07,{type:'sine',vol:.1,delay:i*.05}); tone(1975,.4,{type:'triangle',vol:.14,delay:.5}); },
+    roan:      () => { tone(120,.5,{type:'sawtooth',vol:.18,sweepTo:1600}); noise(.4,.1,2000); tone(880,.3,{type:'square',vol:.1,delay:.45}); },
+    tesla:     () => { for (let i=0;i<4;i++){ tone(880+i*220,.05,{type:'square',vol:.1,delay:i*.05}); } noise(.25,.13,3500); tone(110,.4,{type:'sawtooth',vol:.14,delay:.1}); },
+    pizza:     () => { tone(880,.18,{type:'triangle',vol:.16}); tone(1108,.18,{type:'triangle',vol:.16,delay:.06}); tone(1318,.35,{type:'triangle',vol:.18,delay:.14}); },
+    stardust:  () => { const notes=[2349,1975,1568,1318,1046,880]; notes.forEach((f,i)=>tone(f,.22,{type:'sine',vol:.13-i*.01,delay:i*.08})); },
+    jackpot:   () => { tone(523,.18,{type:'triangle',vol:.18}); tone(659,.18,{type:'triangle',vol:.18,delay:.18}); tone(784,.18,{type:'triangle',vol:.18,delay:.36}); tone(1046,.5,{type:'triangle',vol:.22,delay:.54}); tone(1568,.5,{type:'triangle',vol:.18,delay:.54}); },
+    achieve:   () => { tone(523,.12,{type:'triangle',vol:.16}); tone(659,.12,{type:'triangle',vol:.16,delay:.1}); tone(784,.28,{type:'triangle',vol:.18,delay:.2}); },
+    quizRight: () => { tone(880,.1,{type:'triangle',vol:.14}); tone(1318,.18,{type:'triangle',vol:.16,delay:.06}); },
+    quizWrong: () => { tone(330,.12,{type:'sine',vol:.14}); tone(247,.22,{type:'sine',vol:.14,delay:.1}); },
+    bingoTick: () => { tone(1568,.06,{type:'triangle',vol:.13}); noise(.04,.06,2000); },
+    stamp:     () => { tone(110,.06,{type:'sine',vol:.22}); noise(.08,.18,400); tone(880,.18,{type:'triangle',vol:.13,delay:.08}); tone(1318,.22,{type:'triangle',vol:.13,delay:.14}); },
+    iceScoop:  () => { tone(660,.08,{type:'sine',vol:.12}); tone(990,.14,{type:'triangle',vol:.14,delay:.05}); },
+    pizzaSlice:() => { tone(440,.06,{type:'sine',vol:.12}); tone(660,.12,{type:'triangle',vol:.14,delay:.05}); }
+  };
+  window.spaanSound = SFX;
+
+  /* ===== AUTO-WIRING ===== */
+  // Avatar selection
+  document.addEventListener('click', e => {
+    const card = e.target.closest && e.target.closest('.who-card');
+    if (card) SFX.avatar();
+  });
+  // Easter egg buttons in help-modal
+  document.addEventListener('click', e => {
+    const btn = e.target.closest && e.target.closest('.egg-btn');
+    if (!btn) return;
+    const egg = btn.dataset && btn.dataset.egg;
+    const map = { erica:'erica', gelato:'gelato', leonora:'leonora', roan:'roan',
+                  tesla:'tesla', pizza:'pizza', stardust:'stardust',
+                  jackpot:'jackpot', achievements:'achieve' };
+    if (map[egg] && SFX[map[egg]]) SFX[map[egg]]();
+  });
+  // Type-triggered easter eggs — observe overlay activations
+  function watchOverlay(id, sfx){
+    const el = document.getElementById(id); if (!el) return;
+    new MutationObserver(muts => {
+      muts.forEach(m => {
+        if (m.attributeName === 'class' && el.classList.contains('active')) {
+          if (SFX[sfx]) SFX[sfx]();
+        }
+      });
+    }).observe(el, { attributes:true });
+  }
+  watchOverlay('ee-overlay', 'erica');
+  watchOverlay('confetti-overlay', null); // generic, no sound (we hook per-egg below)
+  watchOverlay('stardust-overlay', 'stardust');
+  watchOverlay('achieve-overlay', 'achieve');
+
+  // Stempel set
+  document.addEventListener('click', e => {
+    const btn = e.target.closest && e.target.closest('.stamp-btn');
+    if (!btn) return;
+    setTimeout(() => {
+      if (btn.classList.contains('collected')) SFX.stamp();
+    }, 30);
+  });
+  // Quiz correct/wrong
+  document.addEventListener('click', e => {
+    const opt = e.target.closest && e.target.closest('.quiz-mc-option');
+    if (!opt) return;
+    setTimeout(() => {
+      if (opt.classList.contains('correct')) SFX.quizRight();
+      else if (opt.classList.contains('wrong')) SFX.quizWrong();
+    }, 30);
+  });
+  // Bingo found — elke cel heeft een eigen toonhoogte (pentatonische ladder 0..8)
+  // Indexes lopen van links-boven (laag) naar rechts-onder (hoog) op de 3×3 grid
+  const PENTATONIC = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66, 1318.51, 1567.98];
+  document.addEventListener('click', e => {
+    const bi = e.target.closest && e.target.closest('.bingo-item');
+    if (!bi || (e.target.closest && e.target.closest('.speak-btn'))) return;
+    setTimeout(() => {
+      if (!bi.classList.contains('found')) return;
+      const idx = parseInt(bi.dataset.i || '0', 10);
+      const freq = PENTATONIC[idx % 9] || 880;
+      // Tweetoons stapeling: hoofdtoon + octaaf (helderder, magischer)
+      tone(freq,      0.18, {type:'triangle', vol:.14});
+      tone(freq * 2,  0.16, {type:'sine',     vol:.08, delay:.02});
+      noise(0.04, .06, 2200);
+      // Check of dit de 9e gevonden is in deze locatie → akkoord-fanfare
+      const zone = bi.closest('.kids-zone');
+      if (zone) {
+        const found = zone.querySelectorAll('.bingo-item.found').length;
+        if (found === 9) {
+          // Volledig bingo-akkoord: C major chord + topnoot
+          [523.25, 659.25, 783.99, 1046.5].forEach((f,i) =>
+            tone(f, 0.6, {type:'triangle', vol:.13, delay:.18 + i*0.04, attack:.05}));
+          tone(1568, 0.7, {type:'sine', vol:.1, delay:.32, attack:.1});
+        }
+      }
+    }, 30);
+  });
+  // Ice + pizza meter taps
+  document.addEventListener('click', e => {
+    if (e.target.closest && e.target.closest('#ice-plus'))   SFX.iceScoop();
+    if (e.target.closest && e.target.closest('#pizza-plus')) SFX.pizzaSlice();
+  });
+  // Milestone celebrations — watch for .celebrate class on milestone elements
+  ['ice-milestone','pizza-milestone'].forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    new MutationObserver(muts => {
+      muts.forEach(m => {
+        if (m.attributeName === 'class' && el.classList.contains('celebrate')) {
+          SFX.achieve();
+        }
+      });
+    }).observe(el, { attributes:true });
+  });
+
+  /* ===== EXTRA LEVENDIGHEID — floating sparkle particles on hover of avatar card ===== */
+  document.addEventListener('click', e => {
+    const card = e.target.closest && e.target.closest('.who-card');
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top  + rect.height/2;
+    for (let i=0; i<14; i++) {
+      const s = document.createElement('span');
+      s.textContent = ['✨','★','✦','💫'][i%4];
+      s.style.cssText = `
+        position:fixed;left:${cx}px;top:${cy}px;
+        font-size:${10 + Math.random()*12}px;
+        pointer-events:none;z-index:9999;
+        color:#F1CD75;
+        transition:transform .9s ease-out, opacity .9s ease-out;
+        will-change:transform,opacity;
+        text-shadow:0 0 6px rgba(241,205,117,.7);`;
+      document.body.appendChild(s);
+      const ang = Math.random()*Math.PI*2;
+      const dist = 50 + Math.random()*80;
+      requestAnimationFrame(() => {
+        s.style.transform = `translate(${Math.cos(ang)*dist}px, ${Math.sin(ang)*dist}px) scale(.3)`;
+        s.style.opacity = '0';
+      });
+      setTimeout(() => s.remove(), 950);
+    }
+  });
+})();
+</script>
+
+
+<script>
+/* ============================================================
+   ✦ FULL APP RESET — wist alle localStorage en herlaadt
+   ============================================================ */
+(function(){
+  const btn  = document.getElementById('full-reset-btn');
+  if (!btn) return;
+  const ORIG_TEXT = btn.textContent;
+  let armed = false, timer = null;
+
+  function disarm(){
+    armed = false;
+    btn.classList.remove('confirming');
+    btn.textContent = ORIG_TEXT;
+    if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function doReset(){
+    // Verzamel alle keys die we kennen + alles met onze prefixes
+    const PREFIXES = ['quizState_','bingoState_','stampsState_',
+                      'iceCreamState_','pizzaState_','userCharacter_',
+                      'drawings_'];
+    try {
+      const toRemove = [];
+      for (let i = 0; i < localStorage.length; i++){
+        const k = localStorage.key(i);
+        if (PREFIXES.some(p => k && k.indexOf(p) === 0)) toRemove.push(k);
+      }
+      toRemove.forEach(k => localStorage.removeItem(k));
+    } catch(e){ console.warn('reset: localStorage error', e); }
+
+    // Visuele bevestiging
+    btn.textContent = '✓ Reset! Even geduld...';
+    btn.classList.remove('confirming');
+    btn.style.background = 'linear-gradient(160deg,#5d8a72,#3a5a48)';
+    btn.style.color = '#fff';
+    btn.style.borderColor = '#3a5a48';
+
+    // Geluid + scroll naar boven, dan herladen
+    if (window.spaanSound && window.spaanSound.stardust) {
+      try { window.spaanSound.stardust(); } catch(_){}
+    }
+    setTimeout(() => {
+      window.scrollTo({top:0, behavior:'smooth'});
+      setTimeout(() => location.reload(), 600);
+    }, 800);
+  }
+
+  btn.addEventListener('click', () => {
+    if (armed) {
+      doReset();
+      return;
+    }
+    armed = true;
+    btn.classList.add('confirming');
+    btn.textContent = '⚠️ Druk nogmaals — alles wissen?';
+    if (window.spaanSound && window.spaanSound.quizWrong) {
+      try { window.spaanSound.quizWrong(); } catch(_){}
+    }
+    timer = setTimeout(disarm, 4500);
+  });
+})();
+</script>
+
+
+<script>
+/* ============================================================
+   ✦ LOCATIE-MUZIEK — 9 sfeerthema's, IntersectionObserver-getrigger
+   ============================================================ */
+(function(){
+  const MUTE_KEY = 'locMusicMuted_v1';
+  const toggle = document.getElementById('loc-music-toggle');
+  let muted = false;
+  try { muted = localStorage.getItem(MUTE_KEY) === '1'; } catch(_) {}
+
+  function applyToggleState(){
+    if (!toggle) return;
+    if (muted) {
+      toggle.classList.add('muted');
+      toggle.classList.remove('playing');
+      toggle.textContent = '🔇';
+      toggle.title = 'Locatie-muziek staat uit — klik om aan te zetten';
+    } else {
+      toggle.classList.remove('muted');
+      toggle.textContent = '🔊';
+      toggle.title = 'Locatie-muziek staat aan — klik om uit te zetten';
+    }
+  }
+  applyToggleState();
+
+  if (toggle) toggle.addEventListener('click', () => {
+    // User gesture — perfect moment to unlock audio context
+    const cx = getCtx();
+    if (cx && cx.state === 'suspended') cx.resume().catch(()=>{});
+    muted = !muted;
+    try { localStorage.setItem(MUTE_KEY, muted ? '1' : '0'); } catch(_){}
+    applyToggleState();
+    // Als we aanzetten: speel direct het huidige thema af zodat de gebruiker iets hoort
+    if (!muted) {
+      const sec = findCurrent();
+      if (sec) playTheme(sec.id, true);
+    }
+  });
+
+  // --- Audio engine — eigen mini-engine zodat deze onafhankelijk werkt van spaanSound ---
+  let ctx = null, master = null;
+  function getCtx(){
+    if (ctx) return ctx;
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain();
+      master.gain.value = 0.42;
+      master.connect(ctx.destination);
+    } catch(e){ return null; }
+    return ctx;
+  }
+  ['pointerdown','keydown','touchstart'].forEach(ev =>
+    document.addEventListener(ev, () => { const c=getCtx(); if (c && c.state==='suspended') c.resume(); }, { passive:true })
+  );
+
+  function tone(freq, dur, opts){
+    const c = getCtx(); if (!c) return;
+    opts = opts || {};
+    const t0 = c.currentTime + (opts.delay || 0);
+    const osc = c.createOscillator();
+    const g   = c.createGain();
+    osc.type = opts.type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    if (opts.sweepTo) osc.frequency.exponentialRampToValueAtTime(opts.sweepTo, t0 + dur);
+    const vol = opts.vol == null ? 0.1 : opts.vol;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol, t0 + (opts.attack || 0.04));
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g).connect(master);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.03);
+  }
+  function noise(dur, vol, freq, delay){
+    const c = getCtx(); if (!c) return;
+    const start = c.currentTime + (delay||0);
+    const bufSize = Math.max(1, Math.floor(c.sampleRate * dur));
+    const buf = c.createBuffer(1, bufSize, c.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1) * Math.exp(-i / (bufSize*0.3));
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = freq || 1500;
+    bp.Q.value = 1.5;
+    const g = c.createGain();
+    g.gain.value = vol || 0.12;
+    src.connect(bp).connect(g).connect(master);
+    src.start(start);
+  }
+
+  // 9 themes
+  const THEMES = {
+    munchen: () => {
+      // Beierse oompah-polka
+      [87.31, 65.41, 87.31, 65.41].forEach((f,i) => tone(f, 0.42, {type:'square',vol:.08,delay:i*0.32}));
+      [349.23, 392, 440, 466.16, 440, 392, 349.23].forEach((f,i) => tone(f, 0.28, {type:'triangle',vol:.12,delay:0.2+i*0.2}));
+      tone(523.25, 0.7, {type:'triangle',vol:.12,delay:1.6});
+    },
+    zell: () => {
+      // Alpine: hoorndrone + jodel + koebel
+      tone(87.31, 2.0, {type:'sawtooth', vol:.07});
+      tone(174.61, 2.0, {type:'sine', vol:.05, delay:0.05});
+      const yodel = [880, 1175, 880, 740, 988, 880];
+      yodel.forEach((f,i) => tone(f, 0.24, {type:'triangle',vol:.13,delay:0.4+i*0.2}));
+      noise(0.08, .09, 1400, 0.6);
+      noise(0.08, .09, 1400, 1.3);
+      tone(1320, 0.18, {type:'triangle', vol:.09, delay:1.85});
+    },
+    dolomieten: () => {
+      // Bergstilte — open kwinten, traag oplopend
+      tone(110, 2.5, {type:'sine', vol:.07});
+      tone(164.81, 2.5, {type:'sine', vol:.05, delay:0.1});
+      const climb = [659.25, 783.99, 987.77, 1318.51];
+      climb.forEach((f,i) => tone(f, 0.6, {type:'sine',vol:.09,delay:0.3+i*0.35,attack:.1}));
+      tone(1975.53, 1.0, {type:'sine', vol:.06, delay:1.7});
+    },
+    garda: () => {
+      // Mediterraan licht — mandoline-arpeggio
+      const arp = [293.66, 369.99, 440, 587.33, 440, 369.99];
+      arp.forEach((f,i) => tone(f, 0.2, {type:'triangle',vol:.12,delay:i*0.13}));
+      arp.forEach((f,i) => tone(f*1.5, 0.18, {type:'triangle',vol:.08,delay:0.85+i*0.13}));
+      tone(880, 0.6, {type:'sine', vol:.09, delay:1.6});
+    },
+    asolo: () => {
+      // Italiaanse acoustische tremolo
+      for (let i=0;i<8;i++) tone(523.25, 0.05, {type:'triangle',vol:.1,delay:i*0.06});
+      tone(659.25, 0.35, {type:'triangle',vol:.13,delay:0.5});
+      tone(783.99, 0.35, {type:'triangle',vol:.13,delay:0.85});
+      tone(1046.5, 0.7, {type:'triangle',vol:.14,delay:1.2,attack:.08});
+    },
+    lido: () => {
+      // Gondelier barcarolle (6/8 lilt)
+      const mel = [349.23, 440, 523.25, 587.33, 523.25, 440];
+      mel.forEach((f,i) => tone(f, 0.28, {type:'sine',vol:.12,delay:i*0.22,attack:.06}));
+      tone(174.61, 1.5, {type:'sine', vol:.07, delay:0.1});
+      tone(261.63, 1.5, {type:'sine', vol:.06, delay:0.1});
+      tone(698.46, 0.7, {type:'sine', vol:.1, delay:1.4, attack:.1});
+    },
+    bergamo: () => {
+      // Plechtig klassiek met klavecimbel-feel
+      tone(196, 0.9, {type:'square', vol:.07});
+      tone(293.66, 0.9, {type:'square', vol:.07, delay:0.02});
+      [392, 466.16, 587.33].forEach((f,i) => tone(f, 0.35, {type:'square',vol:.11,delay:0.4+i*0.25}));
+      [698.46, 587.33, 466.16].forEach((f,i) => tone(f, 0.3, {type:'square',vol:.09,delay:1.2+i*0.22}));
+      tone(880, 0.7, {type:'triangle', vol:.1, delay:1.9, attack:.1});
+    },
+    luzern: () => {
+      // Zwitserse alphorn — laag, statig
+      tone(87.31, 2.5, {type:'sawtooth', vol:.1, attack:.2});
+      tone(130.81, 2.2, {type:'sawtooth', vol:.06, delay:0.4, attack:.2});
+      tone(174.61, 1.8, {type:'sawtooth', vol:.05, delay:0.8, attack:.2});
+      tone(261.63, 1.4, {type:'sine', vol:.08, delay:1.2, attack:.15});
+      noise(0.5, .04, 400, 0.1);
+    },
+    mannheim: () => {
+      // Mannheimer Schule — klassieke fanfare met crescendo
+      tone(130.81, 0.4, {type:'square', vol:.08});
+      tone(195.99, 0.4, {type:'square', vol:.08, delay:0.02});
+      [523.25, 659.25, 783.99, 1046.5].forEach((f,i) =>
+        tone(f, 0.3, {type:'triangle',vol:.1 + i*0.02,delay:0.3+i*0.18}));
+      tone(1318.51, 0.6, {type:'triangle', vol:.13, delay:1.1});
+      tone(880, 0.6, {type:'triangle', vol:.1, delay:1.1});
+      tone(659.25, 0.9, {type:'triangle', vol:.12, delay:1.7, attack:.1});
+    }
+  };
+
+  // Track last play times per location (debounce + remember "current")
+  const lastPlayed = {};
+  const COOLDOWN = 8000; // 8 sec — kort genoeg om feedback te voelen
+  let currentLoc = null;
+  let currentlyPlaying = null;
+
+  function playTheme(loc, force){
+    if (muted || !THEMES[loc]) return;
+    const now = performance.now();
+    if (!force && lastPlayed[loc] && now - lastPlayed[loc] < COOLDOWN) return;
+    lastPlayed[loc] = now;
+    // Resume audio context if browser suspended it
+    const cx = getCtx();
+    if (cx && cx.state === 'suspended') {
+      cx.resume().then(() => { try { THEMES[loc](); } catch(e){} });
+    } else {
+      try { THEMES[loc](); } catch(e){ console.warn('theme error', e); }
+    }
+    if (toggle) {
+      toggle.classList.add('playing');
+      clearTimeout(currentlyPlaying);
+      currentlyPlaying = setTimeout(() => toggle.classList.remove('playing'), 2800);
+    }
+  }
+
+  // --- Scroll-positie detectie ---
+  // We bepalen welke locatie "actief" is op basis van welke sectie-top het
+  // dichtst bij ~25% vanaf de viewport-top zit. Bij wisseling spelen we
+  // het thema af.
+  function findCurrent(){
+    const sections = document.querySelectorAll('section.loc[id]');
+    // Pak de sectie die de "lees-positie" (40% vanaf top) bevat —
+    // werkt ook voor lange secties die groter zijn dan het scherm.
+    const triggerY = window.innerHeight * 0.40;
+    for (const s of sections) {
+      const rect = s.getBoundingClientRect();
+      if (rect.top <= triggerY && rect.bottom >= triggerY) {
+        return s;
+      }
+    }
+    // Geen exacte match? Pak de eerste die onder de fold begint
+    for (const s of sections) {
+      const rect = s.getBoundingClientRect();
+      if (rect.top > 0 && rect.top < window.innerHeight) return s;
+    }
+    return null;
+  }
+
+  function checkAndPlay(){
+    const sec = findCurrent();
+    if (!sec) return;
+    if (sec.id !== currentLoc) {
+      currentLoc = sec.id;
+      playTheme(sec.id);
+    }
+  }
+
+  // Debounced scroll handler
+  let scrollTimer = null;
+  window.addEventListener('scroll', () => {
+    if (scrollTimer) return;
+    scrollTimer = setTimeout(() => { scrollTimer = null; checkAndPlay(); }, 220);
+  }, { passive: true });
+
+  // Directe triggers — kompas-stop / europa-kaart pin / next-stop blok
+  function bindClick(selector, getLoc){
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener('click', () => {
+        const loc = getLoc(el);
+        if (loc && THEMES[loc]) {
+          // Geef de browser tijd om te scrollen, dan thema afspelen
+          setTimeout(() => playTheme(loc, true), 700);
+        }
+      });
+    });
+  }
+  bindClick('.kompas-stop[data-loc]',   el => el.dataset.loc);
+  bindClick('.next-stop[data-next]',    el => el.dataset.next);
+  // Europa-kaart pins: gebruiken aria-label "Ga naar München" etc — match via href in dataset
+  // (de pin-group elementen hebben geen data-loc, dus we doen het na scroll-detectie)
+
+  // Initiele check zodra DOM klaar is
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(checkAndPlay, 250);
+  } else {
+    window.addEventListener('DOMContentLoaded', () => setTimeout(checkAndPlay, 250));
+  }
+})();
+</script>
 
 <script>
 // PWA: register service worker
