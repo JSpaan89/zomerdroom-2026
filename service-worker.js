@@ -11,7 +11,7 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.5.0';
+const VERSION = 'v3.8.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
@@ -25,6 +25,15 @@ const APP_SHELL = [
   './avatars/erica.png',
   './avatars/leonora.png',
   './avatars/roan.png',
+  './backgrounds/garda-cartoon.jpg',
+  './backgrounds/munchen-cartoon.jpg',
+  './backgrounds/zell-cartoon.jpg',
+  './backgrounds/dolomieten-cartoon.jpg',
+  './backgrounds/asolo-cartoon.jpg',
+  './backgrounds/venetie-cartoon.jpg',
+  './backgrounds/bergamo-cartoon.jpg',
+  './backgrounds/luzern-cartoon.jpg',
+  './backgrounds/mannheim-cartoon.jpg',
 ];
 
 self.addEventListener('install', (event) => {
