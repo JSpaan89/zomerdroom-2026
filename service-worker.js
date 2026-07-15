@@ -11,11 +11,13 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.33.0';
+const VERSION = 'v3.34.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
 const APP_SHELL = [
+  './index.html',
+  './vacation-sequence-engine.js',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
