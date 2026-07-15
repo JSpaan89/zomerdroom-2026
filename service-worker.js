@@ -11,7 +11,7 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.8.2';
+const VERSION = 'v3.26.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
@@ -25,6 +25,10 @@ const APP_SHELL = [
   './avatars/erica.png',
   './avatars/leonora.png',
   './avatars/roan.png',
+  './assets/king-hill/jarno.png',
+  './assets/king-hill/erica.png',
+  './assets/king-hill/leonora.png',
+  './assets/king-hill/roan.png',
   // backgrounds worden lazy gecached bij eerst-bezoek (runtime cache),
   // niet in APP_SHELL zodat een ontbrekende .jpg de hele precache niet breekt
 ];
