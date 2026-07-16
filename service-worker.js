@@ -11,13 +11,12 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.34.0';
+const VERSION = 'v3.35.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
 const APP_SHELL = [
   './index.html',
-  './vacation-sequence-engine.js',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -35,10 +34,29 @@ const APP_SHELL = [
   // niet in APP_SHELL zodat een ontbrekende .jpg de hele precache niet breekt
 ];
 
+const EMBEDDED_MANIFEST = './assets/embedded/manifest.json';
+
+async function cacheOfflineAssets(cache) {
+  await cache.addAll(APP_SHELL);
+  try {
+    const response = await fetch(EMBEDDED_MANIFEST, { cache: 'no-store' });
+    if (!response.ok) return;
+    const cachedManifest = response.clone();
+    const assets = await response.json();
+    await cache.put(EMBEDDED_MANIFEST, cachedManifest);
+    // Kleine groepen houden de installatiestap vriendelijk voor oudere tablets.
+    for (let i = 0; i < assets.length; i += 16) {
+      await cache.addAll(assets.slice(i, i + 16));
+    }
+  } catch (err) {
+    console.warn('SW: extra offline spelbeelden worden bij gebruik gecachet:', err);
+  }
+}
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(APP_CACHE).then((cache) => {
-      return cache.addAll(APP_SHELL).catch((err) => {
+      return cacheOfflineAssets(cache).catch((err) => {
         console.warn('SW: pre-cache faalde voor een asset:', err);
       });
     }).then(() => self.skipWaiting())

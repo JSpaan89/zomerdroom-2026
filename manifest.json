@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#FAF0E0",
-  "theme_color": "#2E5266",
+  "background_color": "#071427",
+  "theme_color": "#071427",
   "lang": "nl",
   "categories": ["travel", "lifestyle", "education"],
   "icons": [
