@@ -1996,8 +1996,10 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
 }
 .kids-panel.draw.active{
   position:fixed!important;inset:0!important;z-index:12000!important;display:block!important;
-  overflow:auto;background:linear-gradient(145deg,#fff8e8,#f4dfc2);padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));box-sizing:border-box;
+  overflow:auto;overscroll-behavior:contain;background:linear-gradient(145deg,#fff8e8,#f4dfc2);padding:max(10px,env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));box-sizing:border-box;
 }
+body.drawing-mode{overflow:hidden!important;overscroll-behavior:none}
+body.drawing-mode .book-nav,body.drawing-mode .book-folio{display:none!important;pointer-events:none!important}
 .kids-panel.draw.active .draw-wrap{width:min(1100px,100%);min-height:100%;margin:auto;display:flex;flex-direction:column}
 .kids-panel.draw.active .draw-tools{position:sticky;top:0;z-index:3;background:rgba(255,248,232,.96);padding:.45rem;border-radius:14px;box-shadow:0 4px 16px rgba(60,30,45,.15)}
 .kids-panel.draw.active .draw-canvas-wrap{flex:1;min-height:55vh;max-height:calc(100dvh - 150px);aspect-ratio:auto}
@@ -2010,7 +2012,8 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
 @media(max-width:700px){
   .kids-panel.draw.active .draw-tools{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center}
   .kids-panel.draw.active .draw-canvas-wrap{min-height:calc(100dvh - 190px);max-height:none}
-  .draw-gallery-title,.kids-panel.draw.active .draw-owner,.kids-panel.draw.active .draw-gallery{display:none}
+  .kids-panel.draw.active .draw-owner{display:none}
+  .kids-panel.draw.active .draw-gallery-title{margin-top:1rem;text-align:center}
 }
 .draw-hint{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -2032,11 +2035,12 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
   font-size:1rem;text-align:center;grid-column:1/-1;padding:.6rem 0;
 }
 .draw-thumb{
-  position:relative;aspect-ratio:4/3;background:#fff;
+  position:relative;background:#fff;
   border:1px solid rgba(212,160,67,.4);border-radius:6px;overflow:hidden;
   cursor:pointer;transition:transform .15s,box-shadow .15s;
 }
 .draw-thumb:hover{transform:scale(1.05);box-shadow:0 6px 16px rgba(122,42,58,.25);z-index:1}
+.media-thumb-frame{position:relative;aspect-ratio:4/3;overflow:hidden;background:#fff}
 .draw-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .draw-thumb .del{
   position:absolute;top:2px;right:2px;
@@ -2053,6 +2057,14 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
   text-align:center;padding:.3rem .15rem .15rem;
 }
 .draw-score{position:absolute;top:4px;left:4px;padding:.18rem .38rem;border-radius:99px;background:rgba(31,17,72,.82);color:#ffe28a;font:700 .68rem "EB Garamond",serif;box-shadow:0 2px 7px rgba(0,0,0,.22);pointer-events:none}
+.media-rating-strip{
+  display:flex;align-items:center;justify-content:center;gap:.35rem;min-height:30px;padding:.2rem .32rem;
+  background:#fff8e8;border-top:1px solid rgba(212,160,67,.28);color:#6b3f18;
+  font:700 .72rem "EB Garamond",serif;text-align:center
+}
+.media-rating-stars{position:relative;display:inline-block;line-height:1;color:#c9bea9;letter-spacing:.02em;white-space:nowrap}
+.media-rating-stars .fill{position:absolute;inset:0 auto 0 0;overflow:hidden;color:#d4a043;white-space:nowrap}
+.media-rating-empty{font-weight:600;color:#8a7864}
 .draw-rating{margin:.55rem auto 0;text-align:center;min-height:3rem}
 .draw-rating-label{font-family:"EB Garamond",serif;color:var(--paper-text);font-size:.95rem;margin-bottom:.15rem}
 .draw-stars{display:flex;justify-content:center;gap:.2rem}
@@ -2063,12 +2075,44 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
 .media-comment-list{max-height:120px;overflow-y:auto;display:flex;flex-direction:column;gap:.3rem;margin-bottom:.45rem}
 .media-comment{background:rgba(255,255,255,.58);border-radius:8px;padding:.35rem .5rem;font-family:"EB Garamond",serif;color:var(--paper-text);line-height:1.25}
 .media-comment b{color:var(--burgundy)}
+.media-comment-meta{display:flex;align-items:baseline;justify-content:space-between;gap:.55rem;margin-bottom:.12rem}
+.media-comment-meta time{color:var(--paper-soft);font-size:.76rem;white-space:nowrap}
+.media-comment-text{overflow-wrap:anywhere}
 .media-comment-empty{font-family:"Caveat",cursive;color:var(--paper-soft);text-align:center}
 .media-comment-form{display:flex;gap:.35rem}
 .media-comment-input{flex:1;min-width:0;border:1px solid rgba(138,96,32,.4);border-radius:99px;padding:.45rem .7rem;background:#fffaf0;font-family:"EB Garamond",serif;font-size:1rem;color:var(--ink-text)}
 .media-comment-send{border:0;border-radius:99px;padding:.4rem .7rem;background:var(--burgundy);color:#fff;font-family:"EB Garamond",serif;cursor:pointer}
 .rating-text{width:100%;box-sizing:border-box;margin:.45rem 0 .25rem}
 .rating-review-list{display:flex;flex-direction:column;gap:.25rem;margin:.35rem 0;text-align:left}
+
+/* Familie-avatarstickers voor tekenen en foto's. */
+.sticker-picker{
+  display:flex;gap:.45rem;overflow-x:auto;padding:.55rem;margin:.35rem 0 .55rem;
+  background:rgba(255,250,240,.96);border:1px solid rgba(212,160,67,.35);border-radius:14px;
+  scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch
+}
+.sticker-picker[hidden]{display:none}
+.sticker-group{display:flex;gap:.35rem;padding-right:.55rem;border-right:1px solid rgba(122,42,58,.18)}
+.sticker-group:last-child{border-right:0}
+.sticker-option{
+  flex:0 0 58px;width:58px;height:58px;padding:3px;border:1px solid rgba(122,42,58,.2);border-radius:12px;
+  background:#fff;cursor:pointer;scroll-snap-align:start;box-shadow:0 3px 9px rgba(60,30,45,.09)
+}
+.sticker-option img{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.sticker-option.active{outline:3px solid var(--gold);background:#fff1bd}
+.sticker-canvas-tools{position:relative;z-index:4;margin:.35rem auto;max-width:min(94vw,900px)}
+.sticker-placement-note{font:1rem "Caveat",cursive;color:#7a2a3a;text-align:center;margin:.2rem}
+.photo-sticker-editor{
+  position:fixed;inset:0;z-index:18000;display:flex;flex-direction:column;
+  background:linear-gradient(160deg,#fff8e8,#f8e7d8);padding:max(.65rem,env(safe-area-inset-top)) max(.65rem,env(safe-area-inset-right)) max(.65rem,env(safe-area-inset-bottom)) max(.65rem,env(safe-area-inset-left));
+}
+.photo-sticker-editor h3{margin:.15rem 3rem .35rem;text-align:center;color:#7a2a3a;font-family:"EB Garamond",serif}
+.photo-sticker-stage{flex:1;min-height:0;display:grid;place-items:center;overflow:hidden}
+.photo-sticker-canvas{display:block;max-width:100%;max-height:100%;width:auto;height:auto;border-radius:14px;box-shadow:0 12px 34px rgba(60,30,45,.24);touch-action:none;background:#111}
+.photo-sticker-actions{display:flex;justify-content:center;gap:.45rem;flex-wrap:wrap;padding-top:.45rem}
+.photo-sticker-actions button{min-height:42px;border:1px solid rgba(122,42,58,.25);border-radius:99px;padding:.45rem .8rem;background:#fff8e8;color:#7a2a3a;font:700 .9rem "EB Garamond",serif}
+.photo-sticker-actions .primary{background:#7a2a3a;color:#fff}
+.photo-sticker-close{position:absolute;top:max(.55rem,env(safe-area-inset-top));right:max(.55rem,env(safe-area-inset-right));width:44px!important;padding:0!important;font-size:1.3rem!important}
 
 /* Drawing modal */
 .draw-modal{
@@ -2109,7 +2153,7 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
 .photo-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .photo-status{font-family:"Caveat",cursive;color:var(--burgundy);font-size:1.05rem;min-height:1.3em}
 .photo-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
-.photo-card{position:relative;aspect-ratio:4/3;border-radius:9px;overflow:hidden;background:#fff;border:1px solid rgba(212,160,67,.4);box-shadow:0 4px 12px rgba(40,24,70,.14);cursor:pointer}
+.photo-card{position:relative;border-radius:9px;overflow:hidden;background:#fff;border:1px solid rgba(212,160,67,.4);box-shadow:0 4px 12px rgba(40,24,70,.14);cursor:pointer}
 .photo-card img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-card .photo-by{position:absolute;left:0;right:0;bottom:0;padding:.5rem .3rem .2rem;background:linear-gradient(transparent,rgba(31,17,72,.82));color:#fff;text-align:center;font-family:"Caveat",cursive}
 .photo-card .photo-score{position:absolute;left:5px;top:5px;background:rgba(31,17,72,.84);color:#ffe28a;padding:.18rem .42rem;border-radius:99px;font:bold .72rem "EB Garamond",serif}
@@ -2117,8 +2161,47 @@ body[data-who="roan"]    img[src="avatars/roan.png"]{
 .photo-empty{grid-column:1/-1;text-align:center;padding:1.2rem;font-family:"Caveat",cursive;color:var(--paper-soft);font-size:1.1rem}
 @media(max-width:520px){.photo-gallery{grid-template-columns:repeat(2,1fr)}}
 
+/* Admin: meerdere galerij-items tegelijk selecteren en veilig verwijderen */
+.gallery-admin-toolbar{
+  display:flex;align-items:center;justify-content:flex-end;gap:.45rem;flex-wrap:wrap;
+  margin:.45rem 0 .65rem;font-family:"EB Garamond",serif
+}
+.gallery-admin-actions{display:flex;align-items:center;justify-content:flex-end;gap:.4rem;flex-wrap:wrap}
+.gallery-admin-actions[hidden]{display:none}
+.gallery-admin-button{
+  min-height:38px;padding:.42rem .7rem;border:1px solid rgba(122,42,58,.28);border-radius:99px;
+  background:rgba(255,250,240,.92);color:#6f2638;font:700 .86rem "EB Garamond",serif;
+  cursor:pointer;box-shadow:0 3px 10px rgba(70,35,55,.09)
+}
+.gallery-admin-button.danger{background:#7a2a3a;color:#fff;border-color:#7a2a3a}
+.gallery-admin-button:disabled{opacity:.42;cursor:not-allowed;box-shadow:none}
+.gallery-admin-count{min-width:76px;text-align:center;color:#6b3f18;font-weight:700}
+.gallery-admin-status{flex-basis:100%;text-align:right;min-height:1.15em;color:#357257;font-family:"Caveat",cursive}
+.gallery-admin-select{
+  position:absolute;z-index:6;top:7px;left:7px;width:34px;height:34px;padding:0;
+  display:flex;align-items:center;justify-content:center;border:2px solid #fff;border-radius:50%;
+  background:rgba(255,250,240,.94);color:#7a2a3a;font-size:1.05rem;font-weight:900;
+  box-shadow:0 3px 12px rgba(34,20,50,.28);opacity:0;pointer-events:none;transform:scale(.82);
+  transition:opacity .15s,transform .15s,background .15s
+}
+.gallery-admin-mode .gallery-admin-select{opacity:1;pointer-events:auto;transform:scale(1)}
+.gallery-admin-mode .draw-thumb,.gallery-admin-mode .photo-card,.gallery-admin-mode .db-gallery-item{cursor:pointer}
+.gallery-admin-mode .draw-thumb .del,.gallery-admin-mode .photo-card .photo-del{display:none}
+.draw-thumb.is-selected,.photo-card.is-selected,.db-gallery-item.is-selected{
+  outline:4px solid #d4a043;outline-offset:2px;box-shadow:0 0 0 7px rgba(212,160,67,.22),0 8px 20px rgba(70,35,55,.22)
+}
+.draw-thumb.is-selected:hover{transform:none}
+.is-selected .gallery-admin-select{background:#7a2a3a;color:#fff}
+.db-gallery-item{position:relative}
+@media(max-width:700px){
+  .gallery-admin-toolbar,.gallery-admin-actions{justify-content:center}
+  .gallery-admin-status{text-align:center}
+  .gallery-admin-button{min-height:44px;padding:.5rem .75rem}
+  .gallery-admin-select{width:40px;height:40px}
+}
+
 @media (max-width:520px){
-  .draw-gallery{grid-template-columns:repeat(3,1fr)}
+  .draw-gallery{grid-template-columns:repeat(2,1fr)}
   .draw-color{width:26px;height:26px}
   .draw-size{width:28px;height:28px}
 }
@@ -3596,6 +3679,32 @@ body.book-mode section.paspoort.bookpage{
   </div>
 </nav>
 
+<script>
+/* De geopende bladzijde en de locatie van vandaag zijn twee verschillende dingen. */
+(function markTodaysTripStop(){
+  const plan=[
+    {id:'munchen',from:'2026-07-17',to:'2026-07-17'},
+    {id:'zell',from:'2026-07-18',to:'2026-07-20'},
+    {id:'dolomieten',from:'2026-07-21',to:'2026-07-23'},
+    {id:'garda',from:'2026-07-24',to:'2026-07-27'},
+    {id:'asolo',from:'2026-07-28',to:'2026-07-30'},
+    {id:'lido',from:'2026-07-31',to:'2026-08-01'},
+    {id:'bergamo',from:'2026-08-02',to:'2026-08-05'},
+    {id:'luzern',from:'2026-08-06',to:'2026-08-06'},
+    {id:'mannheim',from:'2026-08-07',to:'2026-08-07'}
+  ];
+  const now=new Date(),pad=n=>String(n).padStart(2,'0');
+  const today=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate());
+  const stop=plan.find(item=>today>=item.from&&today<=item.to);
+  if(!stop)return;
+  const el=document.querySelector('.kompas-stop[data-loc="'+stop.id+'"]');
+  if(!el)return;
+  const label=now.getDate()+'/'+(now.getMonth()+1);
+  el.classList.add('today');el.dataset.todayLabel=label;
+  el.title='Vandaag, '+label+': '+(el.querySelector('span:last-child')?.textContent||stop.id);
+})();
+</script>
+
 <header class="cover">
   <div class="cover-stars"></div>
   <div class="cover-sun" id="cover-sun" title=""><button type="button" class="vault-moon-key" id="vault-moon-key" aria-label="Een vreemde maankrater"></button></div>
@@ -3893,10 +4002,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Acht uur Autobahn ligt achter je. De koffers vallen op het bed. Beneden klinken de eerste Beierse stemmen op een terras — een vrouw die lacht, een glas dat tinkelt. Buiten ruikt het naar gebakken brezel en avondzon op platanen. Dit is geen sightseeing-stop — dit is het moment waarop de vakantie écht begint. Eén pizza, één koude Maß, en morgen rijden we de Alpen in.</p>
     <p class='expanded'>München ligt strategisch precies op de rand: de noordelijke voet van de Alpen. Vanavond ben je nog in de Beierse vlakte; morgen tegen het middaguur torenen de pieken al boven Salzburg. Het hotel is bewust noordelijk van de stad gekozen — geen ZTL-stress, geen parkeer-gedoe, en morgen meteen door op de A8 zuid. Als de kinderen na de lange autorit nog energie hebben: het Olympiapark heeft enorme grasheuvels om vanaf te rollen, en de Englischer Garten heeft een natuurlijk meer en surfers op de Eisbach (Roan zal stomverbaasd zijn).</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.mcdreamshotels.de/muenchen-nord-en.html" target="_blank">MC Dreams München Nord</a> — strategisch noord, snel weg morgen</span></div><div class="row"><span class="k">Rijtijd</span><span class="v">Utrecht › München ~8 u (830 km) — plan vertrek vóór 8u</span></div><div class="row"><span class="k">Doel</span><span class="v">Stuur loslaten, kinderen ontladen, vroeg slapen</span></div><div class="row"><span class="k">Tijd over?</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Englischer+Garten+M%C3%BCnchen" target="_blank">Englischer Garten</a> of <a href="https://www.google.com/maps/search/?api=1&query=Olympiapark+M%C3%BCnchen" target="_blank">Olympiapark</a></span></div></div>
-    <div class="two-col"><div class="col alpine"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Kort, lekker eten</h4><ul><li><a href="https://www.hofbraeuhaus.de/" target="_blank">Hofbräuhaus</a> — toeristisch maar magisch</li><li><a href="https://www.google.com/maps/search/?api=1&query=Augustiner+Br%C3%A4ustuben+M%C3%BCnchen" target="_blank">Augustiner Bräustuben</a> — authentieker</li><li>Lokaal: Brezn, Weißwurst, Kaiserschmarrn als toetje</li></ul></div>
-<div class="col olive"><h4>Bij regen of energie over</h4><ul><li><a href="https://www.deutsches-museum.de/" target="_blank">Deutsches Museum</a> — Kinderreich is goud</li><li><a href="https://www.visitsealife.com/muenchen/en/" target="_blank">Sea Life München</a> — overzichtelijk</li><li><a href="https://www.google.com/maps/search/?api=1&query=Hirschgarten+M%C3%BCnchen" target="_blank">Hirschgarten</a> — biergarten + speeltuin</li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.mcdreamshotels.de/muenchen-nord-en.html" target="_blank" rel="noopener">MC Dreams München Nord</a> — strategisch noord, snel weg morgen</span></div><div class="row"><span class="k">Rijtijd</span><span class="v">Utrecht › München ~8 u (830 km) — plan vertrek vóór 8u</span></div><div class="row"><span class="k">Doel</span><span class="v">Stuur loslaten, kinderen ontladen, vroeg slapen</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Olympiapark+M%C3%BCnchen" target="_blank" rel="noopener">Olympiapark</a> — grasheuvels, ruimte en uitzicht na de autorit</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Eisbachwelle+Englischer+Garten+M%C3%BCnchen" target="_blank" rel="noopener">Englischer Garten + Eisbachsurfers</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Hirschgarten+M%C3%BCnchen" target="_blank" rel="noopener">Hirschgarten</a> — biergarten en speeltuin</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.deutsches-museum.de/en/museum-island/visit/admission-and-tickets" target="_blank" rel="noopener">Deutsches Museum</a> — interactieve techniek en Kinderreich</li><li><a href="https://www.visitsealife.com/muenchen/en/tickets/" target="_blank" rel="noopener">SEA LIFE München</a> — compact en volledig binnen</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Kort en lekker eten</h4><ul><li><a href="https://www.hofbraeuhaus.de/" target="_blank" rel="noopener">Hofbräuhaus</a> — toeristisch maar magisch</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Augustiner+Br%C3%A4ustuben+M%C3%BCnchen" target="_blank" rel="noopener">Augustiner Bräustuben</a> — authentieker</li><li>Lokaal: Brezn, Weißwurst en Kaiserschmarrn als toetje</li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="munchen">
       <h3>🥨 Voor Leonora & Roan</h3>
@@ -3987,10 +4101,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Op je tweede ochtend open je de luiken en het meer ligt er — glashelder, met de Schmittenhöhe als amfitheater eromheen. De kinderen weten het al: vandaag is meer-dag. Eén waarop je naar boven gaat met een kabelbaan en naar beneden komt met een rodelbaan, en alles wat ertussen zit zwemwater is.</p>
     <p class='expanded'>Het Zellermeer is zo schoon dat het officieel <i>Trinkwasserqualität</i> heeft — je kunt ervan drinken. Het water is in juli rond de 23-25°C: niet ijskoud, niet bloedjesheet, gewoon perfect. Vraag bij Hotel Victoriya gelijk om jullie <b>Zell am See-Kaprun Sommerkarte</b> — die krijg je gratis bij verblijf en geeft toegang tot vrijwel alle kabelbanen, bussen, boten en attracties in de regio. Goud waard.</p><p class='expanded'>Drie nachten zijn precies goed. Eén relaxte aankomstdag, één bergdag (Schmittenhöhe of Maiskogel), en één meerdag of Kitzsteinhorn-trip. Op de Kitzsteinhorn ligt 's zomers nog sneeuw — Roan zal het niet geloven.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Victoriya+Zell+am+See" target="_blank">Hotel Victoriya</a> — vraag bij inchecken naar de gratis Sommerkarte</span></div><div class="row"><span class="k">Zwemmen</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Strandbad+Thumersbach" target="_blank">Strandbad Thumersbach</a> — oostkant, rustig, schaduw</span></div><div class="row"><span class="k">Bergen</span><span class="v"><a href="https://www.schmitten.at/" target="_blank">Schmittenhöhe</a> · <a href="https://www.kitzsteinhorn.at/" target="_blank">Kitzsteinhorn</a> · <a href="https://www.maiskogel.info/" target="_blank">Maiskogel Familyland</a></span></div><div class="row"><span class="k">Slecht weer</span><span class="v"><a href="https://www.tauernspa.at/" target="_blank">Tauern Spa Kaprun</a> — een hele dag waterpret</span></div></div>
-    <div class="two-col"><div class="col alpine"><h4>Drie dagen — een ritme</h4><ul><li><b>Za 18/7:</b> aankomen + eerste duik in het meer</li><li><b>Zo 19/7:</b> <a href="https://www.maiskogel.info/" target="_blank">Maiskogel Alpine Coaster</a> — top voor 6-12</li><li><b>Ma 20/7:</b> Schmittenhöhe + <a href="https://www.google.com/maps/search/?api=1&query=AreitXpress+Zell+am+See" target="_blank">AreitXpress</a></li></ul></div>
-<div class="col olive"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Sfeer eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Steinerwirt+1493+Zell+am+See" target="_blank">Steinerwirt 1493</a> — Pinzgauer keuken</li><li><a href="https://www.google.com/maps/search/?api=1&query=Mayer%27s+Restaurant+Schloss+Prielau" target="_blank">Mayer’s Restaurant</a> — voor één bijzondere avond</li><li>Lokaal: <i>Kasnocken, Kaiserschmarrn, Bauernkrapfen</i></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel+Victoriya+Zell+am+See" target="_blank" rel="noopener">Hotel Victoriya</a></span></div><div class="row"><span class="k">Sommerkarte</span><span class="v">Vraag bij het inchecken direct naar de gratis Zell am See-Kaprun Sommerkarte</span></div><div class="row"><span class="k">Ritme</span><span class="v">Eén aankomstdag, één bergdag en één meer- of sneeuwdag</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Strandbad+Thumersbach" target="_blank" rel="noopener">Strandbad Thumersbach</a> — rustig zwemmen aan de oostkant</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Maisi+Flitzer+Alpine+Coaster+Kaprun" target="_blank" rel="noopener">Maisi Flitzer Alpine Coaster</a> — rodelpret voor het gezin</li><li><a href="https://www.schmitten.at/en" target="_blank" rel="noopener">Schmittenhöhe</a> via de <a href="https://www.google.com/maps/search/?api=1&amp;query=AreitXpress+Zell+am+See" target="_blank" rel="noopener">AreitXpress</a></li><li><a href="https://www.kitzsteinhorn.at/en" target="_blank" rel="noopener">Kitzsteinhorn</a> — in de zomer sneeuw zien</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.tauernspakaprun.com/de/therme/preise-oeffnungszeiten" target="_blank" rel="noopener">TAUERN SPA Kaprun</a> — een hele dag waterpret</li><li><a href="https://www.oldtimer-museum.at/" target="_blank" rel="noopener">Vötter’s Oldtimer Museum</a> — voertuigen en techniek binnen</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Sfeervol eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Steinerwirt+1493+Zell+am+See" target="_blank" rel="noopener">Steinerwirt 1493</a> — Pinzgauer keuken</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Mayer%27s+Restaurant+Schloss+Prielau" target="_blank" rel="noopener">Mayer’s Restaurant</a> — voor één bijzondere avond</li><li>Lokaal: <i>Kasnocken, Kaiserschmarrn en Bauernkrapfen</i></li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="zell">
       <h3>🏔️ Voor Leonora & Roan</h3>
@@ -4077,10 +4196,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">In Mezzano staat de auto stil. Je hoort niets, behalve een koe ergens met een belletje. Boven je torenen de Pale di San Martino — kathedralen van roze steen die bij zonsondergang gaan gloeien alsof ze van binnenuit verlicht worden. Hier vertraagt alles. Precies de bedoeling.</p>
     <p class='expanded'>Mezzano is door de Italiaanse vereniging <i>Borghi più Belli</i> uitgeroepen tot één van de mooiste dorpen van Italië. Wandel 's avonds even rond — je vindt overal in het dorp de <i>cataste</i>: gestapelde brandhout-sculpturen die door dorpelingen tot kunst zijn verheven. Een soort openluchtmuseum, maar dan met echte bewoners.</p><p class='expanded'>Vanaf B&B Mas dei Masi is San Martino di Castrozza in 25 minuten. Daar pakt je de kabelbaan naar de <b>Pale di San Martino</b>. Eenmaal boven sta je op een maan-landschap omringd door kalksteenpieken die in de avondzon vuurrood kleuren (het beroemde <i>alpenglow</i>-effect). Voor wie de wandeling te zwaar vindt: ook gewoon vanaf het bergstation is het uitzicht al spectaculair.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Mas+dei+Masi+Mezzano" target="_blank">B&B Mas dei Masi</a> in <a href="https://www.google.com/maps/search/?api=1&query=Mezzano+Trentino" target="_blank">Mezzano</a> — één van Italiës mooiste dorpen</span></div><div class="row"><span class="k">Bergrit</span><span class="v"><a href="https://www.sanmartino.com/" target="_blank">Kabelbaan Colverde-Rosetta</a> naar de Pale</span></div><div class="row"><span class="k">Iconisch</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Baita+Segantini+Passo+Rolle" target="_blank">Baita Segantini bij Passo Rolle</a> — spiegelmeer vóór de pieken</span></div><div class="row"><span class="k">Zwemmen</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Lago+di+Calaita" target="_blank">Lago di Calaita</a> (fris) · <a href="https://www.google.com/maps/search/?api=1&query=Val+Canali" target="_blank">Val Canali</a></span></div></div>
-    <div class="two-col"><div class="col olive"><h4>Drie dagen — zacht ritme</h4><ul><li><b>Di 21/7:</b> rustige aankomst + avondwandeling Mezzano</li><li><b>Wo 22/7:</b> Baita Segantini (1u heen — de fotoplek!)</li><li><b>Do 23/7:</b> Val Canali + picknick bij Lago di Calaita</li></ul></div>
-<div class="col alpine"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Eten in de bergen</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Rifugio+Cant+del+Gal+Val+Canali" target="_blank">Rifugio Cant del Gal</a> — polenta + wild</li><li><a href="https://www.google.com/maps/search/?api=1&query=Malga+Ces+San+Martino" target="_blank">Malga Ces</a> — kindvriendelijk, mooie ligging</li><li>Lokaal: <i>canederli, casunziei (rode-biet ravioli), strudel</i></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Mas+dei+Masi+Mezzano" target="_blank" rel="noopener">B&amp;B Mas dei Masi</a> in Mezzano</span></div><div class="row"><span class="k">Afstand</span><span class="v">San Martino di Castrozza ligt op ongeveer 25 minuten rijden</span></div><div class="row"><span class="k">Bergweer</span><span class="v">Check ’s morgens de kabelbaan en buienradar; boven kan het snel omslaan</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Mezzano+Trentino" target="_blank" rel="noopener">Mezzano</a> — avondwandeling langs de houten <i>cataste</i></li><li><a href="https://www.sanmartino.com/" target="_blank" rel="noopener">Colverde–Rosetta-kabelbaan</a> naar de Pale di San Martino</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Baita+Segantini+Passo+Rolle" target="_blank" rel="noopener">Baita Segantini</a> — dé fotoplek bij Passo Rolle</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Val+Canali" target="_blank" rel="noopener">Val Canali</a> en picknick bij <a href="https://www.google.com/maps/search/?api=1&amp;query=Lago+di+Calaita" target="_blank" rel="noopener">Lago di Calaita</a></li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://parcopan.org/i-centri-visitatori-e-le-iniziative-nel-parco-dinverno/" target="_blank" rel="noopener">Bezoekerscentrum Paneveggio</a> — natuurverhalen en exposities</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Museo+della+Grande+Guerra+Caoria" target="_blank" rel="noopener">Museo della Grande Guerra in Caoria</a> — klein en dichtbij</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Eten in de bergen</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Rifugio+Cant+del+Gal+Val+Canali" target="_blank" rel="noopener">Rifugio Cant del Gal</a> — polenta en wild</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Malga+Ces+San+Martino" target="_blank" rel="noopener">Malga Ces</a> — kindvriendelijk, mooie ligging</li><li>Lokaal: <i>canederli, casunziei en strudel</i></li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="dolomieten">
       <h3>🌄 Voor Leonora & Roan</h3>
@@ -4167,10 +4291,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Citroenbomen langs de weg. Een vespa die voorbijraast. Gelato in een hoorntje. Welkom in het deel van de reis waar het echt zomer wordt. Vier nachten betekent: niet één dag naar het meer, maar elke dag — soms vroeg, soms laat, soms met een boot, soms in de achtertuin van een agriturismo.</p>
     <p class='expanded'>Cavaion Veronese ligt slim gekozen: een paar kilometer landinwaarts van Bardolino, dus ietsje koeler en stiller dan direct aan het meer, maar binnen 15 minuten ben je in het water. Het Gardameer is in juli rond de 24-26°C — heerlijk om in te zwemmen, en in tegenstelling tot de zee voelt het zacht aan je huid.</p><p class='expanded'>Tip voor Gardaland: ga op een <b>maandag of dinsdag</b> (minder druk dan weekend). Wees er om 9u30, koop tickets online vooraf. Kinderfavorieten op 6-12 jaar: <b>Kung Fu Panda Academy</b>, <b>Jumanji</b>, <b>Magic Mountain</b>. Bewaar de natte-attracties voor de namiddag — neem zwemkleding mee.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Cavaion+Veronese" target="_blank">Cavaion Veronese</a> — slim landinwaarts, 15 min van het meer</span></div><div class="row"><span class="k">Zwemmen</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Lido+di+Cisano+Bardolino" target="_blank">Lido di Cisano</a> · <a href="https://www.google.com/maps/search/?api=1&query=Punta+San+Vigilio+Garda" target="_blank">Punta San Vigilio</a></span></div><div class="row"><span class="k">Pretparken</span><span class="v"><a href="https://www.gardaland.it/" target="_blank">Gardaland</a> · <a href="https://www.canevaworld.it/" target="_blank">Movieland</a> · <a href="https://www.parconaturaviva.it/" target="_blank">Parco Natura Viva</a></span></div><div class="row"><span class="k">Boot</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=noleggio+barche+Lazise" target="_blank">Lazise — boot zonder vaarbewijs</a></span></div></div>
-    <div class="two-col"><div class="col lake"><h4>Vier dagen — afwisselen</h4><ul><li><b>Vr 24/7:</b> aankomst + Bardolino-promenade</li><li><b>Za 25/7:</b> Punta San Vigilio — ondiep, schaduw</li><li><b>Zo 26/7:</b> <a href="https://www.gardaland.it/" target="_blank">Gardaland</a> (vroeg!)</li><li><b>Ma 27/7:</b> boot huren of kabelbaan Malcesine</li></ul></div>
-<div class="col terra"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Sfeer eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Trattoria+al+Pesciolino+Bardolino" target="_blank">Trattoria al Pesciolino</a> — vis uit het meer</li><li><a href="https://www.google.com/maps/search/?api=1&query=Locanda+San+Vigilio+Garda" target="_blank">Locanda San Vigilio</a> — voor één bijzondere lunch</li><li>Gelato: <a href="https://www.google.com/maps/search/?api=1&query=Gelateria+Cristallo+Bardolino" target="_blank">Cristallo</a> — een instituut</li><li>Lokaal: <i>bigoli con sarde, risotto all'Amarone</i></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Cavaion+Veronese" target="_blank" rel="noopener">Cavaion Veronese</a> — rustig en ongeveer 15 minuten van het meer</span></div><div class="row"><span class="k">Gardaland</span><span class="v">Ga vroeg, koop tickets vooraf en bewaar de natte attracties voor de middag</span></div><div class="row"><span class="k">Watertemperatuur</span><span class="v">In juli meestal ongeveer 24–26°C</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Bardolino+promenade" target="_blank" rel="noopener">Bardolino-promenade</a> en zwemmen bij <a href="https://www.google.com/maps/search/?api=1&amp;query=Lido+di+Cisano+Bardolino" target="_blank" rel="noopener">Lido di Cisano</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Punta+San+Vigilio+Garda" target="_blank" rel="noopener">Punta San Vigilio</a> — ondiep water en schaduw</li><li><a href="https://www.gardaland.it/en/" target="_blank" rel="noopener">Gardaland</a> — vroeg starten</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=noleggio+barche+Lazise" target="_blank" rel="noopener">Boot huren in Lazise</a> of de <a href="https://www.google.com/maps/search/?api=1&amp;query=Funivia+Malcesine+Monte+Baldo" target="_blank" rel="noopener">kabelbaan van Malcesine</a></li><li><a href="https://www.parconaturaviva.it/en/" target="_blank" rel="noopener">Parco Natura Viva</a> of <a href="https://www.canevaworld.it/en/movieland-the-hollywood-park.html" target="_blank" rel="noopener">Movieland</a></li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.gardaland.it/en/explore-gardaland/sea-life-aquarium/" target="_blank" rel="noopener">Gardaland SEA LIFE Aquarium</a> — volledig binnen</li><li><a href="https://www.museonicolis.com/" target="_blank" rel="noopener">Museo Nicolis</a> — klassieke auto’s, motoren en fietsen</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Sfeervol eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Trattoria+al+Pesciolino+Bardolino" target="_blank" rel="noopener">Trattoria al Pesciolino</a> — vis uit het meer</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Locanda+San+Vigilio+Garda" target="_blank" rel="noopener">Locanda San Vigilio</a> — voor één bijzondere lunch</li><li>Gelato bij <a href="https://www.google.com/maps/search/?api=1&amp;query=Gelateria+Cristallo+Bardolino" target="_blank" rel="noopener">Cristallo</a>; lokaal: <i>bigoli con sarde</i> en risotto all’Amarone</li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="garda">
       <h3>🍋 Voor Leonora & Roan</h3>
@@ -4257,10 +4386,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Hier vertraagt de wereld. Tussen de Prosecco-heuvels openbaart Asolo zich als één van Italiës best bewaarde geheimen — een hooggelegen dorpje met honderd horizonten. Je drinkt om 18:00 een aperitivo op het centrale plein, en je hebt al niet meer in de gaten welke dag het is. Precies de bedoeling.</p>
     <p class='expanded'>Asolo is geen toeristen-stad, maar een echt levend dorp met cafés, ijssalons, kleine ateliers en wijngaarden tot aan de horizon. De bijnaam: <i>la città dai cento orizzonti</i> — de stad met honderd horizonten. Dichteres Eleonora Duse leefde hier en vond dat een goede plek om oud te worden. Wij denken: ook een prima plek om drie nachten te slow-roasten in de zomerzon.</p><p class='expanded'>Vanuit de agriturismo zijn alle hoogtepunten binnen 30 minuten rijden: <b>Bassano del Grappa</b> met de iconische overdekte houten brug, <b>Possagno</b> met de Tempio Canova (een mini-Pantheon op een heuvel), <b>Cison di Valmarino</b> als één van Italiës mooiste dorpen, en de <b>Strada del Prosecco</b> — UNESCO-glooiingen met druiven die over rolheuvels golven.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Agriturismo+Monfumo+Asolo" target="_blank">Agriturismo bij Asolo (Monfumo)</a> — sterren als plafond</span></div><div class="row"><span class="k">Dorpen</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Asolo+dorp" target="_blank">Asolo</a> · <a href="https://www.google.com/maps/search/?api=1&query=Bassano+del+Grappa+Ponte+Vecchio" target="_blank">Bassano</a> · <a href="https://www.google.com/maps/search/?api=1&query=Cison+di+Valmarino" target="_blank">Cison di Valmarino</a></span></div><div class="row"><span class="k">Cultuur</span><span class="v"><a href="https://www.museocanova.it/" target="_blank">Tempio Canova in Possagno</a> · <a href="https://www.google.com/maps/search/?api=1&query=Molinetto+della+Croda+Refrontolo" target="_blank">Molinetto della Croda</a></span></div><div class="row"><span class="k">Wijn</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Strada+del+Prosecco+Valdobbiadene+Conegliano" target="_blank">Strada del Prosecco (UNESCO)</a></span></div></div>
-    <div class="two-col"><div class="col olive"><h4>Drie dagen — slow life</h4><ul><li><b>Di 28/7:</b> aankomen + zwembad + aperitivo in Asolo</li><li><b>Wo 29/7:</b> <a href="https://www.museocanova.it/" target="_blank">Possagno</a> + Bassano del Grappa</li><li><b>Do 30/7:</b> Prosecco-route + Cison di Valmarino</li></ul></div>
-<div class="col terra"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Eten & drinken</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Locanda+Baggio+Asolo" target="_blank">Locanda Baggio</a> — uitstekend, niet duur</li><li><a href="https://www.google.com/maps/search/?api=1&query=Hosteria+Ca+Derton+Asolo" target="_blank">Hosteria Ca’ Derton</a> — klassieker</li><li>Lokaal: <i>sopressa, baccalà alla vicentina, tiramisù</i></li><li>Een glas <a href="https://www.google.com/maps/search/?api=1&query=Cartizze+Valdobbiadene" target="_blank">Prosecco di Cartizze</a></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Agriturismo+Monfumo+Asolo" target="_blank" rel="noopener">Agriturismo bij Asolo (Monfumo)</a> — sterren als plafond</span></div><div class="row"><span class="k">Afstanden</span><span class="v">De belangrijkste dorpen en uitstapjes liggen binnen ongeveer 30 minuten</span></div><div class="row"><span class="k">Ritme</span><span class="v">Plan één dorpendag en één rustige Prosecco-dag</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Asolo+centro" target="_blank" rel="noopener">Asolo</a> — ateliers, honderd horizonten en aperitivo</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Ponte+Vecchio+Bassano+del+Grappa" target="_blank" rel="noopener">Bassano del Grappa + Ponte Vecchio</a></li><li><a href="https://www.museocanova.it/" target="_blank" rel="noopener">Possagno: Museo Gypsotheca en Tempio Canoviano</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Strada+del+Prosecco+Valdobbiadene+Conegliano" target="_blank" rel="noopener">Strada del Prosecco</a>, <a href="https://www.google.com/maps/search/?api=1&amp;query=Cison+di+Valmarino" target="_blank" rel="noopener">Cison di Valmarino</a> en <a href="https://www.google.com/maps/search/?api=1&amp;query=Molinetto+della+Croda+Refrontolo" target="_blank" rel="noopener">Molinetto della Croda</a></li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.museocanova.it/" target="_blank" rel="noopener">Museo Gypsotheca Antonio Canova</a> — veel meer dan alleen de tempel</li><li><a href="https://www.museoasolo.it/" target="_blank" rel="noopener">Museo Civico di Asolo</a> — kunst en lokale verhalen in het centrum</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Eten en drinken</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Locanda+Baggio+Asolo" target="_blank" rel="noopener">Locanda Baggio</a> — uitstekend, niet duur</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Hosteria+Ca+Derton+Asolo" target="_blank" rel="noopener">Hosteria Ca’ Derton</a> — klassieker</li><li>Lokaal: <i>sopressa, baccalà alla vicentina en tiramisù</i>; proef een glas <a href="https://www.google.com/maps/search/?api=1&amp;query=Cartizze+Valdobbiadene" target="_blank" rel="noopener">Prosecco di Cartizze</a></li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="asolo">
       <h3>🍇 Voor Leonora & Roan</h3>
@@ -4347,10 +4481,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Twee nachten, twee werelden. Eén dag op een ouderwetse Adriatische <i>bagno</i> — parasol, badstoeltjes, ondiep zoutwater dat de kinderen uren laat zwemmen. Eén dag in Venetië, maar dan slim: boot pakken vanaf Punta Sabbioni, San Marco vóór de massa, daarna meteen door naar Burano voor de kleuren. Geen toeristen-tax, alleen het moois.</p>
     <p class='expanded'>Cavallino-Treporti ligt op een schiereiland tussen de Adriatische Zee en de Venetiaanse lagune. Aan de zee-kant: kilometers strand met Italiaanse bagno-cultuur (huur een parasol + 2 bedjes voor ~€25/dag). Aan de lagune-kant: vaporetto's naar Venetië, Burano, Murano en het stille Torcello.</p><p class='expanded'>Belangrijk: rij nooit met de auto Venetië in — alleen voor heel rijke mensen die € 400-boetes leuk vinden. Vanaf Punta Sabbioni vertrekken de hele dag boten naar San Marco (35 min, € 10pp). Tip: koop een dagkaart die ook Burano + Murano includes, dat scheelt heel veel.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/Share-B2Jwip" target="_blank">Strandapp. Cavallino-Treporti</a> — strategisch dichtbij de boot</span></div><div class="row"><span class="k">Naar Venetië</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Punta+Sabbioni+Vaporetto" target="_blank">Boot vanaf Punta Sabbioni</a> — 35 min, geen auto-stress</span></div><div class="row"><span class="k">Topplekken</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Piazza+San+Marco" target="_blank">San Marco</a> · <a href="https://www.google.com/maps/search/?api=1&query=Rialto+Bridge+Venice" target="_blank">Rialto</a> · <a href="https://www.google.com/maps/search/?api=1&query=Burano+Venice" target="_blank">Burano</a></span></div><div class="row"><span class="k">Waarschuwing</span><span class="v">Géén auto Venetië in — ZTL-boetes; altijd boot</span></div></div>
-    <div class="two-col"><div class="col gold-bg"><h4>Twee dagen — slimmer dan de massa</h4><ul><li><b>Vr 31/7:</b> aankomen + bagno-middag, pizza op boulevard</li><li><b>Za 1/8:</b> boot 9u: San Marco › Burano</li><li>Slecht weer? <a href="https://www.aqualandia.it/" target="_blank">Aqualandia Jesolo</a></li></ul></div>
-<div class="col lake"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Eten & drinken</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Trattoria+al+Vecio+Cantier+Cavallino" target="_blank">Trattoria al Vecio Cantier</a> — vis</li><li><a href="https://www.google.com/maps/search/?api=1&query=Da+Madama+Burano" target="_blank">Da Madama (Burano)</a> — risotto al gò</li><li>Mijd terrassen direct op San Marco (= toeristval)</li><li>Lokaal: <i>cicchetti, sarde in saor, fritto misto, seppie in nero</i></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/Share-B2Jwip" target="_blank" rel="noopener">Strandappartement Cavallino-Treporti</a> — dichtbij strand en boot</span></div><div class="row"><span class="k">Naar Venetië</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Punta+Sabbioni+Vaporetto" target="_blank" rel="noopener">Vaporetto vanaf Punta Sabbioni</a> — ongeveer 35 minuten</span></div><div class="row"><span class="k">Belangrijk</span><span class="v">Laat de auto staan; koop een dagkaart voor Venetië en de eilanden</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Cavallino+Treporti+beach" target="_blank" rel="noopener">Bagno-middag in Cavallino-Treporti</a> — parasol, bedjes en ondiep water</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Piazza+San+Marco+Venice" target="_blank" rel="noopener">San Marco</a> en de <a href="https://www.google.com/maps/search/?api=1&amp;query=Rialto+Bridge+Venice" target="_blank" rel="noopener">Rialtobrug</a> — begin vroeg</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Burano+Venice" target="_blank" rel="noopener">Burano</a> — kleuren en rust na de binnenstad</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Murano+Venice" target="_blank" rel="noopener">Murano</a> of het stille <a href="https://www.google.com/maps/search/?api=1&amp;query=Torcello+Venice" target="_blank" rel="noopener">Torcello</a> als extra eiland</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://cultura.gov.it/luogo/palazzo-ducale-di-venezia" target="_blank" rel="noopener">Palazzo Ducale</a> — zalen, bruggen en Venetiaanse geschiedenis</li><li><a href="https://msn.visitmuve.it/en/home/" target="_blank" rel="noopener">Natural History Museum Venice</a> — sterk met kinderen en volledig binnen</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Eten en drinken</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Trattoria+al+Vecio+Cantier+Cavallino" target="_blank" rel="noopener">Trattoria al Vecio Cantier</a> — vis</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Da+Madama+Burano" target="_blank" rel="noopener">Da Madama op Burano</a> — risotto al gò</li><li>Mijd terrassen direct op San Marco; kies <i>cicchetti, sarde in saor</i> of <i>fritto misto</i></li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="lido">
       <h3>🛶 Voor Leonora & Roan</h3>
@@ -4437,10 +4576,15 @@ body.book-mode section.paspoort.bookpage{
   <div class="loc-body">
     <p class="hero-text">Bergamo verrast iedereen die er nog nooit was. Een UNESCO-bovenstad op een heuvel, met de Alpen in de verte als belofte van waar je vandaan komt. Vier nachten geven je: één dagtrip naar het auto-vrije Monte Isola, één dag in het pretpark dat de Italianen zelf óók goed vinden, één dag rust, en één laatste avond op de Mura Venete bij zonsondergang.</p>
     <p class='expanded'>Bergamo bestaat uit twee delen: <b>Città Bassa</b> (de moderne onderstad) en <b>Città Alta</b> (de middeleeuwse bovenstad binnen UNESCO-muren). De bovenstad is bijna autovrij, compact, en perfect kindvriendelijk. Vanuit jullie loft kijk je uit op precies die skyline — een vakantiefoto-uitzicht.</p><p class='expanded'>Het beste van Bergamo zit niet in de stad zelf maar in een straal van 50 km: <b>Lago d'Iseo</b> met het auto-vrije eiland Monte Isola is mooier (én rustiger) dan Como, en de oude middeleeuwse dorpjes in de Valle Brembana zijn pure tijdmachines. Door de zachte aankomst van Bergamo voelen de laatste vier dagen niet als 'afsluiting' aan, maar als één lang nagenieten.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/hotel/it/loft-mansardato-sullo-skyline-di-bergamo-bergamo.nl.html" target="_blank">Loft Mansardato sullo Skyline</a> — uitzicht op Città Alta</span></div><div class="row"><span class="k">Stadstop</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Piazza+Vecchia+Bergamo" target="_blank">Piazza Vecchia</a> · <a href="https://www.google.com/maps/search/?api=1&query=Cappella+Colleoni+Bergamo" target="_blank">Cappella Colleoni</a> · <a href="https://www.google.com/maps/search/?api=1&query=Funicolare+San+Vigilio+Bergamo" target="_blank">San Vigilio</a></span></div><div class="row"><span class="k">Dagtrip</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Sulzano+boot+Monte+Isola" target="_blank">Lago d’Iseo + Monte Isola</a> — auto-vrij eiland!</span></div><div class="row"><span class="k">Familie</span><span class="v"><a href="https://www.leolandia.it/" target="_blank">LeoLandia (30 min)</a> — beste familiepark Noord-Italië</span></div><div class="row"><span class="k">Parkeren</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Parcheggio+della+Fara+Bergamo" target="_blank">Parcheggio della Fara</a></span></div></div>
-    <div class="two-col"><div class="col terra"><h4>Vier dagen — ritme van de afsluiting</h4><ul><li><b>Zo 2/8:</b> aankomen + Piazza Vecchia bij zonsondergang</li><li><b>Ma 3/8:</b> <a href="https://www.google.com/maps/search/?api=1&query=Monte+Isola+Lago+d%27Iseo" target="_blank">Monte Isola</a> — fiets + zwem</li><li><b>Di 4/8:</b> <a href="https://www.leolandia.it/" target="_blank">LeoLandia</a> OF rust + Crespi d’Adda</li><li><b>Wo 5/8:</b> Mura Venete bij zonsondergang — laatste avond</li></ul></div>
-<div class="col alpine"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Sant+Ambroeus+Bergamo" target="_blank">Trattoria Sant’Ambroeus</a> — klassieker</li><li><a href="https://www.google.com/maps/search/?api=1&query=Ol+Giopi+e+la+Margi+Bergamo" target="_blank">Ol Giopì e la Margì</a> — volkskeuken</li><li><a href="https://www.google.com/maps/search/?api=1&query=Pizzeria+Da+Mimmo+Bergamo" target="_blank">Da Mimmo</a> — beste pizza Città Alta</li><li>Gelato: <a href="https://www.google.com/maps/search/?api=1&query=La+Marianna+Bergamo" target="_blank">La Marianna</a> — stracciatella hier uitgevonden!</li><li>Lokaal: <i>casoncelli alla bergamasca, polenta taragna</i></li></ul></div>
-</div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/hotel/it/loft-mansardato-sullo-skyline-di-bergamo-bergamo.nl.html" target="_blank" rel="noopener">Loft Mansardato sullo Skyline</a> — uitzicht op Città Alta</span></div><div class="row"><span class="k">Parkeren</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Parcheggio+della+Fara+Bergamo" target="_blank" rel="noopener">Parcheggio della Fara</a> voor de bovenstad</span></div><div class="row"><span class="k">Ritme</span><span class="v">Wissel een stadsmiddag, dagtrip, familiedag en rustdag af</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Piazza+Vecchia+Bergamo" target="_blank" rel="noopener">Città Alta + Piazza Vecchia</a>, <a href="https://www.google.com/maps/search/?api=1&amp;query=Cappella+Colleoni+Bergamo" target="_blank" rel="noopener">Cappella Colleoni</a> en de funicolare naar <a href="https://www.google.com/maps/search/?api=1&amp;query=Funicolare+San+Vigilio+Bergamo" target="_blank" rel="noopener">San Vigilio</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Monte+Isola+Lago+d%27Iseo" target="_blank" rel="noopener">Monte Isola</a> — fietsen en zwemmen op het autovrije eiland</li><li><a href="https://www.leolandia.it/en/" target="_blank" rel="noopener">Leolandia</a> — familiedag op ongeveer 30 minuten</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Crespi+d%27Adda" target="_blank" rel="noopener">Crespi d’Adda</a> of de dorpjes van <a href="https://www.google.com/maps/search/?api=1&amp;query=Valle+Brembana" target="_blank" rel="noopener">Valle Brembana</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Mura+Venete+Bergamo" target="_blank" rel="noopener">Mura Venete</a> bij zonsondergang</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.museoscienzebergamo.it/il-museo/" target="_blank" rel="noopener">Museo Civico di Scienze Naturali</a> — dieren, fossielen en veel voor kinderen</li><li><a href="https://lacarrara.it/en/" target="_blank" rel="noopener">Accademia Carrara</a> — compact kunstmuseum in de benedenstad</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Sant+Ambroeus+Bergamo" target="_blank" rel="noopener">Trattoria Sant’Ambroeus</a> of <a href="https://www.google.com/maps/search/?api=1&amp;query=Ol+Giopi+e+la+Margi+Bergamo" target="_blank" rel="noopener">Ol Giopì e la Margì</a></li><li>Pizza bij <a href="https://www.google.com/maps/search/?api=1&amp;query=Pizzeria+Da+Mimmo+Bergamo" target="_blank" rel="noopener">Da Mimmo</a>; stracciatella bij <a href="https://www.google.com/maps/search/?api=1&amp;query=La+Marianna+Bergamo" target="_blank" rel="noopener">La Marianna</a></li><li>Lokaal: <i>casoncelli alla bergamasca</i> en <i>polenta taragna</i></li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="bergamo">
       <h3>🍨 Voor Leonora & Roan</h3>
@@ -4542,9 +4686,15 @@ body.book-mode section.paspoort.bookpage{
     <p class="hero-text">Het zomertapijt rolt zich op. Vanmiddag duik je nog éven in het Vierwaldstättersee — water dat zo schoon is dat zwanen erin baden, met de Pilatus als wachter op de achtergrond. Tegen de avond rijd je 30 minuten landinwaarts naar de zachte boerenheuvels rond Willisau, waar de B&amp;B Hotel Peter und Paul jullie opvangt: simpele 4-persoonskamer, stille avondlucht, vroeg slapen.</p>
     <p class="expanded">Luzern is geen reisdoel voor deze trip — het is een <i>pauze</i> tussen lange dagen. Geen ZTL-stress, geen wandeltour, gewoon: <a href="https://www.google.com/maps/search/?api=1&query=Strandbad+Tribschen+Luzern" target="_blank">Strandbad Tribschen</a> aanrijden, brood en kaas mee, één uur water, één uur lui in de zon, klaar. De <a href="https://www.google.com/maps/search/?api=1&query=Kapellbr%C3%BCcke+Luzern" target="_blank">Kapellbrücke</a> (uit 1333 — de oudste overdekte houten brug van Europa) zien jullie even vanuit de auto. Volgende keer langer.</p>
     <p class="expanded">Willisau ligt in het zachte <i>Napf</i>-boerenland, een wereld weg van toeristen. De B&amp;B is barrière-vrij, met een 24/7 zelfincheck-machine, gratis koffie/thee, en gratis parkeren. Het is ingericht in warme natuurkleuren en eerlijk hout — een goede laatste nacht in Zwitserland.</p>
-    <div class="facts"><div class="row"><span class="k">Dag-stop</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Strandbad+Tribschen+Luzern" target="_blank">Strandbad Tribschen</a> — gratis ligweide aan het meer</span></div><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/hotel/ch/peter-und-paul.html" target="_blank">B&amp;B Hotel Peter und Paul</a>, Wydematt 8, Willisau (30 min van Luzern)</span></div><div class="row"><span class="k">Eten</span><span class="v">Picknick bij het meer · in Willisau: <a href="https://www.google.com/maps/search/?api=1&query=Migros+Willisau" target="_blank">Migros</a> of <a href="https://www.google.com/maps/search/?api=1&query=Restaurant+Willisau" target="_blank">dorpsrestaurant</a></span></div><div class="row"><span class="k">Belangrijk</span><span class="v">Vignette Schweiz vooraf kopen (€44 / 40 CHF) — verplicht op de snelweg, ook voor 1 dag</span></div></div>
-    <div class="two-col"><div class="col lake"><h4>Middag — één uur meer</h4><ul><li><b>14:00:</b> aankomst Luzern, parkeren bij <a href="https://www.google.com/maps/search/?api=1&query=Strandbad+Tribschen" target="_blank">Strandbad Tribschen</a></li><li><b>14:30–16:00:</b> zwemmen / pootjebaden / brood eten</li><li><b>16:00:</b> kort Kapellbrücke-fotomoment</li><li><b>17:00:</b> 30 min naar B&amp;B Willisau</li></ul></div>
-<div class="col alpine"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Avond — boerenrust</h4><ul><li>Zelfincheck-machine 24/7 bij entree</li><li>Vraag bij aankomst om de gratis-fietsen-info</li><li><a href="https://www.google.com/maps/search/?api=1&query=Restaurant+Willisau+centrum" target="_blank">Dorpsrestaurant</a> of <a href="https://www.google.com/maps/search/?api=1&query=Migros+Willisau" target="_blank">Migros</a> voor avondeten</li><li>Vroeg slapen — morgen 4u 30 rijden naar Mannheim</li></ul></div></div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/hotel/ch/peter-und-paul.html" target="_blank" rel="noopener">B&amp;B Hotel Peter und Paul</a>, Wydematt 8, Willisau</span></div><div class="row"><span class="k">Afstand</span><span class="v">Willisau ligt ongeveer 30 minuten van Luzern; morgen 4u30 naar Mannheim</span></div><div class="row"><span class="k">Belangrijk</span><span class="v">Koop vooraf een Zwitsers snelwegvignet; ook voor één dag verplicht</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Strandbad+Tribschen+Luzern" target="_blank" rel="noopener">Strandbad Tribschen</a> — zwemmen, pootjebaden en picknicken</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Kapellbr%C3%BCcke+Luzern" target="_blank" rel="noopener">Kapellbrücke</a> — kort fotomoment bij de oude houten brug</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Willisau+Altstadt" target="_blank" rel="noopener">Willisau Altstadt</a> — rustige avondwandeling als er nog energie is</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.verkehrshaus.ch/en/your-visit/besuch-planen" target="_blank" rel="noopener">Verkehrshaus der Schweiz</a> — treinen, auto’s, vliegtuigen en ruimtevaart</li><li><a href="https://gletschergarten.ch/de/besuch/besucherinfos/eintrittspreise" target="_blank" rel="noopener">Gletschergarten Luzern</a> — deels binnen en vlak bij het centrum</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Picknick en boerenrust</h4><ul><li>Brood en kaas meenemen naar het meer</li><li>In Willisau: <a href="https://www.google.com/maps/search/?api=1&amp;query=Restaurant+Willisau+centrum" target="_blank" rel="noopener">dorpsrestaurant</a> of <a href="https://www.google.com/maps/search/?api=1&amp;query=Migros+Willisau" target="_blank" rel="noopener">Migros</a></li><li>Daarna zelf inchecken en vroeg slapen</li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="luzern">
       <h3>🏔️ Voor Leonora &amp; Roan</h3>
@@ -4634,9 +4784,15 @@ body.book-mode section.paspoort.bookpage{
     <p class="hero-text">De zon zakt boven de Rijn. Mannheim — de <i>Quadratestadt</i> waar straten geen namen hebben maar coördinaten, als een schaakbord neergelegd door een 17e-eeuwse keurvorst. Een laatste avondwandeling rond de Wasserturm, een eenvoudige maaltijd op een terras, een laatste glas — en dan vroeg slapen voor het laatste stukje naar huis.</p>
     <p class="expanded">Mannheim was ooit een hertogelijk experiment in geometrisch stedenbouw. Alle straten in de oude binnenstad zijn vierkanten, genummerd met een letter en cijfer (A1, A2, B1, B2…). Klein-Manhattan in barokke vorm. De <a href="https://www.google.com/maps/search/?api=1&query=Wasserturm+Mannheim" target="_blank">Wasserturm</a> — een art-nouveau watertoren uit 1889 — is hét postkaart-icoon van de stad.</p>
     <p class="expanded">Vrijdagavond is het rustig in de binnenstad. Eten kan eenvoudig: een Schnitzel of pizza op een terras op de Kunststraße. De kinderen rennen rond op <a href="https://www.google.com/maps/search/?api=1&query=Friedrichsplatz+Mannheim" target="_blank">Friedrichsplatz</a>, jij drinkt een laatste glas Riesling. Morgen om 10 uur weg, om 13 uur sta je voor je eigen voordeur.</p>
-    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/Share-PQFJp8" target="_blank">Hotel via Booking</a> — open je booking-link</span></div><div class="row"><span class="k">Topplek</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Wasserturm+Mannheim" target="_blank">Wasserturm</a> + <a href="https://www.google.com/maps/search/?api=1&query=Friedrichsplatz+Mannheim" target="_blank">Friedrichsplatz</a> (5 min van centrum)</span></div><div class="row"><span class="k">Eten</span><span class="v">Kunststraße — terrassen in de M-blokken</span></div><div class="row"><span class="k">Parkeren</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&query=Parkhaus+Q6+Q7+Mannheim" target="_blank">Q6/Q7 winkelcentrum</a> of bij het hotel</span></div></div>
-    <div class="two-col"><div class="col terra"><h4>Avond — laatste wandeling</h4><ul><li><b>18:00:</b> aankomst, hotel inchecken</li><li><b>19:00:</b> wandeling naar <a href="https://www.google.com/maps/search/?api=1&query=Wasserturm+Mannheim" target="_blank">Wasserturm</a></li><li><b>19:30:</b> eten op terras Kunststraße</li><li><b>21:30:</b> tellen wat er nog over is van de ijsjes-meter 🍦</li></ul></div>
-<div class="col alpine"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">Eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&query=Goldene+Gans+Mannheim" target="_blank">Goldene Gans</a> — klassieke Duitse keuken</li><li><a href="https://www.google.com/maps/search/?api=1&query=Hagestolz+Mannheim" target="_blank">Hagestolz</a> — voor wijnliefhebbers</li><li><a href="https://www.google.com/maps/search/?api=1&query=Eiscafe+Fontanella+Mannheim" target="_blank">Fontanella</a> — laatste ijsje van de reis</li><li>Lokaal: <i>Schnitzel, Brezel, Riesling</i></li></ul></div></div>
+    <div class="facts"><div class="row"><span class="k">Verblijf</span><span class="v"><a href="https://www.booking.com/Share-PQFJp8" target="_blank" rel="noopener">Hotel via Booking</a></span></div><div class="row"><span class="k">Parkeren</span><span class="v"><a href="https://www.google.com/maps/search/?api=1&amp;query=Parkhaus+Q6+Q7+Mannheim" target="_blank" rel="noopener">Parkhaus Q6/Q7</a> of bij het hotel</span></div><div class="row"><span class="k">Vertrek</span><span class="v">Vroeg slapen en morgen rond 10:00 naar huis</span></div></div>
+    <div class="activity-guide">
+      <h3 class="activity-guide-title">🧭 Activiteiten</h3>
+      <div class="activity-grid">
+        <div class="activity-card must-see"><h4>✨ Must see</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Wasserturm+Mannheim" target="_blank" rel="noopener">Wasserturm</a> en <a href="https://www.google.com/maps/search/?api=1&amp;query=Friedrichsplatz+Mannheim" target="_blank" rel="noopener">Friedrichsplatz</a> bij avondlicht</li><li>Een korte wandeling door de <a href="https://www.google.com/maps/search/?api=1&amp;query=Mannheim+Quadratestadt+Kunststrasse" target="_blank" rel="noopener">Quadratestadt en Kunststraße</a></li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Luisenpark+Mannheim" target="_blank" rel="noopener">Luisenpark</a> als jullie vóór het eten nog energie hebben</li></ul></div>
+        <div class="activity-card rain"><h4>☔ Bij slecht weer of regen</h4><ul><li><a href="https://www.technoseum.de/besuch/" target="_blank" rel="noopener">TECHNOSEUM</a> — interactieve techniek en industrie</li><li><a href="https://www.planetarium-mannheim.de/tickets/tickets-preise" target="_blank" rel="noopener">Planetarium Mannheim</a> — kies vooraf een familieshow</li><li><a href="https://www.rem-mannheim.de/en/visit" target="_blank" rel="noopener">Reiss-Engelhorn-Museen</a> — meerdere musea in het centrum</li></ul></div>
+      </div>
+      <div class="food-card"><h4><img loading="lazy" decoding="async" class="avatar-mini" src="avatars/erica.png" alt="Erica">🍴 Laatste avond eten</h4><ul><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Goldene+Gans+Mannheim" target="_blank" rel="noopener">Goldene Gans</a> — klassieke Duitse keuken</li><li><a href="https://www.google.com/maps/search/?api=1&amp;query=Hagestolz+Mannheim" target="_blank" rel="noopener">Hagestolz</a> — voor wijnliefhebbers</li><li>Laatste ijsje bij <a href="https://www.google.com/maps/search/?api=1&amp;query=Eiscafe+Fontanella+Mannheim" target="_blank" rel="noopener">Fontanella</a>; lokaal: Schnitzel, Brezel en Riesling</li></ul></div>
+    </div>
 
     <div class="kids-zone" data-loc="mannheim">
       <h3>🌌 Voor Leonora &amp; Roan</h3>
@@ -7089,6 +7245,53 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     try{await HS.adminResetScores();alert('Alle XP en highscores zijn gewist. Foto’s en tekeningen zijn bewaard.');}catch(e){alert('Wissen is niet gelukt. Controleer de internetverbinding.');}
   });
 })();
+
+/* Eén stickerbibliotheek voor alle tekenvelden en de foto-editor. */
+window.ZD_STICKERS=(function(){
+  const groups={
+    jarno:[['assets/king-hill/jarno.png','Jarno'],['assets/stickers/jarno-1.webp','Jarno racet'],['assets/stickers/jarno-2.webp','Jarno met pizza'],['assets/stickers/jarno-3.webp','Jarno op pad'],['assets/stickers/jarno-4.webp','Jarno met gitaar'],['assets/stickers/jarno-5.webp','Jarno met gelato']],
+    erica:[['assets/king-hill/erica.png','Erica'],['assets/stickers/erica-1.webp','Erica als reisleider'],['assets/stickers/erica-2.webp','Erica proost'],['assets/stickers/erica-3.webp','Erica proeft pasta'],['assets/stickers/erica-4.webp','Erica met viool'],['assets/stickers/erica-5.webp','Erica fotografeert']],
+    leonora:[['assets/king-hill/leonora.png','Leonora'],['assets/stickers/leonora-1.webp','Leonora quizmaster'],['assets/stickers/leonora-2.webp','Leonora tekent'],['assets/stickers/leonora-3.webp','Leonora ontdekt'],['assets/stickers/leonora-4.webp','Leonora met keytar'],['assets/stickers/leonora-5.webp','Leonora viert feest']],
+    roan:[['assets/king-hill/roan.png','Roan'],['assets/stickers/roan-1.webp','Roan racet'],['assets/stickers/roan-2.webp','Roan met megagelato'],['assets/stickers/roan-3.webp','Roan in de sneeuw'],['assets/stickers/roan-4.webp','Roan op drums'],['assets/stickers/roan-5.webp','Roan bingoheld']]
+  };
+  const cache={};
+  function load(src){
+    if(cache[src])return cache[src];
+    cache[src]=new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src;});
+    return cache[src];
+  }
+  function markup(){
+    return Object.keys(groups).map(name=>'<div class="sticker-group" aria-label="'+name+' stickers">'+groups[name].map(pair=>'<button type="button" class="sticker-option" data-sticker="'+pair[0]+'" title="'+pair[1]+'"><img src="'+pair[0]+'" alt="'+pair[1]+'" loading="lazy"></button>').join('')+'</div>').join('');
+  }
+  function enhanceChallengeCanvas(canvas){
+    if(!canvas||canvas.dataset.stickersReady||canvas.classList.contains('draw-canvas'))return;
+    canvas.dataset.stickersReady='1';
+    const tools=document.createElement('div');tools.className='sticker-canvas-tools';
+    tools.innerHTML='<button type="button" class="hs-btn hs-skip sticker-toggle">🙂 Avatarstickers</button><div class="sticker-placement-note" hidden>Kies een sticker</div><div class="sticker-picker" hidden>'+markup()+'</div>';
+    canvas.parentNode.insertBefore(tools,canvas);
+    const toggle=tools.querySelector('.sticker-toggle'),picker=tools.querySelector('.sticker-picker'),note=tools.querySelector('.sticker-placement-note');
+    let selected=null,selectedSrc='';
+    toggle.onclick=()=>{picker.hidden=!picker.hidden;};
+    tools.querySelectorAll('.sticker-option').forEach(btn=>btn.onclick=async()=>{
+      tools.querySelectorAll('.sticker-option').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+      try{selected=await load(btn.dataset.sticker);selectedSrc=btn.dataset.sticker;picker.hidden=true;note.hidden=false;note.textContent='Tik op de tekening om de sticker te plakken';}catch(e){note.hidden=false;note.textContent='Sticker kon niet laden';}
+    });
+    canvas.addEventListener('pointerdown',e=>{
+      if(!selected)return;
+      e.preventDefault();e.stopImmediatePropagation();
+      const rect=canvas.getBoundingClientRect(),x=(e.clientX-rect.left)/rect.width*canvas.width,y=(e.clientY-rect.top)/rect.height*canvas.height;
+      const side=Math.min(canvas.width,canvas.height)*.28,ctx=canvas.getContext('2d');
+      ctx.save();ctx.globalCompositeOperation='source-over';ctx.drawImage(selected,x-side/2,y-side/2,side,side);ctx.restore();
+      selected=null;selectedSrc='';tools.querySelectorAll('.sticker-option').forEach(x=>x.classList.remove('active'));note.textContent='✓ Sticker geplaatst';setTimeout(()=>{note.hidden=true;},900);
+      canvas.dispatchEvent(new Event('change',{bubbles:true}));
+    },true);
+  }
+  const observer=new MutationObserver(()=>document.querySelectorAll('#db-canvas,#db-own-canvas').forEach(enhanceChallengeCanvas));
+  observer.observe(document.documentElement,{childList:true,subtree:true});
+  document.querySelectorAll('#db-canvas,#db-own-canvas').forEach(enhanceChallengeCanvas);
+  return{groups,markup,load,enhanceChallengeCanvas};
+})();
+
 (function(){
   const zones = document.querySelectorAll('.kids-zone');
   if (!zones.length) return;
@@ -7129,6 +7332,22 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     return 'leonora';
   }
   function safeText(v){ const d=document.createElement('div'); d.textContent=String(v||''); return d.innerHTML; }
+  const commentDateFormatter = new Intl.DateTimeFormat('nl-NL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  function commentStamp(comment){
+    const values=[comment&&comment.serverAt,comment&&comment.at,comment&&comment.createdAt,comment&&comment._id];
+    for(const value of values){
+      if(value==null||typeof value==='object')continue;
+      const stamp=typeof value==='number'?value:(/^\d+$/.test(String(value))?Number(value):Date.parse(value));
+      if(Number.isFinite(stamp)&&stamp>0)return stamp;
+    }
+    return 0;
+  }
+  function renderDrawingComment(comment){
+    const stamp=commentStamp(comment),name=comment.authorName||comment.name||playerName(comment.authorId||comment.player);
+    const label=stamp?commentDateFormatter.format(new Date(stamp)):'datum onbekend';
+    const iso=stamp?new Date(stamp).toISOString():'';
+    return '<div class="media-comment"><div class="media-comment-meta"><b>'+safeText(name)+'</b><time datetime="'+safeText(iso)+'">'+safeText(label)+'</time></div><div class="media-comment-text">'+safeText(comment.text)+'</div></div>';
+  }
   function galKey(loc, player){ return PREFIX + loc + '_' + player; }
   function loadGal(loc, player) { try { return JSON.parse(localStorage.getItem(galKey(loc, player)) || '[]'); } catch { return []; } }
   function saveGal(loc, player, arr) { try { localStorage.setItem(galKey(loc, player), JSON.stringify(arr.slice(0, MAX))); } catch(e){ console.warn('storage full',e); } }
@@ -7167,7 +7386,12 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
       zone.querySelectorAll('.kids-panel').forEach(p => p.classList.remove('active'));
       drawTab.classList.add('active');
       panel.classList.add('active');
+      // Verplaats het tekenvenster buiten de boekpagina. Een fixed element binnen
+      // een getransformeerde boekpagina kan anders onder de bladerlaag terechtkomen.
+      document.body.appendChild(panel);
+      document.body.classList.add('drawing-mode');
       const current=activePlayer();panel.querySelector('.draw-player').value=current;panel.querySelector('.draw-owner strong').textContent=playerName(current);
+      setTimeout(syncCloud,0);
     });
 
     const palette = COLORS.concat(loadCustomColors().filter(c => !COLORS.includes(c)));
@@ -7185,15 +7409,18 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
       '<button class="draw-act eraser" type="button">🩹 Gum</button>' +
       '<button class="draw-act undo" type="button">↶ Terug</button>' +
       '<button class="draw-act clear" type="button">✕ Wis</button>' +
+      '<button class="draw-act stickers-toggle" type="button">🙂 Stickers</button>' +
       '<button class="draw-act save" type="button">✦ Bewaar</button>' +
       '<button class="draw-act close-draw" type="button">✕ Sluiten</button>' +
       '</div>' +
+      '<div class="sticker-placement-note" hidden>Kies een sticker</div><div class="sticker-picker" hidden>' + window.ZD_STICKERS.markup() + '</div>' +
       '<div class="draw-canvas-wrap">' +
       '<canvas class="draw-canvas" width="640" height="480"></canvas>' +
       '<div class="draw-hint">Sleep om te tekenen ✨<br><span style="font-size:.8em">(of teken met je vinger op je telefoon)</span></div>' +
       '</div>' +
       '<div class="draw-gallery-title">🖼️ Familiegalerij — ' + loc + '</div>' +
       '<div class="draw-owner"><label>TEKENAAR</label><strong>' + playerName(activePlayer()) + '</strong><input class="draw-player" type="hidden" value="' + activePlayer() + '"></div>' +
+      '<div class="gallery-admin-toolbar"><button class="gallery-admin-button gallery-admin-open" type="button">🔐 Galerij beheren</button><div class="gallery-admin-actions" hidden><button class="gallery-admin-button gallery-admin-all" type="button">Alles kiezen</button><span class="gallery-admin-count">0 gekozen</span><button class="gallery-admin-button danger gallery-admin-delete" type="button" disabled>🗑 Verwijderen</button><button class="gallery-admin-button gallery-admin-cancel" type="button">Annuleren</button></div><div class="gallery-admin-status" aria-live="polite"></div></div>' +
       '<div class="draw-gallery"></div>' +
       '</div>';
     const last = zone.querySelectorAll('.kids-panel');
@@ -7210,7 +7437,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    let color = COLORS[0], size = SIZES[1], erasing = false, drawing = false, lastPt = null, dirty = false;
+    let color = COLORS[0], size = SIZES[1], erasing = false, drawing = false, lastPt = null, dirty = false, pendingSticker = null;
     const snaps = [];
 
     function snap() { try { snaps.push(canvas.toDataURL('image/png')); if (snaps.length > 12) snaps.shift(); } catch(e){} }
@@ -7225,6 +7452,16 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     }
     canvas.addEventListener('pointerdown', e => {
       e.preventDefault();
+      if (pendingSticker){
+        snap();
+        const p=pt(e),side=Math.min(canvas.width,canvas.height)*.3;
+        ctx.save();ctx.globalCompositeOperation='source-over';ctx.drawImage(pendingSticker,p.x-side/2,p.y-side/2,side,side);ctx.restore();
+        pendingSticker=null;dirty=true;hint.classList.add('hide');
+        panel.querySelectorAll('.sticker-option').forEach(x=>x.classList.remove('active'));
+        panel.querySelector('.stickers-toggle').classList.remove('active');
+        const note=panel.querySelector('.sticker-placement-note');note.textContent='✓ Sticker geplaatst';setTimeout(()=>{note.hidden=true;},900);
+        return;
+      }
       drawing = true; apply(); lastPt = pt(e); snap();
       ctx.beginPath();
       ctx.arc(lastPt.x, lastPt.y, Math.max(.5, size/2), 0, Math.PI * 2);
@@ -7275,7 +7512,18 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
       b.classList.add('active'); size = parseInt(b.dataset.size, 10);
     }));
     panel.querySelector('.draw-width-range').addEventListener('input',function(){size=parseInt(this.value,10)||8;panel.querySelectorAll('.draw-size').forEach(x=>x.classList.remove('active'));});
-    panel.querySelector('.close-draw').addEventListener('click',function(){panel.classList.remove('active');drawTab.classList.remove('active');});
+    const stickerToggle=panel.querySelector('.stickers-toggle'),stickerPicker=panel.querySelector('.sticker-picker'),stickerNote=panel.querySelector('.sticker-placement-note');
+    stickerToggle.addEventListener('click',()=>{stickerPicker.hidden=!stickerPicker.hidden;stickerToggle.classList.toggle('active',!stickerPicker.hidden);});
+    panel.querySelectorAll('.sticker-option').forEach(btn=>btn.addEventListener('click',async()=>{
+      panel.querySelectorAll('.sticker-option').forEach(x=>x.classList.remove('active'));btn.classList.add('active');
+      try{pendingSticker=await window.ZD_STICKERS.load(btn.dataset.sticker);erasing=false;stickerPicker.hidden=true;stickerNote.hidden=false;stickerNote.textContent='Tik op de tekening om de sticker te plakken';}
+      catch(e){stickerNote.hidden=false;stickerNote.textContent='Sticker kon niet laden';}
+    }));
+    panel.querySelector('.close-draw').addEventListener('click',function(){
+      panel.classList.remove('active');drawTab.classList.remove('active');
+      document.body.classList.remove('drawing-mode');
+      zone.appendChild(panel);
+    });
     const eraseBtn = panel.querySelector('.draw-act.eraser');
     eraseBtn.addEventListener('click', () => {
       erasing = !erasing;
@@ -7328,6 +7576,61 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     });
 
     const gallery = panel.querySelector('.draw-gallery');
+    const adminOpen = panel.querySelector('.gallery-admin-open');
+    const adminActions = panel.querySelector('.gallery-admin-actions');
+    const adminAll = panel.querySelector('.gallery-admin-all');
+    const adminCount = panel.querySelector('.gallery-admin-count');
+    const adminDelete = panel.querySelector('.gallery-admin-delete');
+    const adminCancel = panel.querySelector('.gallery-admin-cancel');
+    const adminStatus = panel.querySelector('.gallery-admin-status');
+    let adminMode = false, visibleItems = [];
+    const selectedItems = new Set();
+    function galleryKey(item){ return String(item.player) + '::' + String(item.id); }
+    function updateAdminBar(){
+      panel.classList.toggle('gallery-admin-mode', adminMode);
+      adminOpen.hidden = adminMode;
+      adminActions.hidden = !adminMode;
+      adminCount.textContent = selectedItems.size + (selectedItems.size === 1 ? ' gekozen' : ' gekozen');
+      adminDelete.disabled = !selectedItems.size;
+      adminAll.disabled = !visibleItems.length;
+      adminAll.textContent = visibleItems.length && selectedItems.size === visibleItems.length ? 'Niets kiezen' : 'Alles kiezen';
+    }
+    adminOpen.addEventListener('click', async function(){
+      adminStatus.textContent = '';
+      if (!window.ZD_ADMIN || !(await window.ZD_ADMIN.verify())) return;
+      adminMode = true; selectedItems.clear(); render();
+    });
+    adminCancel.addEventListener('click', function(){
+      adminMode = false; selectedItems.clear(); adminStatus.textContent = ''; render();
+    });
+    adminAll.addEventListener('click', function(){
+      if (selectedItems.size === visibleItems.length) selectedItems.clear();
+      else visibleItems.forEach(function(item){ selectedItems.add(galleryKey(item)); });
+      render();
+    });
+    adminDelete.addEventListener('click', async function(){
+      const chosen = visibleItems.filter(function(item){ return selectedItems.has(galleryKey(item)); });
+      if (!chosen.length) return;
+      if (!window.HS || !HS.isCloudReady || !HS.isCloudReady()){
+        adminStatus.textContent = 'Firebase is niet bereikbaar — er is nog niets verwijderd.';
+        return;
+      }
+      if (!confirm(chosen.length + (chosen.length === 1 ? ' tekening definitief verwijderen?' : ' tekeningen definitief verwijderen?'))) return;
+      adminDelete.disabled = true; adminStatus.textContent = 'Bezig met veilig verwijderen…';
+      try{
+        if (HS.deleteMediaBatch) await HS.deleteMediaBatch('drawings', loc, chosen);
+        else await Promise.all(chosen.map(function(item){ return HS.deleteDrawing(loc, item.player, item.id); }));
+        PLAYERS.forEach(function(p){
+          const ids = new Set(chosen.filter(function(item){ return item.player === p.id; }).map(function(item){ return String(item.id); }));
+          if (ids.size) saveGal(loc, p.id, loadGal(loc, p.id).filter(function(item){ return !ids.has(String(item.id)); }));
+        });
+        selectedItems.clear(); adminMode = false; render();
+        adminStatus.textContent = '✓ ' + chosen.length + (chosen.length === 1 ? ' tekening verwijderd' : ' tekeningen verwijderd');
+      }catch(e){
+        adminStatus.textContent = 'Verwijderen is niet gelukt — probeer het opnieuw.';
+        updateAdminBar();
+      }
+    });
     function ratingInfo(item){
       const ratings = item.ratings || {};
       const values = Object.keys(ratings).map(k => Number(ratings[k] && ratings[k].stars != null ? ratings[k].stars : ratings[k])).filter(v => v >= 1 && v <= 5);
@@ -7342,9 +7645,11 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
       const own = item.ratings && item.ratings[voter];
       const ownStars = Number(own && own.stars != null ? own.stars : own) || 0;
       const info = ratingInfo(item);
-      const comments = Object.values(item.comments || {}).sort((a,b)=>(a.at||0)-(b.at||0));
+      const comments = Object.keys(item.comments || {}).map(key=>Object.assign({_id:key},item.comments[key])).sort((a,b)=>commentStamp(a)-commentStamp(b));
       const reviews = Object.values(item.ratings || {}).filter(r=>r&&r.text);
-      rating.innerHTML = '<div class="draw-rating-label">' + playerName(voter) + ', geef sterren en vertel waarom</div><div class="draw-stars">' + [1,2,3,4,5].map(n => '<button class="draw-star' + (n <= ownStars ? ' active' : '') + '" data-stars="' + n + '" aria-label="' + n + ' sterren">★</button>').join('') + '</div><input class="media-comment-input rating-text" maxlength="120" placeholder="Tekst bij je beoordeling…" value="'+safeText(own&&own.text||'')+'"><div class="draw-rating-summary">' + (info.count ? info.avg.toFixed(1) + ' van 5 · ' + info.count + (info.count === 1 ? ' stem' : ' stemmen') : 'Nog geen stemmen') + '</div><div class="rating-review-list">'+reviews.map(r=>'<div class="media-comment"><b>★ '+r.stars+' · '+safeText(r.name||playerName(r.player))+':</b> '+safeText(r.text)+'</div>').join('')+'</div><div class="media-comments"><div class="media-comment-list">' + (comments.length ? comments.map(c=>'<div class="media-comment"><b>'+safeText(c.name||playerName(c.player))+':</b> '+safeText(c.text)+'</div>').join('') : '<div class="media-comment-empty">Nog geen losse berichtjes</div>') + '</div><div class="media-comment-form"><input class="media-comment-input" maxlength="120" placeholder="Schrijf een los berichtje…"><button class="media-comment-send">Plaats</button></div></div>';
+      rating.innerHTML = '<div class="draw-rating-label">' + playerName(voter) + ', geef sterren en vertel waarom</div><div class="draw-stars">' + [1,2,3,4,5].map(n => '<button class="draw-star' + (n <= ownStars ? ' active' : '') + '" data-stars="' + n + '" aria-label="' + n + ' sterren">★</button>').join('') + '</div><input class="media-comment-input rating-text" maxlength="120" placeholder="Tekst bij je beoordeling…" value="'+safeText(own&&own.text||'')+'"><div class="draw-rating-summary">' + (info.count ? info.avg.toFixed(1) + ' van 5 · ' + info.count + (info.count === 1 ? ' stem' : ' stemmen') : 'Nog geen stemmen') + '</div><div class="rating-review-list">'+reviews.map(r=>'<div class="media-comment"><b>★ '+r.stars+' · '+safeText(r.name||playerName(r.player))+':</b> '+safeText(r.text)+'</div>').join('')+'</div><div class="media-comments"><div class="media-comment-list">' + (comments.length ? comments.map(renderDrawingComment).join('') : '<div class="media-comment-empty">Nog geen losse berichtjes</div>') + '</div><div class="media-comment-form"><input class="media-comment-input" maxlength="120" placeholder="Schrijf een los berichtje…"><button class="media-comment-send">Plaats</button></div></div>';
+      const commentList = rating.querySelector('.media-comment-list');
+      if (commentList) requestAnimationFrame(function(){ commentList.scrollTop = commentList.scrollHeight; });
       rating.querySelectorAll('.draw-star').forEach(btn => btn.addEventListener('click', function(){
         const stars = Number(btn.dataset.stars);
         const reviewText=(rating.querySelector('.rating-text').value||'').trim();
@@ -7356,20 +7661,32 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
         render(); openDrawing(item);
         if (window.HS && typeof window.HS.rateDrawing === 'function') window.HS.rateDrawing(loc, item.player, item.id, voter, stars, reviewText, playerName(voter)).catch(function(){});
       }));
-      const send = rating.querySelector('.media-comment-send'), input = rating.querySelector('.media-comment-input');
-      function post(){ const text=(input.value||'').trim(); if(!text)return; const id=String(Date.now()),comment={player:voter,name:playerName(voter),text:text.slice(0,120),at:Date.now()}; item.comments=item.comments||{};item.comments[id]=comment; const a=loadGal(loc,item.player),saved=a.find(x=>String(x.id)===String(item.id));if(saved)saved.comments=item.comments;saveGal(loc,item.player,a);openDrawing(item);if(window.HS&&HS.addMediaComment)HS.addMediaComment('drawings',loc,item.player,item.id,id,comment).catch(function(){}); }
+      const send = rating.querySelector('.media-comment-send'), input = rating.querySelector('.media-comment-form .media-comment-input');
+      function post(){ const text=(input.value||'').trim(); if(!text)return; const now=Date.now(),id=String(now),authorName=playerName(voter),comment={player:voter,name:authorName,authorId:voter,authorName:authorName,text:text.slice(0,120),at:now,createdAt:new Date(now).toISOString()}; item.comments=item.comments||{};item.comments[id]=comment; const a=loadGal(loc,item.player),saved=a.find(x=>String(x.id)===String(item.id));if(saved)saved.comments=item.comments;saveGal(loc,item.player,a);openDrawing(item);if(window.HS&&HS.addMediaComment)HS.addMediaComment('drawings',loc,item.player,item.id,id,comment).catch(function(){}); }
       send.addEventListener('click',post); input.addEventListener('keydown',e=>{if(e.key==='Enter')post();});
       modal.classList.add('active');
     }
     function render() {
       const arr = PLAYERS.reduce((all,p) => all.concat(loadGal(loc,p.id)), []).sort((a,b) => (b.id||0) - (a.id||0));
+      visibleItems = arr;
+      Array.from(selectedItems).forEach(function(key){ if (!arr.some(function(item){ return galleryKey(item) === key; })) selectedItems.delete(key); });
       gallery.innerHTML = '';
       arr.forEach(item => {
         const info = ratingInfo(item);
         const t = document.createElement('div');
-        t.className = 'draw-thumb';
-        t.innerHTML = '<img src="' + item.data + '" alt="Tekening van ' + item.by + '">' + (info.count ? '<div class="draw-score">★ ' + info.avg.toFixed(1) + '</div>' : '') + '<div class="draw-by">' + item.by + '</div><button class="del" aria-label="Verwijderen">×</button>';
-        t.querySelector('img').addEventListener('click', () => openDrawing(item));
+        const key = galleryKey(item), isSelected = selectedItems.has(key);
+        t.className = 'draw-thumb' + (isSelected ? ' is-selected' : '');
+        const ratingStrip=info.count
+          ? '<div class="media-rating-strip" aria-label="Gemiddeld '+info.avg.toFixed(1)+' van 5 uit '+info.count+' stemmen"><span class="media-rating-stars"><span>★★★★★</span><span class="fill" style="width:'+(info.avg/5*100).toFixed(1)+'%">★★★★★</span></span><span>'+info.avg.toFixed(1).replace('.',',')+' · '+info.count+'</span></div>'
+          : '<div class="media-rating-strip media-rating-empty">☆ Nog niet beoordeeld</div>';
+        t.innerHTML = '<button class="gallery-admin-select" type="button" aria-label="Selecteer tekening van ' + item.by + '" aria-pressed="' + isSelected + '">✓</button><div class="media-thumb-frame"><img src="' + item.data + '" alt="Tekening van ' + item.by + '"><div class="draw-by">' + item.by + '</div></div>'+ratingStrip+'<button class="del" aria-label="Verwijderen">×</button>';
+        t.addEventListener('click', function(e){
+          if (!adminMode || e.target.closest('.del')) return;
+          e.preventDefault(); e.stopPropagation();
+          if (selectedItems.has(key)) selectedItems.delete(key); else selectedItems.add(key);
+          render();
+        });
+        t.querySelector('img').addEventListener('click', () => { if (!adminMode) openDrawing(item); });
         const del = t.querySelector('.del');
         if (del) del.addEventListener('click', async e => {
           e.stopPropagation();
@@ -7383,6 +7700,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
         });
         gallery.appendChild(t);
       });
+      updateAdminBar();
     }
     function syncCloud(){
       if (!window.HS || typeof window.HS.loadDrawings !== 'function') return;
@@ -7414,30 +7732,93 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   const PREFIX='photos_v1_', MAX=18;
   function pname(id){const p=PLAYERS.find(x=>x.id===id);return p?p.name:id;}
   function safe(v){const d=document.createElement('div');d.textContent=String(v||'');return d.innerHTML;}
+  const photoCommentDateFormatter=new Intl.DateTimeFormat('nl-NL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  function photoCommentStamp(comment){const values=[comment&&comment.serverAt,comment&&comment.at,comment&&comment.createdAt,comment&&comment._id];for(const value of values){if(value==null||typeof value==='object')continue;const stamp=typeof value==='number'?value:(/^\d+$/.test(String(value))?Number(value):Date.parse(value));if(Number.isFinite(stamp)&&stamp>0)return stamp;}return 0;}
+  function renderPhotoComment(comment){const stamp=photoCommentStamp(comment),name=comment.authorName||comment.name||pname(comment.authorId||comment.player),label=stamp?photoCommentDateFormatter.format(new Date(stamp)):'datum onbekend',iso=stamp?new Date(stamp).toISOString():'';return '<div class="media-comment"><div class="media-comment-meta"><b>'+safe(name)+'</b><time datetime="'+safe(iso)+'">'+safe(label)+'</time></div><div class="media-comment-text">'+safe(comment.text)+'</div></div>';}
   function activePlayer(){try{const raw=localStorage.getItem('userCharacter_v1')||'',v=(function(){try{return JSON.parse(raw);}catch(_){return raw;}})(),id=typeof v==='string'?v:v&&v.id;if(PLAYERS.some(p=>p.id===id))return id;}catch(e){}return 'leonora';}
   function key(loc,p){return PREFIX+loc+'_'+p;}
   function load(loc,p){try{return JSON.parse(localStorage.getItem(key(loc,p))||'[]');}catch(e){return [];}}
   function save(loc,p,a){try{localStorage.setItem(key(loc,p),JSON.stringify(a.slice(0,MAX)));}catch(e){alert('De foto kon lokaal niet worden opgeslagen.');}}
   function info(item){const r=item.ratings||{},v=Object.keys(r).map(k=>Number(r[k]&&r[k].stars!=null?r[k].stars:r[k])).filter(n=>n>=1&&n<=5);return{count:v.length,avg:v.length?v.reduce((a,b)=>a+b,0)/v.length:0};}
   function resize(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const im=new Image();im.onerror=reject;im.onload=()=>{const max=960,s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*s));c.height=Math.max(1,Math.round(im.height*s));c.getContext('2d').drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL('image/jpeg',.72));};im.src=reader.result;};reader.readAsDataURL(file);});}
+  function editPhotoWithStickers(data){return new Promise((resolve,reject)=>{
+    const base=new Image();base.onerror=reject;base.onload=()=>{
+      const ov=document.createElement('div');ov.className='photo-sticker-editor';
+      ov.innerHTML='<button type="button" class="photo-sticker-close">×</button><h3>🙂 Plak jullie avatars op de foto</h3><div class="sticker-picker">'+window.ZD_STICKERS.markup()+'</div><div class="photo-sticker-stage"><canvas class="photo-sticker-canvas"></canvas></div><div class="sticker-placement-note">Kies een sticker; sleep hem daarna naar de juiste plek</div><div class="photo-sticker-actions"><button type="button" data-photo-smaller>− Kleiner</button><button type="button" data-photo-larger>+ Groter</button><button type="button" data-photo-rotate>↻ Draaien</button><button type="button" data-photo-remove>🗑 Sticker</button><button type="button" data-photo-none>Zonder stickers</button><button type="button" class="primary" data-photo-save>✓ Foto gebruiken</button></div>';
+      const canvas=ov.querySelector('canvas'),ctx=canvas.getContext('2d'),note=ov.querySelector('.sticker-placement-note');
+      canvas.width=base.naturalWidth;canvas.height=base.naturalHeight;
+      const stickers=[];let selected=-1,drag=false,dx=0,dy=0;
+      function paint(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(base,0,0,canvas.width,canvas.height);stickers.forEach((s,i)=>{ctx.save();ctx.translate(s.x,s.y);ctx.rotate(s.angle);ctx.drawImage(s.img,-s.size/2,-s.size/2,s.size,s.size);if(i===selected){ctx.strokeStyle='rgba(255,224,138,.95)';ctx.lineWidth=Math.max(3,canvas.width/240);ctx.setLineDash([10,7]);ctx.strokeRect(-s.size/2,-s.size/2,s.size,s.size);}ctx.restore();});}
+      function point(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width*canvas.width,y:(e.clientY-r.top)/r.height*canvas.height};}
+      function hit(p){for(let i=stickers.length-1;i>=0;i--){const s=stickers[i],cs=Math.cos(-s.angle),sn=Math.sin(-s.angle),rx=(p.x-s.x)*cs-(p.y-s.y)*sn,ry=(p.x-s.x)*sn+(p.y-s.y)*cs;if(Math.abs(rx)<=s.size/2&&Math.abs(ry)<=s.size/2)return i;}return-1;}
+      canvas.addEventListener('pointerdown',e=>{e.preventDefault();const p=point(e);selected=hit(p);if(selected>=0){drag=true;dx=p.x-stickers[selected].x;dy=p.y-stickers[selected].y;try{canvas.setPointerCapture(e.pointerId);}catch(_){}}paint();});
+      canvas.addEventListener('pointermove',e=>{if(!drag||selected<0)return;e.preventDefault();const p=point(e),s=stickers[selected];s.x=Math.max(0,Math.min(canvas.width,p.x-dx));s.y=Math.max(0,Math.min(canvas.height,p.y-dy));paint();});
+      const end=()=>{drag=false;};canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
+      ov.querySelectorAll('.sticker-option').forEach(btn=>btn.onclick=async()=>{try{const im=await window.ZD_STICKERS.load(btn.dataset.sticker),size=Math.min(canvas.width,canvas.height)*.3;stickers.push({img:im,x:canvas.width/2,y:canvas.height/2,size,angle:0});selected=stickers.length-1;ov.querySelectorAll('.sticker-option').forEach(x=>x.classList.remove('active'));btn.classList.add('active');note.textContent='Sleep de sticker naar de juiste plek';paint();}catch(e){note.textContent='Sticker kon niet laden';}});
+      ov.querySelector('[data-photo-smaller]').onclick=()=>{if(selected<0)return;stickers[selected].size=Math.max(60,stickers[selected].size*.84);paint();};
+      ov.querySelector('[data-photo-larger]').onclick=()=>{if(selected<0)return;stickers[selected].size=Math.min(Math.max(canvas.width,canvas.height)*.7,stickers[selected].size*1.18);paint();};
+      ov.querySelector('[data-photo-rotate]').onclick=()=>{if(selected<0)return;stickers[selected].angle+=Math.PI/12;paint();};
+      ov.querySelector('[data-photo-remove]').onclick=()=>{if(selected<0)return;stickers.splice(selected,1);selected=stickers.length-1;paint();};
+      function done(value){ov.remove();resolve(value);}
+      ov.querySelector('[data-photo-save]').onclick=()=>{selected=-1;paint();done(canvas.toDataURL('image/jpeg',.8));};
+      ov.querySelector('[data-photo-none]').onclick=()=>done(data);
+      ov.querySelector('.photo-sticker-close').onclick=()=>done(null);
+      document.body.appendChild(ov);paint();
+    };base.src=data;
+  });}
   function showPhoto(item,loc,rerender){
     const ov=document.createElement('div');ov.className='draw-modal active';
     const voter=activePlayer(), own=item.ratings&&item.ratings[voter], ownStars=Number(own&&own.stars!=null?own.stars:own)||0, ri=info(item);
-    const comments=Object.values(item.comments||{}).sort((a,b)=>(a.at||0)-(b.at||0)),reviews=Object.values(item.ratings||{}).filter(r=>r&&r.text);
-    ov.innerHTML='<div class="draw-modal-inner"><button class="draw-modal-close" aria-label="Sluiten">×</button><img src="'+item.data+'" alt="Foto van '+item.by+'"><div class="draw-modal-caption">📸 door '+item.by+'</div><div class="draw-rating"><div class="draw-rating-label">'+pname(voter)+', geef sterren en vertel waarom</div><div class="draw-stars">'+[1,2,3,4,5].map(n=>'<button class="draw-star'+(n<=ownStars?' active':'')+'" data-stars="'+n+'">★</button>').join('')+'</div><input class="media-comment-input rating-text" maxlength="120" placeholder="Tekst bij je beoordeling…" value="'+safe(own&&own.text||'')+'"><div class="draw-rating-summary">'+(ri.count?ri.avg.toFixed(1)+' van 5 · '+ri.count+(ri.count===1?' stem':' stemmen'):'Nog geen stemmen')+'</div><div class="rating-review-list">'+reviews.map(r=>'<div class="media-comment"><b>★ '+r.stars+' · '+safe(r.name||pname(r.player))+':</b> '+safe(r.text)+'</div>').join('')+'</div><div class="media-comments"><div class="media-comment-list">'+(comments.length?comments.map(c=>'<div class="media-comment"><b>'+safe(c.name||pname(c.player))+':</b> '+safe(c.text)+'</div>').join(''):'<div class="media-comment-empty">Nog geen losse berichtjes</div>')+'</div><div class="media-comment-form"><input class="media-comment-input" maxlength="120" placeholder="Schrijf een los berichtje…"><button class="media-comment-send">Plaats</button></div></div></div></div>';
+    const comments=Object.keys(item.comments||{}).map(key=>Object.assign({_id:key},item.comments[key])).sort((a,b)=>photoCommentStamp(a)-photoCommentStamp(b)),reviews=Object.values(item.ratings||{}).filter(r=>r&&r.text);
+    ov.innerHTML='<div class="draw-modal-inner"><button class="draw-modal-close" aria-label="Sluiten">×</button><img src="'+item.data+'" alt="Foto van '+item.by+'"><div class="draw-modal-caption">📸 door '+item.by+'</div><div class="draw-rating"><div class="draw-rating-label">'+pname(voter)+', geef sterren en vertel waarom</div><div class="draw-stars">'+[1,2,3,4,5].map(n=>'<button class="draw-star'+(n<=ownStars?' active':'')+'" data-stars="'+n+'">★</button>').join('')+'</div><input class="media-comment-input rating-text" maxlength="120" placeholder="Tekst bij je beoordeling…" value="'+safe(own&&own.text||'')+'"><div class="draw-rating-summary">'+(ri.count?ri.avg.toFixed(1)+' van 5 · '+ri.count+(ri.count===1?' stem':' stemmen'):'Nog geen stemmen')+'</div><div class="rating-review-list">'+reviews.map(r=>'<div class="media-comment"><b>★ '+r.stars+' · '+safe(r.name||pname(r.player))+':</b> '+safe(r.text)+'</div>').join('')+'</div><div class="media-comments"><div class="media-comment-list">'+(comments.length?comments.map(renderPhotoComment).join(''):'<div class="media-comment-empty">Nog geen losse berichtjes</div>')+'</div><div class="media-comment-form"><input class="media-comment-input" maxlength="120" placeholder="Schrijf een los berichtje…"><button class="media-comment-send">Plaats</button></div></div></div></div>';
+    const commentList=ov.querySelector('.media-comment-list');if(commentList)requestAnimationFrame(()=>{commentList.scrollTop=commentList.scrollHeight;});
     ov.querySelector('.draw-modal-close').onclick=()=>ov.remove();ov.onclick=e=>{if(e.target===ov)ov.remove();};
     ov.querySelectorAll('.draw-star').forEach(b=>b.onclick=()=>{const stars=Number(b.dataset.stars),text=(ov.querySelector('.rating-text').value||'').trim();item.ratings=item.ratings||{};item.ratings[voter]={stars,text:text.slice(0,120),player:voter,name:pname(voter)};const a=load(loc,item.player),x=a.find(v=>String(v.id)===String(item.id));if(x)x.ratings=item.ratings;save(loc,item.player,a);ov.remove();rerender();if(window.HS&&HS.ratePhoto)HS.ratePhoto(loc,item.player,item.id,voter,stars,text,pname(voter)).catch(()=>{});});
-    const input=ov.querySelector('.media-comment-input');function post(){const text=(input.value||'').trim();if(!text)return;const id=String(Date.now()),comment={player:voter,name:pname(voter),text:text.slice(0,120),at:Date.now()};item.comments=item.comments||{};item.comments[id]=comment;const a=load(loc,item.player),x=a.find(v=>String(v.id)===String(item.id));if(x)x.comments=item.comments;save(loc,item.player,a);ov.remove();rerender();showPhoto(item,loc,rerender);if(window.HS&&HS.addMediaComment)HS.addMediaComment('photos',loc,item.player,item.id,id,comment).catch(()=>{});}ov.querySelector('.media-comment-send').onclick=post;input.onkeydown=e=>{if(e.key==='Enter')post();};
+    const input=ov.querySelector('.media-comment-form .media-comment-input');function post(){const text=(input.value||'').trim();if(!text)return;const now=Date.now(),id=String(now),authorName=pname(voter),comment={player:voter,name:authorName,authorId:voter,authorName:authorName,text:text.slice(0,120),at:now,createdAt:new Date(now).toISOString()};item.comments=item.comments||{};item.comments[id]=comment;const a=load(loc,item.player),x=a.find(v=>String(v.id)===String(item.id));if(x)x.comments=item.comments;save(loc,item.player,a);ov.remove();rerender();showPhoto(item,loc,rerender);if(window.HS&&HS.addMediaComment)HS.addMediaComment('photos',loc,item.player,item.id,id,comment).catch(()=>{});}ov.querySelector('.media-comment-send').onclick=post;input.onkeydown=e=>{if(e.key==='Enter')post();};
     document.body.appendChild(ov);
   }
   document.querySelectorAll('.kids-zone').forEach(zone=>{
     const loc=zone.dataset.loc,tabs=zone.querySelector('.kids-tabs');if(!loc||!tabs)return;
     const tab=document.createElement('button');tab.className='kids-tab photo';tab.dataset.panel='photo';tab.textContent='📸 Foto';tabs.appendChild(tab);
-    const panel=document.createElement('div');panel.className='kids-panel photo';panel.innerHTML='<div class="photo-wrap"><div class="photo-head"><div><div class="draw-gallery-title">📸 Fotowedstrijd — '+loc+'</div><div class="photo-status">Maak hier jullie mooiste vakantiefoto</div></div><label class="photo-pick">📷 Maak of kies foto<input class="photo-input" type="file" accept="image/*" capture="environment"></label></div><div class="draw-owner"><label>FOTOGRAAF</label><strong>'+pname(activePlayer())+'</strong><input class="draw-player" type="hidden" value="'+activePlayer()+'"></div><div class="photo-gallery"></div></div>';
-    zone.appendChild(panel);const sel=panel.querySelector('.draw-player'),gallery=panel.querySelector('.photo-gallery'),status=panel.querySelector('.photo-status');sel.value=activePlayer();
+    const panel=document.createElement('div');panel.className='kids-panel photo';panel.innerHTML='<div class="photo-wrap"><div class="photo-head"><div><div class="draw-gallery-title">📸 Fotowedstrijd — '+loc+'</div><div class="photo-status">Maak hier jullie mooiste vakantiefoto</div></div><label class="photo-pick">📷 Maak of kies foto<input class="photo-input" type="file" accept="image/*" capture="environment"></label></div><div class="draw-owner"><label>FOTOGRAAF</label><strong>'+pname(activePlayer())+'</strong><input class="draw-player" type="hidden" value="'+activePlayer()+'"></div><div class="gallery-admin-toolbar"><button class="gallery-admin-button gallery-admin-open" type="button">🔐 Galerij beheren</button><div class="gallery-admin-actions" hidden><button class="gallery-admin-button gallery-admin-all" type="button">Alles kiezen</button><span class="gallery-admin-count">0 gekozen</span><button class="gallery-admin-button danger gallery-admin-delete" type="button" disabled>🗑 Verwijderen</button><button class="gallery-admin-button gallery-admin-cancel" type="button">Annuleren</button></div><div class="gallery-admin-status" aria-live="polite"></div></div><div class="photo-gallery"></div></div>';
+    zone.appendChild(panel);
+    const sel=panel.querySelector('.draw-player'),gallery=panel.querySelector('.photo-gallery'),status=panel.querySelector('.photo-status');
+    const adminOpen=panel.querySelector('.gallery-admin-open'),adminActions=panel.querySelector('.gallery-admin-actions'),adminAll=panel.querySelector('.gallery-admin-all'),adminCount=panel.querySelector('.gallery-admin-count'),adminDelete=panel.querySelector('.gallery-admin-delete'),adminCancel=panel.querySelector('.gallery-admin-cancel'),adminStatus=panel.querySelector('.gallery-admin-status');
+    let adminMode=false,visibleItems=[];const selectedItems=new Set();
+    function galleryKey(item){return String(item.player)+'::'+String(item.id);}
+    function updateAdminBar(){panel.classList.toggle('gallery-admin-mode',adminMode);adminOpen.hidden=adminMode;adminActions.hidden=!adminMode;adminCount.textContent=selectedItems.size+' gekozen';adminDelete.disabled=!selectedItems.size;adminAll.disabled=!visibleItems.length;adminAll.textContent=visibleItems.length&&selectedItems.size===visibleItems.length?'Niets kiezen':'Alles kiezen';}
+    adminOpen.onclick=async function(){adminStatus.textContent='';if(!window.ZD_ADMIN||!(await window.ZD_ADMIN.verify()))return;adminMode=true;selectedItems.clear();render();};
+    adminCancel.onclick=function(){adminMode=false;selectedItems.clear();adminStatus.textContent='';render();};
+    adminAll.onclick=function(){if(selectedItems.size===visibleItems.length)selectedItems.clear();else visibleItems.forEach(item=>selectedItems.add(galleryKey(item)));render();};
+    adminDelete.onclick=async function(){
+      const chosen=visibleItems.filter(item=>selectedItems.has(galleryKey(item)));if(!chosen.length)return;
+      if(!window.HS||!HS.isCloudReady||!HS.isCloudReady()){adminStatus.textContent='Firebase is niet bereikbaar — er is nog niets verwijderd.';return;}
+      if(!confirm(chosen.length+(chosen.length===1?' foto definitief verwijderen?':' foto’s definitief verwijderen?')))return;
+      adminDelete.disabled=true;adminStatus.textContent='Bezig met veilig verwijderen…';
+      try{
+        if(HS.deleteMediaBatch)await HS.deleteMediaBatch('photos',loc,chosen);else await Promise.all(chosen.map(item=>HS.deletePhoto(loc,item.player,item.id)));
+        PLAYERS.forEach(function(p){const ids=new Set(chosen.filter(item=>item.player===p.id).map(item=>String(item.id)));if(ids.size)save(loc,p.id,load(loc,p.id).filter(item=>!ids.has(String(item.id))));});
+        selectedItems.clear();adminMode=false;render();adminStatus.textContent='✓ '+chosen.length+(chosen.length===1?' foto verwijderd':' foto’s verwijderd');
+      }catch(e){adminStatus.textContent='Verwijderen is niet gelukt — probeer het opnieuw.';updateAdminBar();}
+    };
+    sel.value=activePlayer();
     tab.onclick=()=>{zone.querySelectorAll('.kids-tab').forEach(t=>t.classList.remove('active'));zone.querySelectorAll('.kids-panel').forEach(p=>p.classList.remove('active'));tab.classList.add('active');panel.classList.add('active');const current=activePlayer();sel.value=current;panel.querySelector('.draw-owner strong').textContent=pname(current);sync();};
-    function render(){const items=PLAYERS.reduce((a,p)=>a.concat(load(loc,p.id)),[]).sort((a,b)=>(b.id||0)-(a.id||0));gallery.innerHTML=items.length?'':'<div class="photo-empty">Nog geen foto’s — maak de eerste inzending ✨</div>';items.forEach(item=>{const ri=info(item),card=document.createElement('div');card.className='photo-card';card.innerHTML='<img src="'+item.data+'" alt="Foto van '+item.by+'">'+(ri.count?'<div class="photo-score">★ '+ri.avg.toFixed(1)+'</div>':'')+'<div class="photo-by">'+item.by+'</div><button class="photo-del">×</button>';card.querySelector('img').onclick=()=>showPhoto(item,loc,render);const del=card.querySelector('.photo-del');if(del)del.onclick=async e=>{e.stopPropagation();if(!window.ZD_ADMIN||!(await window.ZD_ADMIN.verify()))return;if(!confirm('Deze foto verwijderen?'))return;save(loc,item.player,load(loc,item.player).filter(x=>String(x.id)!==String(item.id)));render();if(window.HS&&HS.deletePhoto)HS.deletePhoto(loc,item.player,item.id).catch(()=>{});};gallery.appendChild(card);});}
-    panel.querySelector('.photo-input').onchange=async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;status.textContent='Foto verwerken…';try{const player=activePlayer(),item={id:Date.now(),data:await resize(file),by:pname(player),player,loc,ratings:{}};const a=load(loc,player);a.unshift(item);save(loc,player,a);render();status.textContent='✨ Foto ingezonden!';if(window.HS&&HS.savePhoto)HS.savePhoto(loc,player,item).catch(()=>{status.textContent='Lokaal opgeslagen · synchroniseert later';});}catch(err){status.textContent='Deze foto kon niet worden verwerkt';}e.target.value='';};
+    function render(){
+      const items=PLAYERS.reduce((a,p)=>a.concat(load(loc,p.id)),[]).sort((a,b)=>(b.id||0)-(a.id||0));visibleItems=items;
+      Array.from(selectedItems).forEach(key=>{if(!items.some(item=>galleryKey(item)===key))selectedItems.delete(key);});
+      gallery.innerHTML=items.length?'':'<div class="photo-empty media-empty-family"><img loading="lazy" decoding="async" src="assets/stickers/erica-5.webp" alt="Erica met camera"><span>Nog geen foto’s — maak de eerste inzending ✨</span></div>';
+      items.forEach(item=>{
+        const ri=info(item),key=galleryKey(item),isSelected=selectedItems.has(key),card=document.createElement('div');card.className='photo-card'+(isSelected?' is-selected':'');
+        const ratingStrip=ri.count?'<div class="media-rating-strip" aria-label="Gemiddeld '+ri.avg.toFixed(1)+' van 5 uit '+ri.count+' stemmen"><span class="media-rating-stars"><span>★★★★★</span><span class="fill" style="width:'+(ri.avg/5*100).toFixed(1)+'%">★★★★★</span></span><span>'+ri.avg.toFixed(1).replace('.',',')+' · '+ri.count+'</span></div>':'<div class="media-rating-strip media-rating-empty">☆ Nog niet beoordeeld</div>';
+        card.innerHTML='<button class="gallery-admin-select" type="button" aria-label="Selecteer foto van '+item.by+'" aria-pressed="'+isSelected+'">✓</button><div class="media-thumb-frame"><img src="'+item.data+'" alt="Foto van '+item.by+'"><div class="photo-by">'+item.by+'</div></div>'+ratingStrip+'<button class="photo-del">×</button>';
+        card.onclick=e=>{if(!adminMode||e.target.closest('.photo-del'))return;e.preventDefault();e.stopPropagation();if(selectedItems.has(key))selectedItems.delete(key);else selectedItems.add(key);render();};
+        card.querySelector('img').onclick=()=>{if(!adminMode)showPhoto(item,loc,render);};
+        const del=card.querySelector('.photo-del');if(del)del.onclick=async e=>{e.stopPropagation();if(!window.ZD_ADMIN||!(await window.ZD_ADMIN.verify()))return;if(!confirm('Deze foto verwijderen?'))return;save(loc,item.player,load(loc,item.player).filter(x=>String(x.id)!==String(item.id)));render();if(window.HS&&HS.deletePhoto)HS.deletePhoto(loc,item.player,item.id).catch(()=>{});};
+        gallery.appendChild(card);
+      });
+      updateAdminBar();
+    }
+    panel.querySelector('.photo-input').onchange=async e=>{const file=e.target.files&&e.target.files[0];if(!file)return;status.textContent='Foto verwerken…';try{const player=activePlayer(),base=await resize(file);status.textContent='Kies eventueel een avatarsticker…';const decorated=await editPhotoWithStickers(base);if(!decorated){status.textContent='Foto geannuleerd';e.target.value='';return;}const item={id:Date.now(),data:decorated,by:pname(player),player,loc,ratings:{}};const a=load(loc,player);a.unshift(item);save(loc,player,a);render();status.textContent='✨ Foto ingezonden!';if(window.HS&&HS.savePhoto)HS.savePhoto(loc,player,item).catch(()=>{status.textContent='Lokaal opgeslagen · synchroniseert later';});}catch(err){status.textContent='Deze foto kon niet worden verwerkt';}e.target.value='';};
     function sync(){if(!window.HS||!HS.loadAllPhotos)return;const local=PLAYERS.reduce((a,p)=>a.concat(load(loc,p.id)),[]),upload=HS.savePhoto?Promise.all(local.map(item=>HS.savePhoto(loc,item.player,item))).catch(()=>{}):Promise.resolve();upload.then(()=>HS.loadAllPhotos(loc)).then(items=>{(items||[]).forEach(item=>{const a=load(loc,item.player),i=a.findIndex(x=>String(x.id)===String(item.id));if(i<0)a.push(item);else a[i]=Object.assign({},a[i],item);a.sort((x,y)=>(y.id||0)-(x.id||0));save(loc,item.player,a);});render();}).catch(()=>{});}
     render();window.addEventListener('load',()=>setTimeout(sync,200));
   });
@@ -7803,6 +8184,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     if (cx && cx.state === 'suspended') cx.resume().catch(()=>{});
     muted = !muted;
     try { localStorage.setItem(MUTE_KEY, muted ? '1' : '0'); } catch(_){}
+    if (muted) stopActiveTheme();
     applyToggleState();
     window.dispatchEvent(new CustomEvent('zd:audio-preferences',{detail:{musicMuted:muted}}));
     // Als we aanzetten: speel direct het huidige thema af zodat de gebruiker iets hoort
@@ -7815,22 +8197,31 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   window.addEventListener('zd:audio-preferences', function(event){
     if (!event.detail || typeof event.detail.musicMuted !== 'boolean') return;
     muted = event.detail.musicMuted;
+    if (muted) stopActiveTheme();
     applyToggleState();
   });
 
-  // --- Audio engine — eigen mini-engine zodat deze onafhankelijk werkt van spaanSound ---
-  let ctx = null, master = null, ambience = null;
+  // --- Audio engine — één gedeelde locatielaag, ook als een oude app-shell dubbel initialiseert ---
+  const LOCATION_AUDIO_STATE = window.__ZD_LOCATION_AUDIO__ || (window.__ZD_LOCATION_AUDIO__ = {sources:new Set(),run:0,lastLoc:null,lastAt:0});
+  if (!(LOCATION_AUDIO_STATE.sources instanceof Set)) LOCATION_AUDIO_STATE.sources = new Set();
+  let ctx = null, master = null;
+  function trackSource(source){
+    LOCATION_AUDIO_STATE.sources.add(source);
+    source.onended = function(){ LOCATION_AUDIO_STATE.sources.delete(source); };
+    return source;
+  }
+  function stopActiveTheme(){
+    LOCATION_AUDIO_STATE.run++;
+    LOCATION_AUDIO_STATE.sources.forEach(function(source){ try { source.stop(); } catch(_){} });
+    LOCATION_AUDIO_STATE.sources.clear();
+    if (toggle) toggle.classList.remove('playing');
+  }
   function getCtx(){
     if (ctx) return ctx;
     try {
       ctx = new (window.AudioContext || window.webkitAudioContext)();
       master = ctx.createGain(); master.gain.value = 0.34;
       const comp=ctx.createDynamicsCompressor();comp.threshold.value=-22;comp.knee.value=24;comp.ratio.value=2.2;comp.attack.value=.02;comp.release.value=.35;master.connect(comp).connect(ctx.destination);
-      // De galm-impuls kost op oudere tablets merkbaar CPU en geheugen. In de
-      // lichte tabletmodus gebruiken we de directe, nog steeds warme mix.
-      if(!document.documentElement.classList.contains('zd-lite-mode')){
-        ambience=ctx.createConvolver();const len=Math.floor(ctx.sampleRate*2.2),ir=ctx.createBuffer(2,len,ctx.sampleRate);for(let ch=0;ch<2;ch++){const d=ir.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3.4);}ambience.buffer=ir;const wet=ctx.createGain();wet.gain.value=.12;ambience.connect(wet).connect(comp);
-      }
     } catch(e){ return null; }
     return ctx;
   }
@@ -7842,7 +8233,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     const c = getCtx(); if (!c) return;
     opts = opts || {};
     const t0 = c.currentTime + (opts.delay || 0);
-    const osc = c.createOscillator();
+    const osc = trackSource(c.createOscillator());
     const g   = c.createGain();
     osc.type = opts.type || 'sine';
     osc.frequency.setValueAtTime(freq, t0);
@@ -7851,7 +8242,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(vol, t0 + (opts.attack || 0.04));
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    const filter=c.createBiquadFilter();filter.type='lowpass';filter.frequency.value=opts.cutoff||4200;filter.Q.value=.55;osc.connect(filter).connect(g);g.connect(master);if(ambience&&opts.room!==0){const send=c.createGain();send.gain.value=opts.room==null?.2:opts.room;g.connect(send).connect(ambience);}
+    const filter=c.createBiquadFilter();filter.type='lowpass';filter.frequency.value=opts.cutoff||4200;filter.Q.value=.55;osc.connect(filter).connect(g);g.connect(master);
     osc.start(t0);
     osc.stop(t0 + dur + 0.03);
   }
@@ -7862,7 +8253,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
     const buf = c.createBuffer(1, bufSize, c.sampleRate);
     const data = buf.getChannelData(0);
     for (let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1) * Math.exp(-i / (bufSize*0.3));
-    const src = c.createBufferSource();
+    const src = trackSource(c.createBufferSource());
     src.buffer = buf;
     const bp = c.createBiquadFilter();
     bp.type = 'bandpass';
@@ -7953,20 +8344,29 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   // Track last play times per location (debounce + remember "current")
   const lastPlayed = {};
   const COOLDOWN = 8000; // 8 sec — kort genoeg om feedback te voelen
+  const DOUBLE_TRIGGER_GUARD = 1400; // paginaomslag + klik mogen nooit dubbel klinken
+  const LOCATION_SINGLETON_GUARD = 3200; // blokkeert ook een tweede, oud geïnitialiseerd audioscript
   let currentLoc = null;
   let currentlyPlaying = null;
 
   function playTheme(loc, force){
     if (muted || !THEMES[loc]) return;
     const now = performance.now();
-    if (!force && lastPlayed[loc] && now - lastPlayed[loc] < COOLDOWN) return;
+    const elapsed = lastPlayed[loc] ? now - lastPlayed[loc] : Infinity;
+    if (elapsed < DOUBLE_TRIGGER_GUARD) return;
+    if (!force && elapsed < COOLDOWN) return;
+    if (LOCATION_AUDIO_STATE.lastLoc === loc && now - LOCATION_AUDIO_STATE.lastAt < LOCATION_SINGLETON_GUARD) return;
     lastPlayed[loc] = now;
+    stopActiveTheme();
+    LOCATION_AUDIO_STATE.lastLoc = loc;
+    LOCATION_AUDIO_STATE.lastAt = now;
+    const runId = ++LOCATION_AUDIO_STATE.run;
     // Resume audio context if browser suspended it
     const cx = getCtx();
     if (cx && cx.state === 'suspended') {
-      cx.resume().then(() => { try { THEMES[loc](); } catch(e){} });
+      cx.resume().then(() => { if (runId !== LOCATION_AUDIO_STATE.run || muted) return; try { THEMES[loc](); } catch(e){} });
     } else {
-      try { THEMES[loc](); } catch(e){ console.warn('theme error', e); }
+      if (runId === LOCATION_AUDIO_STATE.run && !muted) try { THEMES[loc](); } catch(e){ console.warn('theme error', e); }
     }
     if (toggle) {
       toggle.classList.add('playing');
@@ -8018,17 +8418,27 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   // Boek-modus: thema wisselen bij paginaomslag
   document.addEventListener('zd:page', (e) => {
     const id = e.detail && e.detail.id;
-    if (id && THEMES[id]) { currentLoc = id; playTheme(id, true); }
+    if (id && THEMES[id] && id !== currentLoc) {
+      currentLoc = id;
+      playTheme(id);
+    }
   });
 
-  // Directe triggers — kompas-stop / europa-kaart pin / next-stop blok
+  // Directe triggers zijn alleen nodig in de oude scrollweergave. In boekmodus
+  // is 'zd:page' de enige audiobron; anders klonk hetzelfde thema tweemaal.
   function bindClick(selector, getLoc){
     document.querySelectorAll(selector).forEach(el => {
       el.addEventListener('click', () => {
+        if (document.body.classList.contains('book-mode')) return;
         const loc = getLoc(el);
         if (loc && THEMES[loc]) {
-          // Geef de browser tijd om te scrollen, dan thema afspelen
-          setTimeout(() => playTheme(loc, true), 700);
+          // Geef de browser tijd om te scrollen. De scroll-detectie heeft
+          // voorrang; deze fallback speelt alleen als die nog niet afging.
+          setTimeout(() => {
+            if (currentLoc === loc) return;
+            currentLoc = loc;
+            playTheme(loc);
+          }, 700);
         }
       });
     });
@@ -8044,6 +8454,7 @@ document.querySelectorAll('.reset-loc-btn').forEach(btn => {
   } else {
     window.addEventListener('DOMContentLoaded', () => setTimeout(checkAndPlay, 250));
   }
+  window.ZD_LOCATION_AUDIO = {stop:stopActiveTheme};
 })();
 </script>
 
@@ -12882,12 +13293,41 @@ window.addEventListener('beforeinstallprompt', (e) => {
     const av=AVATARS.find(function(a){return a.id===player;})||AVATARS[0];
     const prompts=['een Tesla op de maan','een koe in een gondel','een ijsje met zonnebril','een dinosaurus in Venetië','een pizza op ski’s','een slapende berg','een kasteel op wielen','een zingende gelato','een draak bij het Gardameer','een lama bij een laadpaal','een raket vol koffers','een spook in een kabelbaan'];
     const shell=modalShell('🎨 Geheime Tekenstrijd','<div id="db-root" style="width:100%;max-width:900px;margin:auto;"></div>',{maxWidth:'980px'});
-    const root=shell.card.querySelector('#db-root');let unsubscribe=function(){},galleryUnsub=function(){},lastRound=null,view='menu';
+    const root=shell.card.querySelector('#db-root');let unsubscribe=function(){},galleryUnsub=function(){},lastRound=null,view='menu',galleryAdmin=false,galleryItems=[],galleryNotice='';
+    const gallerySelected=new Set();
     const escHtml=function(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;};
     function modeBar(){
       const bar=document.createElement('div');bar.style.cssText='display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;margin:0 0 .8rem';
       bar.innerHTML='<button class="hs-btn hs-skip" data-db-home>← Keuzemenu</button><button class="hs-btn hs-skip" data-db-gallery>🖼️ Raadgalerij</button>';
       root.prepend(bar);bar.querySelector('[data-db-home]').onclick=function(){view='menu';render(lastRound);};bar.querySelector('[data-db-gallery]').onclick=function(){view='gallery';render(lastRound);};
+    }
+    function galleryAdminHtml(){
+      return '<div class="gallery-admin-toolbar" id="db-gallery-admin"><button class="gallery-admin-button gallery-admin-open" type="button">🔐 Galerij beheren</button><div class="gallery-admin-actions" hidden><button class="gallery-admin-button gallery-admin-all" type="button">Alles kiezen</button><span class="gallery-admin-count">0 gekozen</span><button class="gallery-admin-button danger gallery-admin-delete" type="button" disabled>🗑 Verwijderen</button><button class="gallery-admin-button gallery-admin-cancel" type="button">Annuleren</button></div><div class="gallery-admin-status" aria-live="polite"></div></div>';
+    }
+    function paintChallengeGallery(items,round){
+      galleryItems=items||[];
+      Array.from(gallerySelected).forEach(function(id){if(!galleryItems.some(function(item){return String(item.id)===id;}))gallerySelected.delete(id);});
+      const box=root.querySelector('#db-gallery'),bar=root.querySelector('#db-gallery-admin');if(!box||!bar)return;
+      box.classList.toggle('gallery-admin-mode',galleryAdmin);
+      if(!galleryItems.length)box.innerHTML='<div class="media-empty-family"><img loading="lazy" decoding="async" src="assets/stickers/leonora-2.webp" alt="Leonora tekent"><span>Nog geen tekeningen — wie opent de galerij?</span></div>';
+      else box.innerHTML=galleryItems.map(function(it,index){
+        const id=String(it.id||''),chosen=gallerySelected.has(id),secret=round&&String(it.roundId||'')===String(round.id);
+        return '<figure class="db-gallery-item'+(chosen?' is-selected':'')+'" data-db-gallery-index="'+index+'" style="margin:0;padding:.4rem;background:#fff8e8;border:1px solid #d4a043;border-radius:12px"><button class="gallery-admin-select" type="button" aria-label="Selecteer tekening van '+escHtml(it.name)+'" aria-pressed="'+chosen+'">✓</button><img src="'+it.data+'" style="width:100%;aspect-ratio:5/3;object-fit:contain;border-radius:8px;background:#fff" alt="Tekening van '+escHtml(it.name)+'"><figcaption style="font:1rem Caveat,cursive"><b>'+escHtml(it.name)+'</b><br>'+(secret?'🔒 Geheime opdracht':escHtml(it.prompt))+'</figcaption></figure>';
+      }).join('');
+      const open=bar.querySelector('.gallery-admin-open'),actions=bar.querySelector('.gallery-admin-actions'),all=bar.querySelector('.gallery-admin-all'),count=bar.querySelector('.gallery-admin-count'),remove=bar.querySelector('.gallery-admin-delete'),cancel=bar.querySelector('.gallery-admin-cancel'),status=bar.querySelector('.gallery-admin-status');
+      open.hidden=galleryAdmin;actions.hidden=!galleryAdmin;count.textContent=gallerySelected.size+' gekozen';remove.disabled=!gallerySelected.size;all.disabled=!galleryItems.length;all.textContent=galleryItems.length&&gallerySelected.size===galleryItems.length?'Niets kiezen':'Alles kiezen';status.textContent=galleryNotice;
+      open.onclick=async function(){galleryNotice='';if(!window.ZD_ADMIN||!(await window.ZD_ADMIN.verify()))return;galleryAdmin=true;gallerySelected.clear();paintChallengeGallery(galleryItems,round);};
+      cancel.onclick=function(){galleryAdmin=false;gallerySelected.clear();galleryNotice='';paintChallengeGallery(galleryItems,round);};
+      all.onclick=function(){if(gallerySelected.size===galleryItems.length)gallerySelected.clear();else galleryItems.forEach(function(item){gallerySelected.add(String(item.id));});paintChallengeGallery(galleryItems,round);};
+      remove.onclick=async function(){
+        const ids=galleryItems.filter(function(item){return gallerySelected.has(String(item.id));}).map(function(item){return String(item.id);});if(!ids.length)return;
+        if(!window.HS||!HS.isCloudReady||!HS.isCloudReady()||!HS.deleteChallengeGalleryItems){galleryNotice='Firebase is niet bereikbaar — er is nog niets verwijderd.';paintChallengeGallery(galleryItems,round);return;}
+        if(!confirm(ids.length+(ids.length===1?' galerijtekening definitief verwijderen?':' galerijtekeningen definitief verwijderen?')))return;
+        remove.disabled=true;galleryNotice='Bezig met veilig verwijderen…';status.textContent=galleryNotice;
+        try{await HS.deleteChallengeGalleryItems(ids);galleryAdmin=false;gallerySelected.clear();galleryNotice='✓ '+ids.length+(ids.length===1?' tekening verwijderd':' tekeningen verwijderd');paintChallengeGallery(galleryItems.filter(function(item){return !ids.includes(String(item.id));}),round);}
+        catch(e){galleryNotice='Verwijderen is niet gelukt — probeer het opnieuw.';paintChallengeGallery(galleryItems,round);}
+      };
+      box.querySelectorAll('.db-gallery-item').forEach(function(card){card.onclick=function(e){if(!galleryAdmin)return;e.preventDefault();const item=galleryItems[Number(card.dataset.dbGalleryIndex)],id=item&&String(item.id);if(!id)return;if(gallerySelected.has(id))gallerySelected.delete(id);else gallerySelected.add(id);paintChallengeGallery(galleryItems,round);};});
     }
     function lobby(round){
       galleryUnsub();galleryUnsub=function(){};
@@ -12903,8 +13343,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
       };
     }
     function galleryWaiting(){
-      root.innerHTML='<div style="text-align:center;padding:1rem"><h2 style="font-family:Playfair Display,serif;color:#7a2a3a">🖼️ Raadgalerij</h2><p>Er is nog geen actieve tekening om te raden. Eerdere inzendingen staan hieronder.</p><div id="db-gallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.55rem"></div></div>';modeBar();
-      galleryUnsub();galleryUnsub=HS.watchChallengeGallery(function(items){const box=root.querySelector('#db-gallery');if(!box)return;box.innerHTML=items.length?items.map(function(it){return'<figure style="margin:0;padding:.4rem;background:#fff8e8;border:1px solid #d4a043;border-radius:12px"><img src="'+it.data+'" style="width:100%;aspect-ratio:5/3;object-fit:contain;border-radius:8px;background:#fff"><figcaption style="font:1rem Caveat,cursive"><b>'+escHtml(it.name)+'</b><br>'+escHtml(it.prompt)+'</figcaption></figure>';}).join(''):'<p>Nog geen tekeningen.</p>';});
+      root.innerHTML='<div style="text-align:center;padding:1rem"><h2 style="font-family:Playfair Display,serif;color:#7a2a3a">🖼️ Raadgalerij</h2><p>Er is nog geen actieve tekening om te raden. Eerdere inzendingen staan hieronder.</p>'+galleryAdminHtml()+'<div id="db-gallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.55rem"></div></div>';modeBar();
+      galleryUnsub();galleryUnsub=HS.watchChallengeGallery(function(items){paintChallengeGallery(items,null);});
     }
     function empty(){
       root.innerHTML='<div style="text-align:center;padding:1rem;"><div style="font-size:4rem">🎨🔒</div><h2 style="font-family:Playfair Display,serif;color:#7a2a3a">Start een geheime opdracht</h2><p style="font-family:EB Garamond,serif;font-size:1.08rem">Alleen jij ziet wat je moet tekenen. De andere telefoons zien uitsluitend je tekening en mogen raden.</p><button id="db-start" class="hs-btn hs-save">Nieuwe tekenronde</button><div id="db-error" style="margin-top:.7rem;color:#a33"></div></div>';
@@ -12943,13 +13383,13 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }
     function guesser(round){
       const hasDrawing=!!round.drawing;
-      root.innerHTML='<div style="text-align:center"><div style="display:flex;align-items:center;justify-content:center;gap:.6rem"><img src="assets/king-hill/'+round.drawer+'.png" style="height:82px;object-fit:contain" alt=""><h2 style="font-family:Playfair Display,serif;color:#7a2a3a">Wat tekent '+escHtml(round.drawerName)+'?</h2></div>'+(hasDrawing?'<img src="'+round.drawing+'" alt="Live tekening" style="display:block;width:100%;max-height:52vh;object-fit:contain;margin:auto;border:2px solid #d4a043;border-radius:16px;background:#fffaf0">':'<div style="padding:4rem 1rem;border:2px dashed #d4a043;border-radius:16px;font:1.4rem Caveat,cursive">De tekenaar is nog bezig… ✏️</div>')+'<div style="display:flex;gap:.45rem;max-width:620px;margin:.7rem auto"><input id="db-guess" class="hs-input" placeholder="Typ je gok…" autocomplete="off" '+(hasDrawing?'':'disabled')+'><button id="db-send" class="hs-btn hs-save" '+(hasDrawing?'':'disabled')+'>Raad</button></div><div id="db-feedback" style="min-height:1.4rem;font:1.05rem Caveat,cursive;color:#7a2a3a"></div><button id="db-own-toggle" class="hs-btn hs-skip">🎨 Zelf een tekening maken</button><div id="db-own" hidden style="position:fixed;inset:0;z-index:13000;background:#fff8e8;padding:max(12px,env(safe-area-inset-top)) 12px;overflow:auto"><input id="db-own-title" class="hs-input" maxlength="60" placeholder="Wat teken je?"><div style="display:flex;align-items:center;justify-content:center;gap:.6rem;margin:.4rem"><label class="draw-rainbow-picker"><input id="db-own-color" type="color" value="#4b2940" aria-label="Regenboog kleurkiezer"></label><label>✏️ <input id="db-own-width" class="draw-width-range" type="range" min="1" max="45" value="9" aria-label="Lijndikte"></label></div><canvas id="db-own-canvas" width="1200" height="800" style="display:block;width:100%;height:calc(100dvh - 170px);margin:.45rem auto;border:2px solid #d4a043;border-radius:16px;background:#fffaf0;touch-action:none"></canvas><button id="db-own-close" class="hs-btn hs-skip">Sluiten</button> <button id="db-own-clear" class="hs-btn hs-skip">Wissen</button> <button id="db-own-upload" class="hs-btn hs-save">Upload naar galerij</button><div id="db-own-status"></div></div><h3 style="margin-top:1rem;font-family:Playfair Display,serif;color:#7a2a3a">Galerij</h3><div id="db-gallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.55rem"></div></div>';
+      root.innerHTML='<div style="text-align:center"><div style="display:flex;align-items:center;justify-content:center;gap:.6rem"><img src="assets/king-hill/'+round.drawer+'.png" style="height:82px;object-fit:contain" alt=""><h2 style="font-family:Playfair Display,serif;color:#7a2a3a">Wat tekent '+escHtml(round.drawerName)+'?</h2></div>'+(hasDrawing?'<img src="'+round.drawing+'" alt="Live tekening" style="display:block;width:100%;max-height:52vh;object-fit:contain;margin:auto;border:2px solid #d4a043;border-radius:16px;background:#fffaf0">':'<div style="padding:4rem 1rem;border:2px dashed #d4a043;border-radius:16px;font:1.4rem Caveat,cursive">De tekenaar is nog bezig… ✏️</div>')+'<div style="display:flex;gap:.45rem;max-width:620px;margin:.7rem auto"><input id="db-guess" class="hs-input" placeholder="Typ je gok…" autocomplete="off" '+(hasDrawing?'':'disabled')+'><button id="db-send" class="hs-btn hs-save" '+(hasDrawing?'':'disabled')+'>Raad</button></div><div id="db-feedback" style="min-height:1.4rem;font:1.05rem Caveat,cursive;color:#7a2a3a"></div><button id="db-own-toggle" class="hs-btn hs-skip">🎨 Zelf een tekening maken</button><div id="db-own" hidden style="position:fixed;inset:0;z-index:13000;background:#fff8e8;padding:max(12px,env(safe-area-inset-top)) 12px;overflow:auto"><input id="db-own-title" class="hs-input" maxlength="60" placeholder="Wat teken je?"><div style="display:flex;align-items:center;justify-content:center;gap:.6rem;margin:.4rem"><label class="draw-rainbow-picker"><input id="db-own-color" type="color" value="#4b2940" aria-label="Regenboog kleurkiezer"></label><label>✏️ <input id="db-own-width" class="draw-width-range" type="range" min="1" max="45" value="9" aria-label="Lijndikte"></label></div><canvas id="db-own-canvas" width="1200" height="800" style="display:block;width:100%;height:calc(100dvh - 170px);margin:.45rem auto;border:2px solid #d4a043;border-radius:16px;background:#fffaf0;touch-action:none"></canvas><button id="db-own-close" class="hs-btn hs-skip">Sluiten</button> <button id="db-own-clear" class="hs-btn hs-skip">Wissen</button> <button id="db-own-upload" class="hs-btn hs-save">Upload naar galerij</button><div id="db-own-status"></div></div><h3 style="margin-top:1rem;font-family:Playfair Display,serif;color:#7a2a3a">Galerij</h3>'+galleryAdminHtml()+'<div id="db-gallery" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.55rem"></div></div>';
       const input=root.querySelector('#db-guess'),send=root.querySelector('#db-send');
       function submit(){const guess=input.value.trim();if(!guess)return;send.disabled=true;HS.submitDrawingGuess(player,av.name,guess).then(function(r){if(!r.correct){root.querySelector('#db-feedback').textContent='Nog niet… kijk nog eens goed 👀';send.disabled=false;input.select();}}).catch(function(e){root.querySelector('#db-feedback').textContent=e.message||'Verbinding mislukt';send.disabled=false;});}
       send.onclick=submit;input.onkeydown=function(e){if(e.key==='Enter')submit();};
       const own=root.querySelector('#db-own'),oc=root.querySelector('#db-own-canvas'),og=oc.getContext('2d');og.fillStyle='#fffaf0';og.fillRect(0,0,oc.width,oc.height);og.lineCap='round';og.lineWidth=9;og.strokeStyle='#4b2940';let od=false,op=null;
       root.querySelector('#db-own-toggle').onclick=function(){own.hidden=false;};root.querySelector('#db-own-close').onclick=function(){own.hidden=true;};root.querySelector('#db-own-color').oninput=function(){og.strokeStyle=this.value;};root.querySelector('#db-own-width').oninput=function(){og.lineWidth=parseInt(this.value,10)||9;};function pt(e){const r=oc.getBoundingClientRect();return{x:(e.clientX-r.left)*oc.width/r.width,y:(e.clientY-r.top)*oc.height/r.height};}oc.onpointerdown=function(e){e.preventDefault();od=true;op=pt(e);};oc.onpointermove=function(e){if(!od)return;const p=pt(e);og.beginPath();og.moveTo(op.x,op.y);og.lineTo(p.x,p.y);og.stroke();op=p;};oc.onpointerup=oc.onpointercancel=function(){od=false;};root.querySelector('#db-own-clear').onclick=function(){og.fillStyle='#fffaf0';og.fillRect(0,0,oc.width,oc.height);};root.querySelector('#db-own-upload').onclick=function(){const b=this,s=root.querySelector('#db-own-status'),title=root.querySelector('#db-own-title').value.trim()||'Vrije tekening';b.disabled=true;s.textContent='Uploaden…';HS.publishChallengeDrawing(round,oc.toDataURL('image/jpeg',.78),player,av.name,title).then(function(){s.textContent='✅ Staat in de galerij';b.disabled=false;}).catch(function(e){s.textContent='❌ '+(e.message||'Upload mislukt');b.disabled=false;});};
-      galleryUnsub();galleryUnsub=HS.watchChallengeGallery(function(items){const box=root.querySelector('#db-gallery');if(!box)return;box.innerHTML=items.length?items.map(function(it){const secret=String(it.roundId||'')===String(round.id);return'<figure style="margin:0;padding:.4rem;background:#fff8e8;border:1px solid #d4a043;border-radius:12px"><img src="'+it.data+'" style="width:100%;aspect-ratio:5/3;object-fit:contain;border-radius:8px;background:#fff"><figcaption style="font:1rem Caveat,cursive"><b>'+escHtml(it.name)+'</b><br>'+(secret?'🔒 Geheime opdracht':escHtml(it.prompt))+'</figcaption></figure>';}).join(''):'<p>Nog geen tekeningen.</p>';});
+      galleryUnsub();galleryUnsub=HS.watchChallengeGallery(function(items){paintChallengeGallery(items,round);});
       modeBar();
     }
     function solved(round){
@@ -15385,11 +15825,25 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
   function savePhoto(loc,player,item){if(!cloudReady||!cloudDb)return Promise.reject(new Error('cloud not ready'));return cloudDb.ref(photoPath(loc,player,item.id)).update({id:item.id,loc:loc,player:player,by:item.by||player,data:item.data,createdAt:item.id||firebase.database.ServerValue.TIMESTAMP});}
   function loadAllPhotos(loc){if(!cloudReady||!cloudDb)return Promise.reject(new Error('cloud not ready'));return cloudDb.ref(photoPath(loc,'')).once('value').then(function(snap){const arr=[];snap.forEach(function(ps){ps.forEach(function(ch){const v=ch.val();if(v&&v.data)arr.push({id:v.id||ch.key,data:v.data,by:v.by||ps.key,player:v.player||ps.key,loc:v.loc||loc,ratings:v.ratings||{},comments:v.comments||{}});});});arr.sort((a,b)=>(b.id||0)-(a.id||0));return arr;});}
   function deletePhoto(loc,player,id){if(!cloudReady||!cloudDb)return Promise.reject(new Error('cloud not ready'));return cloudDb.ref(photoPath(loc,player,id)).remove();}
+  function deleteMediaBatch(type,loc,items){
+    if(!cloudReady||!cloudDb)return Promise.reject(new Error('Firebase is niet bereikbaar'));
+    const updates={};
+    (items||[]).forEach(function(item){
+      if(!item||item.id==null||!item.player)return;
+      const path=type==='photos'?photoPath(loc,item.player,item.id):drawingPath(loc,item.player,item.id);
+      if(path)updates[path]=null;
+    });
+    return Object.keys(updates).length?cloudDb.ref().update(updates):Promise.resolve();
+  }
   function ratePhoto(loc,player,id,voter,stars,text,name){if(!cloudReady||!cloudDb)return Promise.reject(new Error('cloud not ready'));const safe=String(voter||'gast').toLowerCase().replace(/[^a-z0-9_-]/g,'');return cloudDb.ref(photoPath(loc,player,id)+'/ratings/'+safe).set({stars:Math.max(1,Math.min(5,Number(stars)||1)),text:String(text||'').slice(0,120),player:safe,name:String(name||voter).slice(0,24),updatedAt:firebase.database.ServerValue.TIMESTAMP});}
   function addMediaComment(type,loc,player,id,commentId,comment){
     if(!cloudReady||!cloudDb)return Promise.reject(new Error('cloud not ready'));
     const base=type==='photos'?photoPath(loc,player,id):drawingPath(loc,player,id);
-    return cloudDb.ref(base+'/comments/'+String(commentId).replace(/[^0-9]/g,'')).set({player:comment.player,name:String(comment.name||'').slice(0,24),text:String(comment.text||'').slice(0,120),at:comment.at||firebase.database.ServerValue.TIMESTAMP});
+    const authorId=String(comment.authorId||comment.player||'gast').toLowerCase().replace(/[^a-z0-9_-]/g,'');
+    const authorName=String(comment.authorName||comment.name||authorId).slice(0,24);
+    const at=Number(comment.at)||Date.now();
+    const createdAt=comment.createdAt||new Date(at).toISOString();
+    return cloudDb.ref(base+'/comments/'+String(commentId).replace(/[^0-9]/g,'')).set({player:authorId,name:authorName,authorId:authorId,authorName:authorName,text:String(comment.text||'').slice(0,120),at:at,createdAt:createdAt,serverAt:firebase.database.ServerValue.TIMESTAMP});
   }
 
   // Live geheime tekenstrijd — één actieve ronde voor alle telefoons.
@@ -15442,6 +15896,12 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
     if(!cloudReady||!cloudDb){cb([]);return function(){};}
     const ref=cloudDb.ref('drawingChallenges/gallery').limitToLast(40),fn=function(s){const list=[];s.forEach(function(ch){const v=ch.val();if(v&&v.data)list.push(v);});list.reverse();cb(list);};ref.on('value',fn);return function(){ref.off('value',fn);};
   }
+  function deleteChallengeGalleryItems(ids){
+    if(!cloudReady||!cloudDb)return Promise.reject(new Error('Firebase is niet bereikbaar'));
+    const updates={};
+    (ids||[]).forEach(function(id){const safe=String(id||'').replace(/[^a-zA-Z0-9_-]/g,'');if(safe)updates['drawingChallenges/gallery/'+safe]=null;});
+    return Object.keys(updates).length?cloudDb.ref().update(updates):Promise.resolve();
+  }
   function raceRoomRef(code){return cloudDb&&cloudDb.ref('racingRooms/'+String(code||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,4));}
   function createRaceRoom(player,name){
     if(!cloudReady||!cloudDb)return Promise.reject(new Error('Firebase is niet bereikbaar'));
@@ -15481,6 +15941,7 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
     savePhoto: savePhoto,
     loadAllPhotos: loadAllPhotos,
     deletePhoto: deletePhoto,
+    deleteMediaBatch: deleteMediaBatch,
     ratePhoto: ratePhoto,
     addMediaComment: addMediaComment,
     createDrawingChallenge:createDrawingChallenge,
@@ -15491,6 +15952,7 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
     setDrawingPrompt:setDrawingPrompt,
     publishChallengeDrawing:publishChallengeDrawing,
     watchChallengeGallery:watchChallengeGallery,
+    deleteChallengeGalleryItems:deleteChallengeGalleryItems,
     createRaceRoom:createRaceRoom,
     joinRaceRoom:joinRaceRoom,
     startRaceRoom:startRaceRoom,
@@ -15746,7 +16208,7 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
   function clamp(i){ return Math.max(0, Math.min(pages.length - 1, i)); }
 
   function overlayOpen(){
-    return !!document.querySelector('.modal-overlay.active, .zd-gameoverlay');
+    return document.body.classList.contains('drawing-mode') || !!document.querySelector('.modal-overlay.active, .zd-gameoverlay');
   }
 
   function setActive(i){
@@ -15831,6 +16293,7 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
 
   function goTo(i, opts){
     opts = opts || {};
+    if (overlayOpen()) return;
     i = clamp(i);
     if (turning || i === idx) return;
     const dir = i > idx ? 1 : -1;
@@ -15861,7 +16324,7 @@ a.rl-route:hover{color:#8a4a12;text-decoration:underline;}
 
   // ---- interne ankerlinks (kompas + next-stop + overige #id) ----
   document.addEventListener('click', function(e){
-    if (!open) return;
+    if (!open || overlayOpen()) return;
     const a = e.target.closest('a[href^="#"], .kompas-stop[data-loc]');
     if (!a) return;
     let id = a.dataset && a.dataset.loc;
@@ -16003,6 +16466,17 @@ body::after{opacity:.25;animation:none}
 .kompas-stop.current .kompas-dot{
   background:var(--loc-accent,var(--v2-gold));border-color:rgba(255,255,255,.7);
   color:#071427;box-shadow:0 0 0 4px rgba(255,255,255,.08)!important;
+}
+.kompas-stop.today{position:relative;color:#fff}
+.kompas-stop.today .kompas-dot{
+  outline:2px solid #ffe08a;outline-offset:4px;
+  box-shadow:0 0 0 7px rgba(255,224,138,.16),0 0 16px rgba(255,203,87,.45)!important;
+}
+.kompas-stop.today::before{
+  content:attr(data-today-label);position:absolute;z-index:3;top:-.38rem;left:50%;
+  transform:translateX(8px);padding:.08rem .28rem;border-radius:99px;
+  background:#ffe08a;color:#4b2940;border:1px solid rgba(75,41,64,.25);
+  font:700 .48rem/1.25 "EB Garamond",Georgia,serif;letter-spacing:.02em;white-space:nowrap;
 }
 .kompas-progress{height:2px;background:rgba(255,255,255,.07)}
 
@@ -16155,6 +16629,42 @@ body.book-mode .bookpage::after{
 .two-col .col::before{display:none}
 .two-col h4{font-family:"Inter",sans-serif;font-size:.95rem;color:var(--v2-ink)}
 .two-col li{color:#495461}
+
+/* All outings live in one scan-friendly guide: good-weather highlights, rain plan, then food. */
+.activity-guide{margin:1.7rem 0 2.2rem}
+.activity-guide-title{
+  display:flex;align-items:center;gap:.65rem;margin:0 0 .85rem;
+  color:var(--v2-ink);font-family:"EB Garamond",Georgia,serif;
+  font-size:clamp(1.45rem,3vw,1.9rem);font-weight:700;
+}
+.activity-guide-title::after{content:"";height:1px;flex:1;background:var(--v2-line)}
+.activity-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.activity-card,.food-card{
+  position:relative;background:var(--v2-paper-strong);border:1px solid var(--v2-line);
+  border-radius:var(--v2-radius-sm);box-shadow:var(--v2-shadow-soft);
+  padding:1.25rem 1.35rem;overflow:hidden;
+}
+.activity-card::before,.food-card::before{
+  content:"";position:absolute;inset:0 auto 0 0;width:4px;
+  background:linear-gradient(180deg,#d6a943,#8a4d57);
+}
+.activity-card.rain::before{background:linear-gradient(180deg,#7196a8,#54617f)}
+.activity-card h4,.food-card h4{
+  margin:0 0 .75rem;font-family:"EB Garamond",Georgia,serif;
+  font-size:1.15rem;color:var(--v2-ink);
+}
+.activity-card ul,.food-card ul{margin:0;padding-left:1.15rem}
+.activity-card li,.food-card li{margin:.48rem 0;color:#495461;line-height:1.55}
+.activity-card a,.food-card a{font-weight:600;text-underline-offset:3px}
+.food-card{margin-top:1rem}
+.food-card::before{background:linear-gradient(180deg,#c98a57,#b25c78)}
+.food-card h4{display:flex;align-items:center;gap:.45rem}
+.food-card .avatar-mini{width:31px;height:31px;margin:0 .15rem 0 0}
+
+@media(max-width:700px){
+  .activity-grid{grid-template-columns:1fr}
+  .activity-card,.food-card{padding:1.15rem 1.2rem}
+}
 
 .kids-zone{
   margin:2.5rem 0;background:#fff!important;border-radius:var(--v2-radius);
@@ -16512,6 +17022,97 @@ body.book-mode .loc-body p.hero-text::first-letter{margin-left:0}
   document.querySelectorAll('[data-dream-egg]').forEach(function(b){b.addEventListener('click',function(){if(typeof hideHelp==='function')hideHelp();setTimeout(function(){openDream(b.dataset.dreamEgg);},260);});});
   const moonKey=document.getElementById('vault-moon-key');if(moonKey)moonKey.addEventListener('click',function(e){e.stopPropagation();if(typeof showHelp==='function')showHelp();});
   window.ZD_DREAM_EGGS={open:openDream,close:closeDream};
+})();
+</script>
+<style id="family-stickers-throughout-css">
+/* De familiefiguren zijn nu deel van het reisverhaal, niet alleen van de tekenwerkplaats.
+   Alle beelden blijven losse, lui geladen WebP-bestanden zodat tablets soepel blijven. */
+.family-location-moment{
+  display:grid;grid-template-columns:88px minmax(0,1fr);align-items:center;gap:.9rem;
+  margin:-.75rem 0 2.2rem;padding:.7rem 1rem .7rem .55rem;
+  border:1px solid rgba(122,42,58,.16);border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,250,240,.96),rgba(247,226,195,.82));
+  box-shadow:0 10px 28px rgba(78,49,30,.09);overflow:hidden;
+}
+.family-location-moment img{display:block;width:88px;height:82px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 6px 7px rgba(75,41,64,.2))}
+.family-location-copy{min-width:0;color:#5e493b;font:1rem/1.35 "EB Garamond",Georgia,serif}
+.family-location-copy b{display:block;margin-bottom:.12rem;color:#7a2a3a;font:700 .67rem/1.2 "Cinzel",serif;letter-spacing:.11em;text-transform:uppercase}
+.team-sticker-signature{display:flex;align-items:center;gap:.45rem;margin:.8rem -.2rem -.25rem;padding:.4rem .55rem;border-radius:12px;background:linear-gradient(120deg,rgba(255,224,138,.18),rgba(218,183,232,.2));color:#6d5544;font:700 .72rem "EB Garamond",serif}
+.team-sticker-signature img{width:48px;height:52px;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(75,41,64,.18))}
+.quest-family-band{display:flex;align-items:flex-end;justify-content:center;gap:clamp(.25rem,2vw,1rem);margin:.9rem 0 0;padding:.55rem .8rem .25rem;border-top:1px solid rgba(81,56,38,.12)}
+.quest-family-band span{display:flex;flex-direction:column;align-items:center;min-width:0;color:#725341;font:700 .58rem "Cinzel",serif;letter-spacing:.04em}
+.quest-family-band img{width:clamp(46px,8vw,68px);height:62px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(42,24,46,.2))}
+.quest-family-band strong{margin-right:.3rem;align-self:center;color:#7a2a3a;font:700 .78rem "EB Garamond",serif;white-space:nowrap}
+.passport-family-strip{display:flex;align-items:flex-end;justify-content:center;gap:clamp(.15rem,2.5vw,1.2rem);margin:.8rem auto 1.2rem;padding:.5rem 1rem .25rem;width:min(100%,560px);border-radius:18px;background:linear-gradient(135deg,rgba(255,224,138,.16),rgba(218,183,232,.22))}
+.passport-family-strip figure{margin:0;text-align:center;min-width:0;flex:1}
+.passport-family-strip img{display:block;margin:auto;width:min(82px,100%);height:76px;object-fit:contain;filter:drop-shadow(0 5px 5px rgba(75,41,64,.18))}
+.passport-family-strip figcaption{color:#7a2a3a;font:700 .58rem "Cinzel",serif;letter-spacing:.05em}
+.family-inline-note,.map-family-guide{display:flex;align-items:center;gap:.7rem;margin:.9rem 0;padding:.55rem .85rem;border-radius:16px;background:rgba(255,250,240,.82);border:1px solid rgba(122,42,58,.13);color:#664e3f;font:italic .95rem "EB Garamond",serif}
+.family-inline-note img,.map-family-guide img{width:60px;height:62px;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 4px 4px rgba(75,41,64,.18))}
+.next-stop .family-inline-note{margin:.65rem 0;color:rgba(255,255,255,.82);background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
+.map-family-guide{width:min(100%,520px);margin:.8rem auto}
+.media-empty-family{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:.65rem;min-height:86px;padding:.6rem 1rem!important;text-align:left;color:#846b5a;font:1rem "Caveat",cursive}
+.media-empty-family img{width:68px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(75,41,64,.16))}
+.photo-empty.media-empty-family{display:flex}
+@media(max-width:700px){
+  .family-location-moment{grid-template-columns:72px minmax(0,1fr);gap:.65rem;margin:-.45rem 0 1.6rem;padding:.55rem .7rem .55rem .35rem}
+  .family-location-moment img{width:72px;height:72px}
+  .team-sticker-signature{display:block;text-align:center;padding:.25rem}
+  .team-sticker-signature img{display:block;margin:auto}
+  .quest-family-band{overflow-x:auto;justify-content:flex-start;padding-left:.35rem;padding-right:.35rem}
+  .quest-family-band strong{display:none}
+  .passport-family-strip{gap:.05rem;padding-left:.35rem;padding-right:.35rem}
+  .passport-family-strip img{height:64px}
+  .passport-family-strip figcaption{font-size:.48rem}
+}
+</style>
+<script>
+/* Lichte familiecameo's door de hele gids. Geen timers of doorlopende animaties. */
+(function(){
+  'use strict';
+  const moments={
+    munchen:['assets/stickers/jarno-2.webp','Jarno','De eerste vakantiedag telt pas echt na de eerste gezamenlijke pizza.'],
+    zell:['assets/stickers/leonora-3.webp','Leonora','Bergdetective van dienst: wie spot als eerste sneeuw boven het meer?'],
+    dolomieten:['assets/stickers/roan-3.webp','Roan','Sneeuw in juli is officieel goedgekeurd — handschoenen zijn optioneel.'],
+    garda:['assets/stickers/erica-5.webp','Erica','Bewaar één foto van de gouden avond waarop niemand voor de camera poseert.'],
+    asolo:['assets/stickers/erica-2.webp','Erica','Prosecco voor de groten, een zonsondergang en dolce far niente voor iedereen.'],
+    lido:['assets/stickers/roan-2.webp','Roan','De beste laguneroute loopt volgens Roan altijd langs een gelateria.'],
+    bergamo:['assets/stickers/leonora-2.webp','Leonora','Teken vanaf de stadsmuur de horizon zoals jij hem later wilt herinneren.'],
+    luzern:['assets/stickers/jarno-1.webp','Jarno','Laatste Alpenetappe: nog één frisse duik en dan rustig richting huis.'],
+    mannheim:['assets/stickers/roan-1.webp','Roan','De laatste rit is óók een race — maar alleen tegen de navigatietijd.']
+  };
+  function picture(src,alt,cls){const im=document.createElement('img');im.src=src;im.alt=alt;im.loading='lazy';im.decoding='async';if(cls)im.className=cls;return im;}
+  Object.keys(moments).forEach(function(id){
+    const section=document.getElementById(id),guide=section&&section.querySelector('.activity-guide');
+    if(!guide||section.querySelector('.family-location-moment'))return;
+    const data=moments[id],box=document.createElement('aside');box.className='family-location-moment';box.setAttribute('aria-label','Familiemoment van '+data[1]);
+    box.appendChild(picture(data[0],data[1]+' als reissticker'));
+    const copy=document.createElement('div');copy.className='family-location-copy';copy.innerHTML='<b>✦ '+data[1]+'s familiemoment</b>'+data[2];box.appendChild(copy);
+    guide.insertAdjacentElement('afterend',box);
+  });
+
+  const team=[
+    ['assets/stickers/jarno-4.webp','Jarno','Gitaar'],['assets/stickers/erica-4.webp','Erica','Viool'],
+    ['assets/stickers/leonora-4.webp','Leonora','Keytar'],['assets/stickers/roan-4.webp','Roan','Drums']
+  ];
+  document.querySelectorAll('#team .team-card').forEach(function(card,i){
+    if(!team[i]||card.querySelector('.team-sticker-signature'))return;const d=team[i],sig=document.createElement('div');sig.className='team-sticker-signature';sig.appendChild(picture(d[0],d[1]+' speelt '+d[2]));const s=document.createElement('span');s.textContent='Familieband · '+d[2];sig.appendChild(s);card.appendChild(sig);
+  });
+
+  const next=document.querySelector('.intro .next-stop'),nextActions=next&&next.querySelector('.next-stop-actions');
+  if(next&&nextActions&&!next.querySelector('.family-inline-note')){const n=document.createElement('div');n.className='family-inline-note';n.appendChild(picture('assets/stickers/jarno-3.webp','Jarno klaar voor vertrek'));n.append(' Jarno heeft de route. Jullie hoeven alleen de zomer in te stappen.');next.insertBefore(n,nextActions);}
+
+  const map=document.getElementById('europa-kaart'),mapLegend=map&&map.querySelector('.europa-kaart-legenda');
+  if(map&&mapLegend&&!map.querySelector('.map-family-guide')){const n=document.createElement('div');n.className='map-family-guide';n.appendChild(picture('assets/stickers/erica-1.webp','Erica met reisgids'));n.append(' Erica’s routeboek: tik op een pin en spring rechtstreeks naar dat hoofdstuk.');map.insertBefore(n,mapLegend);}
+
+  const mini=document.querySelector('.quest-minigames');
+  if(mini&&!mini.parentElement.querySelector('.quest-family-band')){const band=document.createElement('div');band.className='quest-family-band';band.innerHTML='<strong>Familieband:</strong>'+team.map(function(d){return '<span><img loading="lazy" decoding="async" src="'+d[0]+'" alt="'+d[1]+' met '+d[2]+'">'+d[1]+'</span>';}).join('');mini.insertAdjacentElement('afterend',band);}
+
+  const passport=document.getElementById('paspoort'),stats=passport&&passport.querySelector('.stats');
+  if(passport&&stats&&!passport.querySelector('.passport-family-strip')){const row=document.createElement('div');row.className='passport-family-strip';[['assets/stickers/jarno-5.webp','Jarno'],['assets/stickers/erica-3.webp','Erica'],['assets/stickers/leonora-5.webp','Leonora'],['assets/stickers/roan-5.webp','Roan']].forEach(function(d){const f=document.createElement('figure');f.appendChild(picture(d[0],d[1]+' als vakantiesticker'));const c=document.createElement('figcaption');c.textContent=d[1];f.appendChild(c);row.appendChild(f);});passport.insertBefore(row,stats);}
+
+  const mustHeading=Array.from(document.querySelectorAll('.practical h2')).find(function(h){return h.textContent.includes('tien momenten');});
+  if(mustHeading&&mustHeading.parentElement&&!mustHeading.parentElement.querySelector('.family-must-note')){const n=document.createElement('div');n.className='family-inline-note family-must-note';n.appendChild(picture('assets/stickers/leonora-1.webp','Leonora als quizmaster'));n.append(' Leonora’s eindchallenge: kies na de reis samen jullie eigen nummer één.');mustHeading.nextElementSibling.insertAdjacentElement('afterend',n);}
 })();
 </script>
 <style id="tablet-performance-css">

@@ -11,7 +11,7 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.35.0';
+const VERSION = 'v3.43.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
@@ -30,6 +30,26 @@ const APP_SHELL = [
   './assets/king-hill/erica.png',
   './assets/king-hill/leonora.png',
   './assets/king-hill/roan.png',
+  './assets/stickers/jarno-1.webp',
+  './assets/stickers/jarno-2.webp',
+  './assets/stickers/jarno-3.webp',
+  './assets/stickers/jarno-4.webp',
+  './assets/stickers/jarno-5.webp',
+  './assets/stickers/erica-1.webp',
+  './assets/stickers/erica-2.webp',
+  './assets/stickers/erica-3.webp',
+  './assets/stickers/erica-4.webp',
+  './assets/stickers/erica-5.webp',
+  './assets/stickers/leonora-1.webp',
+  './assets/stickers/leonora-2.webp',
+  './assets/stickers/leonora-3.webp',
+  './assets/stickers/leonora-4.webp',
+  './assets/stickers/leonora-5.webp',
+  './assets/stickers/roan-1.webp',
+  './assets/stickers/roan-2.webp',
+  './assets/stickers/roan-3.webp',
+  './assets/stickers/roan-4.webp',
+  './assets/stickers/roan-5.webp',
   // backgrounds worden lazy gecached bij eerst-bezoek (runtime cache),
   // niet in APP_SHELL zodat een ontbrekende .jpg de hele precache niet breekt
 ];
