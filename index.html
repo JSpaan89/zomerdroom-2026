@@ -17154,6 +17154,22 @@ html.zd-lite-mode body.book-mode .bookpage.pg-in-fwd,
 html.zd-lite-mode body.book-mode .bookpage.pg-in-back{animation:zdLitePageIn .16s ease-out both!important}
 html.zd-lite-mode .tesla-driveby{display:none!important}
 </style>
+<style id="pixel-header-fix-css">
+/* Android/Pixel: reserveer echte ruimte boven de route-items. De horizontaal
+   scrollende route knipte anders de datumchip en de buitenste dagcirkel af. */
+.kompas{padding-top:env(safe-area-inset-top,0px)}
+@media(max-width:700px){
+  .kompas{overflow:visible}
+  .kompas-inner{padding-top:.28rem;padding-bottom:.3rem}
+  .kompas-route{
+    padding:.7rem .12rem .38rem;
+    overflow-x:auto;overflow-y:hidden;
+    scroll-padding-inline:1.25rem;
+  }
+  .kompas-stop{transform:translateY(.03rem)}
+  .kompas-stop.today::before{top:-.32rem;transform:translateX(6px)}
+}
+</style>
 <script>document.documentElement.classList.add('zd-ready');</script>
 </body>
 

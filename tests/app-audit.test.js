@@ -88,7 +88,20 @@ test('admin kan alle galerijen met multiselect opschonen', function () {
   assert.match(html, /HS\.deleteMediaBatch\('drawings'/);
   assert.match(html, /HS\.deleteMediaBatch\('photos'/);
   assert.match(html, /await HS\.deleteChallengeGalleryItems\(ids\)/);
-  assert.match(worker, /const VERSION = 'v3\.43\.0'/);
+  assert.match(worker, /const VERSION = 'v3\.45\.0'/);
+});
+
+test('Google Pixel gebruikt het ruime maskable app-icoon', function () {
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));
+  const maskable = manifest.icons.filter(function (icon) { return icon.purpose === 'maskable'; });
+  assert.deepEqual(maskable.map(function (icon) { return icon.src; }), [
+    'icons/icon-192-maskable-v2.png',
+    'icons/icon-512-maskable-v2.png'
+  ]);
+  for (const icon of maskable) {
+    assert.ok(fs.existsSync(path.join(root, icon.src)), icon.src);
+    assert.match(worker, new RegExp(icon.src.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
 });
 
 test('iedere locatie bundelt activiteiten in must-see en regen', function () {
@@ -103,6 +116,9 @@ test('de titelbalk markeert de locatie van vandaag los van de geopende pagina', 
   assert.match(html, /classList\.add\('today'\)/);
   assert.match(html, /\.kompas-stop\.today \.kompas-dot/);
   assert.match(html, /data-today-label/);
+  assert.match(html, /id="pixel-header-fix-css"/);
+  assert.match(html, /padding:\.7rem \.12rem \.38rem/);
+  assert.match(html, /safe-area-inset-top/);
 });
 
 test('alle tekenvelden en de foto-editor gebruiken twintig extra avatarstickers', function () {

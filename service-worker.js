@@ -11,7 +11,7 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.43.0';
+const VERSION = 'v3.45.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 
@@ -20,6 +20,8 @@ const APP_SHELL = [
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
+  './icons/icon-192-maskable-v2.png',
+  './icons/icon-512-maskable-v2.png',
   './icons/apple-touch-icon.png',
   './icons/favicon-32.png',
   './avatars/jarno.png',
