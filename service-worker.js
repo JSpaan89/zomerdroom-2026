@@ -11,7 +11,7 @@
  *  - Listens for SKIP_WAITING message so the page can force activation.
  */
 
-const VERSION = 'v3.45.0';
+const VERSION = 'v3.46.0';
 const APP_CACHE = `zomerdroom-app-${VERSION}`;
 const RUNTIME_CACHE = `zomerdroom-runtime-${VERSION}`;
 

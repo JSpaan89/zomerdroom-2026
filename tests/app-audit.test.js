@@ -88,7 +88,15 @@ test('admin kan alle galerijen met multiselect opschonen', function () {
   assert.match(html, /HS\.deleteMediaBatch\('drawings'/);
   assert.match(html, /HS\.deleteMediaBatch\('photos'/);
   assert.match(html, /await HS\.deleteChallengeGalleryItems\(ids\)/);
-  assert.match(worker, /const VERSION = 'v3\.45\.0'/);
+  assert.match(worker, /const VERSION = 'v3\.46\.0'/);
+});
+
+test('de fotowedstrijd biedt camera en galerij als losse keuzes', function () {
+  assert.match(html, /photo-camera-input[^>]+capture="environment"/);
+  assert.match(html, /photo-gallery-input[^>]+type="file"[^>]+accept="image\/\*"/);
+  assert.doesNotMatch(html, /photo-gallery-input[^>]+capture=/);
+  assert.match(html, /querySelectorAll\('\.photo-input'\)\.forEach/);
+  assert.match(html, /Upload foto/);
 });
 
 test('Google Pixel gebruikt het ruime maskable app-icoon', function () {
